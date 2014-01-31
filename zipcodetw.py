@@ -19,6 +19,7 @@ rule_re = re.compile(u'''
     (?P<lane>       \d+巷 )?
     (?P<alley>      \d+弄 )?
     (?P<number>     \d+(之\d+)?號)?
+    (?P<range>      \d+(之\d+)?號至\d+(之\d+)?號)?
     (?P<all>        全    )?
     (?P<skipped>   .+     )?
 ''', re.X)
@@ -36,7 +37,6 @@ with open('zipcodetw-20140131.csv') as f:
         rule_str = row[-1].decode('utf-8').replace(u' ', u'').replace(u'　', u'')
 
         #print zipcode, address_tuple, rule_str
-
 
         rule_m = rule_re.match(rule_str)
         if rule_m.group('skipped'):
