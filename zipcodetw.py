@@ -16,7 +16,7 @@ addr_token_re = re.compile(u'''
     (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
 ''', re.X)
 
-counter = 0
+fail_counter = 0
 
 with open('zipcodetw-20140131.csv') as f:
 
@@ -37,9 +37,9 @@ with open('zipcodetw-20140131.csv') as f:
             print rule_str
             print rule_tokens
             print len(rule_tokens)
-            counter += 1
+            fail_counter += 1
 
-print counter
+print fail_counter
 
 addr_str = u'臺北市信義區市府路1之23號'
 
