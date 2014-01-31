@@ -24,10 +24,11 @@ with open('zipcodetw-20140131.csv') as f:
 
     for row in csv.reader(f):
 
+        row = [item.decode('utf-8') for item in row]
 
         zipcode = row[0]
         triple_addr = row[1:-1]
-        rule_str = row[-1].decode('utf-8').replace(u' ', u'').replace(u'　', u'')
+        rule_str = row[-1].replace(u' ', u'').replace(u'　', u'')
 
         rule_tokens = rule_token_re.findall(rule_str)
 
