@@ -18,6 +18,8 @@ rule_token_re = re.compile(u'''
     (?P<suffix>全|以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
 
+triple_addr_rules_zip = {}
+
 fail_count = 0
 
 with open('zipcodetw-20140131.csv') as f:
@@ -35,6 +37,12 @@ with open('zipcodetw-20140131.csv') as f:
 
         rule_str = row[-1].replace(u' ', u'').replace(u'　', u'')
         rule_tokens = rule_token_re.findall(rule_str)
+
+        if triple_addr not in triple_addr_rules_zip:
+            triple_addr_rules_zip[triple_addr] = ([rule_tokens], [zipcode])
+        else:
+            triple_addr_rules_zip[triple_addr][0].append(rule_tokens)
+            triple_addr_rules_zip[triple_addr][1].append(zipcode)
 
         # check the rule_token_re is right
         if len(rule_tokens) != (
