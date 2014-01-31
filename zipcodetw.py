@@ -12,14 +12,15 @@ import re
 # * + <lane>     : 22383
 # * + <alley>    : 22319
 # * + <number>   : 21318
+# * + <range>    : 16129
 #
 
 rule_re = re.compile(u'''
     (?P<odd_or_even>[單雙])?
     (?P<lane>       \d+巷 )?
     (?P<alley>      \d+弄 )?
-    (?P<number>     \d+(之\d+)?號)?
     (?P<range>      \d+(之\d+)?號至\d+(之\d+)?號)?
+    (?P<number>     \d+(之\d+)?號)?
     (?P<all>        全    )?
     (?P<skipped>   .+     )?
 ''', re.X)
