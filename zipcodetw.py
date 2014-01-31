@@ -11,11 +11,6 @@ rule_token_re = re.compile(u'''
     (?P<suffix>全|以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
 
-addr_token_re = re.compile(u'''
-    (?P<name>.+?)
-    (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
-''', re.X)
-
 fail_counter = 0
 
 with open('zipcodetw-20140131.csv') as f:
@@ -49,6 +44,11 @@ with open('zipcodetw-20140131.csv') as f:
 print fail_counter
 
 # test addr_token_re
+
+addr_token_re = re.compile(u'''
+    (?P<name>.+?)
+    (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
+''', re.X)
 
 addr_str = u'臺北市信義區市府路1之23號'
 
