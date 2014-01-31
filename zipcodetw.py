@@ -59,6 +59,12 @@ print fail_count
 
 # test addr_token_re
 
+import uniout
+from pprint import pprint
+
 addr_str = u'臺北市信義區市府路1之23號'
 print addr_str
-print addr_token_re.findall(addr_str)
+addr_tokens = tuple(addr_token_re.findall(addr_str))
+print addr_tokens
+print addr_tokens[:3]
+pprint(triple_addr_rules_zip[addr_tokens[:3]])
