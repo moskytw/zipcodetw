@@ -11,7 +11,7 @@ rule_token_re = re.compile(u'''
     (?P<suffix>全|以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
 
-fail_counter = 0
+fail_count = 0
 
 with open('zipcodetw-20140131.csv') as f:
 
@@ -39,9 +39,9 @@ with open('zipcodetw-20140131.csv') as f:
             print rule_str
             print rule_tokens
             print len(rule_tokens)
-            fail_counter += 1
+            fail_count += 1
 
-print fail_counter
+print fail_count
 
 # test addr_token_re
 
