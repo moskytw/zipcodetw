@@ -24,16 +24,20 @@ with open('zipcodetw-20140131.csv') as f:
 
     for row in csv.reader(f):
 
+
         zipcode = row[0]
         triple_addr = row[1:-1]
         rule_str = row[-1].decode('utf-8').replace(u' ', u'').replace(u'　', u'')
+
         rule_tokens = rule_token_re.findall(rule_str)
+
         if len(rule_tokens) != (
             sum(rule_str.count(k) for k in u'巷弄號樓')
             -(u'附號' in rule_str)
             +(u'附號全' in rule_str)
             -(u'含附號全' in rule_str)
         ):
+
             print rule_str
             print rule_tokens
             print len(rule_tokens)
