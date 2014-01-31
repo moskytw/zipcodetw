@@ -1,40 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import uniout
 import csv
 import re
 
-rule_re = re.compile(u'''
-    (?P<lane>       \d+巷)?
-    (?P<alley>      \d+弄)?
-    (?P<greater>    [單雙連]?\d+(?:之\d+)?[巷弄號](?:含附號)?以上(?:附號)?)?
-    (?P<lesser>     [單雙連]?\d+(?:之\d+)?[巷弄號](?:含附號)?以下(?:附號)?)?
-    (?P<range>      [單雙連]?\d+(?:之\d+)?[巷弄號]?至(?:\d+)?(?:之\d+)?[巷弄號](?:含附號全)?)?
-    (?P<number>     [單雙連]?\d+(?:之\d+)?[巷弄號]?(?:含附號|附號全|及以上附號)?)?
-    (?P<all>        [單雙連]?全)?
-    (?P<comment>     \(.+\)?)?
-    (?P<skipped>   .+     )?
+rule_token_re = re.compile(u'''
+    (?P<prefix>[全單雙連至])?
+    (?P<number>.+?)
+    (?P<unit>[巷弄號樓]|附號全)
+    (?P<suffix>全|以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
+
+addr_token_re = re.compile(u'''
+    (?P<name>.+?)
+    (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
+''', re.X)
+
+counter = 0
 
 with open('zipcodetw-20140131.csv') as f:
 
     next(f)
 
-    counter = 0
-
     for row in csv.reader(f):
 
         zipcode = row[0]
-        address_tuple = row[1:-1]
+        triple_addr = row[1:-1]
         rule_str = row[-1].decode('utf-8').replace(u' ', u'').replace(u'　', u'')
-
-        #print zipcode, address_tuple, rule_str
-
-        rule_m = rule_re.match(rule_str)
-        if rule_m.group('skipped'):
+        rule_tokens = rule_token_re.findall(rule_str)
+        if len(rule_tokens) != sum(rule_str.count(k) for k in u'巷弄號樓')-(u'附號' in rule_str):
             print rule_str
-            #print rule_m.groupdict()
+            print rule_tokens
+            print len(rule_tokens)
             counter += 1
 
-    print counter
+print counter
+
+addr_str = u'臺北市信義區市府路1之23號'
+
+print addr_str
+print addr_token_re.findall(addr_str)
