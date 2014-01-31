@@ -31,8 +31,8 @@ with open('zipcodetw-20140131.csv') as f:
         # check the rule_token_re is right
         if len(rule_tokens) != (
             sum(rule_str.count(k) for k in u'巷弄號樓')
-            -(u'附號' in rule_str)
-            +(u'附號全' in rule_str)
+            -(u'附號'     in rule_str)
+            +(u'附號全'   in rule_str)
             -(u'含附號全' in rule_str)
         ):
 
