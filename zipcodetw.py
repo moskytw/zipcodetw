@@ -20,6 +20,7 @@ fail_counter = 0
 
 with open('zipcodetw-20140131.csv') as f:
 
+    # skip the title line
     next(f)
 
     for row in csv.reader(f):
@@ -32,6 +33,7 @@ with open('zipcodetw-20140131.csv') as f:
 
         rule_tokens = rule_token_re.findall(rule_str)
 
+        # check the rule_token_re is right
         if len(rule_tokens) != (
             sum(rule_str.count(k) for k in u'巷弄號樓')
             -(u'附號' in rule_str)
@@ -45,6 +47,8 @@ with open('zipcodetw-20140131.csv') as f:
             fail_counter += 1
 
 print fail_counter
+
+# test addr_token_re
 
 addr_str = u'臺北市信義區市府路1之23號'
 
