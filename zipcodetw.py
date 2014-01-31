@@ -4,6 +4,13 @@
 import csv
 import re
 
+addr_token_re = re.compile(u'''
+    (?P<name>.+?)
+    (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
+''', re.X)
+
+addr_str = u'臺北市信義區市府路1之23號'
+
 rule_token_re = re.compile(u'''
     (?P<prefix>[全單雙連至])?
     (?P<number>.+?)
@@ -44,13 +51,6 @@ with open('zipcodetw-20140131.csv') as f:
 print fail_count
 
 # test addr_token_re
-
-addr_token_re = re.compile(u'''
-    (?P<name>.+?)
-    (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
-''', re.X)
-
-addr_str = u'臺北市信義區市府路1之23號'
 
 print addr_str
 print addr_token_re.findall(addr_str)
