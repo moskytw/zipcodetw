@@ -10,11 +10,23 @@ addr_token_re = re.compile(u'''
 ''', re.X)
 
 rule_token_re = re.compile(u'''
-    (?P<prefix>[全單雙連至])?
-    (?P<number>.+?)
-    (?P<unit>[巷弄號樓]|附號全)
+    (?P<prefix>[單雙連至])?
+    (?P<number>[\d之]+?)?
+    (?P<unit>[全巷弄號樓]|附號全)
     (?P<suffix>全|以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
+
+
+#print rule_token_re.findall(u'全')
+#print rule_token_re.findall(u'雙全')
+#print rule_token_re.findall(u'566巷全')
+#print rule_token_re.findall(u'單97號以下')
+#print rule_token_re.findall(u'雙598號至600號')
+#print rule_token_re.findall(u'1號含附號')
+#print rule_token_re.findall(u'雙444號至452號含附號全')
+#
+#import sys; sys.exit()
+
 
 triple_addr_rules_zip = {}
 
@@ -48,6 +60,7 @@ with open('zipcodetw-20140131.csv') as f:
             -(u'附號'     in rule_str) # 5號含附號
             +(u'附號全'   in rule_str) # 86附號全
             -(u'含附號全' in rule_str) # 連68號至69號含附號全
+            +(rule_str in (u'全', u'單全', u'雙全'))
         ):
 
             print rule_str
