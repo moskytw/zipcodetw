@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import uniout
 import csv
 import re
 from pprint import pprint
-
 
 addr_token_re = re.compile(u'''
     (?P<name>.+?)
@@ -72,30 +72,7 @@ def find_unit_rule(rule_tokens, reverse=False):
     return idx
 
 def match(addr_tokens, rule_tokens):
-
-    special_idxs = []
-    matching_idx = 0
-
-    for addr_token in addr_tokens:
-
-        if rule_tokens[matching_idx][0]:
-            special_idxs.append(matching_idx)
-
-        if addr_token[-1] != rule_tokens[matching_idx][-1]:
-            continue
-
-        if not special_idxs:
-            if addr_token == rule_tokens[matching_idx][1:]:
-                continue
-            else:
-                break
-        else:
-            continue
-
-    else:
-        return True
-
-    return False
+    return True
 
 rule_zipcode_pairs = [
     (((u'\u96d9', u'', u''),), u'11060'),
@@ -114,7 +91,7 @@ rule_zipcode_pairs = [
     ), u'11073')
 ]
 
-rule_tokens = rule_zipcode_pairs[1][0]
+rule_tokens = rule_zipcode_pairs[2][0]
 print rule_tokens
 print match(addr_tokens, rule_tokens)
 
