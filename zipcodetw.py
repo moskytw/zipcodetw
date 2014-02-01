@@ -33,7 +33,6 @@ rule_token_re = re.compile(u'''
 #
 #import sys; sys.exit()
 
-
 triple_addr_rules_zip = {}
 
 fail_count = 0
