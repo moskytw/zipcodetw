@@ -16,14 +16,20 @@ rule_token_re = re.compile(u'''
     (?P<suffix>以下|以上|含附號全?|含附號以下|及以上附號)?
 ''', re.X)
 
-
-#print rule_token_re.findall(u'全')
-#print rule_token_re.findall(u'雙全')
-#print rule_token_re.findall(u'566巷全')
-#print rule_token_re.findall(u'單97號以下')
-#print rule_token_re.findall(u'雙598號至600號')
-#print rule_token_re.findall(u'1號含附號')
-#print rule_token_re.findall(u'雙444號至452號含附號全')
+#test_cases = [
+#    u'全',
+#    u'雙全',
+#    u'566巷全',
+#    u'2樓全',
+#    u'單97號以下',
+#    u'雙598號至600號',
+#    u'1號含附號',
+#    u'雙444號至452號含附號全',
+#]
+#
+#for test_case in test_cases:
+#    print test_case
+#    print rule_token_re.findall(test_case)
 #
 #import sys; sys.exit()
 
