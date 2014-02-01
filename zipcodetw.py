@@ -11,11 +11,6 @@ addr_token_re = re.compile(u'''
     (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
 ''', re.X)
 
-addr_str = u'臺北市信義區市府路1號'
-print addr_str
-
-addr_tokens = tuple(addr_token_re.findall(addr_str))
-print addr_tokens
 
 rule_token_re = re.compile(u'''
     (?P<special>[單雙至]|以下|以上)
@@ -42,35 +37,6 @@ rule_token_re = re.compile(u'''
 #
 #import sys; sys.exit()
 
-def find_unit(tokens, unit, idx=0):
-
-    len_rule_tokens = len(rule_tokens)
-
-    while idx < len_rule_tokens:
-        if tokens[idx][-1] != unit:
-            idx += 1
-        else:
-            break
-    else:
-        return -1
-
-    return idx
-
-def find_unit_rule(rule_tokens, reverse=False):
-
-    len_rule_tokens = len(rule_tokens)
-    idx = reverse*-1
-
-    while -len_rule_tokens <= idx < len_rule_tokens:
-        if rule_tokens[idx][0]:
-            idx += 1+reverse*-2
-        else:
-            break
-    else:
-        return -1
-
-    return idx
-
 def match(addr_tokens, rule_tokens):
 
     len_rule_tokens = len(rule_tokens)
@@ -85,43 +51,24 @@ def match(addr_tokens, rule_tokens):
                 break
             special_idxs.append(matching_idx)
             matching_idx += 1
-        else:
-            break
 
-        # skip to next addr_token if units don't match
-        if addr_token[-1] != rule_tokens[matching_idx][-1]:
-            continue
-
-        if addr_tokens == rule_tokens[matching_idx][1:]:
-            continue
+        if not special_idxs:
+            if addr_tokens ==vrule_tokens[matching_idx][1:]:
+                continue
+            else:
+                break
         else:
-            break
+            for idx in special_idxs:
+                special_rule = rule_tokens[idx][0]
+                if special_rule == u'單' and int(addr_token[1]) & 0 == 1:
+                    continue
+                elif special_rule == u'雙' and int(addr_token[1]) & 0 == 0:
+                    continue
+                break
     else:
         return True
 
     return False
-
-
-rule_zipcode_pairs = [
-    (((u'\u96d9', u'', u''),), u'11060'),
-    (((u'', u'1', u'\u865f'),), u'11008'),
-    ((
-        (u'\u55ae', u'', u''),
-        (u'', u'3', u'\u865f'),
-        (u'\u81f3', u'', u''),
-        (u'', u'43', u'\u865f')
-    ), u'11073'),
-    (((u'', u'45', u'\u865f'),), u'11001'),
-    ((
-        (u'\u55ae', u'', u''),
-        (u'', u'47', u'\u865f'),
-        (u'\u4ee5\u4e0a', u'', u'')
-    ), u'11073')
-]
-
-rule_tokens = rule_zipcode_pairs[0][0]
-print rule_tokens
-print match(addr_tokens, rule_tokens)
 
 import sys; sys.exit()
 
@@ -148,6 +95,11 @@ with open('zipcodetw-20140131.csv') as f:
         else:
             triple_addr_rules_zip[triple_addr].append((rule_tokens, zipcode))
 
+addr_str = u'臺北市信義區市府路1號'
+print addr_str
+
+addr_tokens = tuple(addr_token_re.findall(addr_str))
+print addr_tokens
 print addr_tokens[:3]
 rule_zipcode_pairs = triple_addr_rules_zip[addr_tokens[:3]]
 pprint(rule_zipcode_pairs)
