@@ -53,10 +53,9 @@ with open('zipcodetw-20140131.csv') as f:
         rule_tokens = rule_token_re.findall(rule_str)
 
         if triple_addr not in triple_addr_rules_zip:
-            triple_addr_rules_zip[triple_addr] = ([rule_tokens], [zipcode])
+            triple_addr_rules_zip[triple_addr] = [(rule_tokens, zipcode)]
         else:
-            triple_addr_rules_zip[triple_addr][0].append(rule_tokens)
-            triple_addr_rules_zip[triple_addr][1].append(zipcode)
+            triple_addr_rules_zip[triple_addr].append((rule_tokens, zipcode))
 
 # test addr_token_re
 
