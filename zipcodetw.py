@@ -50,7 +50,7 @@ with open('zipcodetw-20140131.csv') as f:
         triple_addr = tuple(addr_token_re.findall(''.join(row[1:-1])))
 
         rule_str = row[-1].replace(u' ', u'').replace(u'　', u'')
-        rule_tokens = rule_token_re.findall(rule_str)
+        rule_tokens = tuple(rule_token_re.findall(rule_str))
 
         if triple_addr not in triple_addr_rules_zip:
             triple_addr_rules_zip[triple_addr] = [(rule_tokens, zipcode)]
