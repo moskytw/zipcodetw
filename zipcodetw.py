@@ -72,7 +72,35 @@ def find_unit_rule(rule_tokens, reverse=False):
     return idx
 
 def match(addr_tokens, rule_tokens):
-    return True
+
+    len_rule_tokens = len(rule_tokens)
+    matching_idx = 0
+    special_idxs = []
+
+    for addr_token in addr_tokens:
+
+        # skip and queue the special rule token
+        while matching_idx < len_rule_tokens:
+            if not rule_tokens[matching_idx][0]:
+                break
+            special_idxs.append(matching_idx)
+            matching_idx += 1
+        else:
+            break
+
+        # skip to next addr_token if units don't match
+        if addr_token[-1] != rule_tokens[matching_idx][-1]:
+            continue
+
+        if addr_tokens == rule_tokens[matching_idx][1:]:
+            continue
+        else:
+            break
+    else:
+        return True
+
+    return False
+
 
 rule_zipcode_pairs = [
     (((u'\u96d9', u'', u''),), u'11060'),
@@ -91,7 +119,7 @@ rule_zipcode_pairs = [
     ), u'11073')
 ]
 
-rule_tokens = rule_zipcode_pairs[2][0]
+rule_tokens = rule_zipcode_pairs[0][0]
 print rule_tokens
 print match(addr_tokens, rule_tokens)
 
