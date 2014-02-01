@@ -10,10 +10,10 @@ addr_token_re = re.compile(u'''
 ''', re.X)
 
 rule_token_re = re.compile(u'''
-    (?P<prefix>[單雙連至])?
-    (?P<number>[\d之]+?)?
-    (?P<unit>[全巷弄號樓]|附號全)
-    (?P<suffix>以下|以上|含附號全?|含附號以下|及以上附號)?
+    (?P<special>[單雙連至]|全|以下|以上|含附號全?|含附號以下|及以上附號)
+    |
+    (?P<number>[\d之]+?)
+    (?P<unit>[巷弄號樓]|附號全)
 ''', re.X)
 
 #test_cases = [
