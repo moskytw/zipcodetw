@@ -12,7 +12,7 @@ class Address(object):
             |
             (?P<name>.+?)
         )
-        (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
+        (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
     ''', re.X)
 
     NO = 0
