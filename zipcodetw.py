@@ -33,23 +33,21 @@ class Address(object):
 
         self.addr_str = addr_str
         self.tokens = Address.tokenize(addr_str)
-
         self.number_token_idx = 0
+        self.number = None
+        self.sub_number = None
+
         len_tokens = len(self.tokens)
         while self.number_token_idx < len_tokens:
             if self.tokens[self.number_token_idx][Address.NUMBER]:
                 break
             self.number_token_idx += 1
         else:
-            self.number_token_idx = None
+            self.number_token_idx = len_tokens
             return
 
-        self.number = None
-        number_str = self.tokens[self.number_token_idx][Address.NUMBER]
-        if number_str:
-            self.number = int(number_str)
+        self.number = int(self.tokens[self.number_token_idx][Address.NUMBER])
 
-        self.sub_number = None
         sub_number_str = self.tokens[self.number_token_idx][Address.SUB_NUMBER]
         if sub_number_str:
             self.sub_number = int(sub_number_str)
@@ -59,21 +57,15 @@ class Address(object):
 
     def __cmp__(self, other):
 
-        if len(self.tokens) != len(other.tokens):
-            raise ValueError("the lengths must equivalent")
-
-        if self.number_token_idx is None:
-            raise ValueError("this address doesn't include number")
-
-        if other.number_token_idx is None:
-            raise ValueError("that address doesn't include number")
-
-        if self.number_token_idx != other.number_token_idx:
-            raise ValueError('the number tokens are in different positions')
-
         for i in range(self.number_token_idx):
             if self.tokens[i] != other.tokens[i]:
-                raise ValueError('they are not on same road')
+                raise ValueError("incompatible")
+
+        if self.number is None:
+            return 1
+
+        if other.number is None:
+            return -1
 
         number_diff = self.number - other.number
         if number_diff == 0:
@@ -92,13 +84,16 @@ addr3 = Address('臺北市信義區市府路2-1號')
 print addr3.tokens
 addr4 = Address('臺北市信義區市府路2-5號')
 print addr4.tokens
-addr5 = Address('臺北市信義區另一條路1號')
+addr5 = Address('臺北市信義區市府路')
 print addr5.tokens
+addr6 = Address('臺北市信義區另一條路1號')
+print addr6.tokens
 
 print addr1 < addr2
 print addr2 < addr3
 print addr3 < addr4
-print addr5 == addr1
+print addr4 < addr5
+#print addr5 < addr6 # ValueError
 
 rule_token_re = re.compile(u'''
     (?P<special>[單雙至]|以下|以上)
