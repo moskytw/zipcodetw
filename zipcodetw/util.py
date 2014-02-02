@@ -34,16 +34,20 @@ class Address(object):
     def tokenize(addr_str):
         return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
+    def extract_no_pair(self, idx):
+        try:
+            return (
+                int(self.tokens[idx][Address.NO]    or 0),
+                int(self.tokens[idx][Address.SUBNO] or 0)
+            )
+        except IndexError:
+            return (0, 0)
+
     def __init__(self, addr_str):
 
         self.addr_str = addr_str
         self.tokens = Address.tokenize(addr_str)
-
-    def extract_no_pair(self, idx=-1):
-        return (
-            int(self.tokens[idx][Address.NO]    or 0),
-            int(self.tokens[idx][Address.SUBNO] or 0)
-        )
+        self.last_no_pair = self.extract_no_pair(-1)
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
@@ -93,23 +97,23 @@ class AddressRule(Address):
 
     def match(self, addr):
 
-        his_no_pair = addr.extract_no_pair()
+        my_tokens_to_match = self.tokens[:-1-(u'至' in self.rule_tokens)]
+        if my_tokens_to_match:
 
-        if self.tokens:
-
-            start_unit = self.tokens[0][Address.UNIT]
+            start_unit = my_tokens_to_match[0][Address.UNIT]
             for i, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
                     break
 
-            j = -1-(u'至' in self.rule_tokens)
-            for my_token, his_token in zip(self.tokens[:j], addr.tokens[i:]):
+            for my_token, his_token in zip(my_tokens_to_match, addr.tokens[i:]):
                 if my_token != his_token:
                     return False
 
-            my_no_pair = self.extract_no_pair()
             if not self.rule_tokens:
-                return his_no_pair == my_no_pair
+                return addr.last_no_pair == self.last_no_pair
+
+        his_no_pair = addr.last_no_pair
+        my_no_pair = self.last_no_pair
 
         for rule_token in self.rule_tokens:
             if (
