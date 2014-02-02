@@ -112,18 +112,14 @@ class AddressRule(Address):
                 return his_no_pair == my_no_pair
 
         for rule_token in self.rule_tokens:
-
-            if rule_token == u'單' and not his_no_pair[0] & 1 == 1:
-                return False
-            if rule_token == u'雙' and not his_no_pair[0] & 1 == 0:
-                return False
-            if u'以上' in rule_token and not his_no_pair >= my_no_pair:
-                return False
-            if u'以下' in rule_token and not his_no_pair <= my_no_pair:
-                return False
-            if rule_token == u'至' and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair:
-                return False
-            if rule_token == u'附號全' and not his_no_pair[1] > 0:
+            if (
+                (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
+                (rule_token == u'雙'     and not his_no_pair[0] & 1 == 0) or
+                (rule_token == u'至'     and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair) or
+                (rule_token == u'附號全' and not his_no_pair[1] > 0) or
+                (u'以上' in rule_token   and not his_no_pair >= my_no_pair) or
+                (u'以下' in rule_token   and not his_no_pair <= my_no_pair)
+            ):
                 return False
 
         return True
