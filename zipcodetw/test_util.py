@@ -29,10 +29,6 @@ def test_address_tokenize_subno():
 
 def test_address_is_comparable():
 
-    addr = Address('桃園縣,中壢市,普義,1號')
-    assert Address.is_comparable(Address('桃園縣,中壢市,普義,2號'), addr)
-    assert Address.is_comparable(Address('桃園縣,中壢市,普義路,3號'), addr)
-
     addr = Address('臺北市大安區市府路1號')
     assert     Address.is_comparable(Address('臺北市大安區市府路2號'), addr)
     assert not Address.is_comparable(Address('臺北市大安區另一條路3號'), addr)

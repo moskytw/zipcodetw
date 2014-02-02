@@ -46,13 +46,7 @@ class Address(object):
 
         for i in range(a.first_no_token_idx):
 
-            a_token = a.tokens[i]
-            b_token = b.tokens[i]
-
-            if a_token[Address.UNIT] and b_token[Address.UNIT]:
-                if a_token == b_token:
-                    continue
-            elif a_token[Address.NAME] == b_token[Address.NAME]:
+            if a.tokens[i] == b.tokens[i]:
                 continue
 
             return False
