@@ -29,52 +29,39 @@ class Address(object):
             addr_str = addr_str.decode('utf-8')
         return tuple(Address.TOKEN_RE.findall(addr_str))
 
+    @staticmethod
+    def get_number_pair(token):
+        return (
+            int(token[Address.NUMBER]     or 0),
+            int(token[Address.SUB_NUMBER] or 0)
+        )
+
     def __init__(self, addr_str):
 
         self.addr_str = addr_str
         self.tokens = Address.tokenize(addr_str)
-        self.number_token_idx = 0
-        self.number = None
-        self.sub_number = None
+        self.first_number_token_idx = 0
+        self.number_pair = (0, 0)
 
         len_tokens = len(self.tokens)
-        while self.number_token_idx < len_tokens:
-            if self.tokens[self.number_token_idx][Address.NUMBER]:
+        while self.first_number_token_idx < len_tokens:
+            if self.tokens[self.first_number_token_idx][Address.NUMBER]:
+                self.number_pair = Address.get_number_pair(self.tokens[self.first_number_token_idx])
                 break
-            self.number_token_idx += 1
+            self.first_number_token_idx += 1
         else:
-            self.number_token_idx = len_tokens
-            return
-
-        self.number = int(self.tokens[self.number_token_idx][Address.NUMBER])
-
-        sub_number_str = self.tokens[self.number_token_idx][Address.SUB_NUMBER]
-        if sub_number_str:
-            self.sub_number = int(sub_number_str)
+            self.first_number_token_idx = len_tokens
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
 
     def __cmp__(self, other):
 
-        for i in range(self.number_token_idx):
+        for i in range(self.first_number_token_idx):
             if self.tokens[i] != other.tokens[i]:
                 raise ValueError("incompatible")
 
-        if self.number is None:
-            return 1
-
-        if other.number is None:
-            return -1
-
-        number_diff = self.number - other.number
-        if number_diff == 0:
-            if self.sub_number is None:
-                return -1
-            else:
-                return self.sub_number - other.sub_number
-
-        return number_diff
+        return cmp(self.number_pair, other.number_pair)
 
 addr1 = Address('臺北市信義區市府路1號')
 print addr1.tokens
