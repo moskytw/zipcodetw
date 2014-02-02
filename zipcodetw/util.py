@@ -7,16 +7,16 @@ class Address(object):
 
     TOKEN_RE = re.compile(u'''
         (?:
-            (?P<number>\d+)
-            (?:[之-](?P<sub_number>\d+))?
+            (?P<no>\d+)
+            (?:[之-](?P<subno>\d+))?
             |
             (?P<name>.+?)
         )
         (?P<unit>[縣市鄉鎮市區村里路街巷弄號樓])
     ''', re.X)
 
-    NUMBER = 0
-    SUB_NUMBER = 1
+    NO = 0
+    SUBNO = 1
     NAME = 2
     UNIT = 3
 
@@ -29,8 +29,8 @@ class Address(object):
     @staticmethod
     def extract_no_pair(token):
         return (
-            int(token[Address.NUMBER]     or 0),
-            int(token[Address.SUB_NUMBER] or 0)
+            int(token[Address.NO]     or 0),
+            int(token[Address.SUBNO] or 0)
         )
 
     def __init__(self, addr_str):
@@ -42,7 +42,7 @@ class Address(object):
 
         len_tokens = len(self.tokens)
         while self.first_no_token_idx < len_tokens:
-            if self.tokens[self.first_no_token_idx][Address.NUMBER]:
+            if self.tokens[self.first_no_token_idx][Address.NO]:
                 self.number_pair = Address.extract_no_pair(self.tokens[self.first_no_token_idx])
                 break
             self.first_no_token_idx += 1
