@@ -38,37 +38,15 @@ rule_token_re = re.compile(u'''
 #import sys; sys.exit()
 
 def match(addr_tokens, rule_tokens):
+    pass
 
-    len_rule_tokens = len(rule_tokens)
-    matching_idx = 0
-    special_idxs = []
+rule_tokens = rule_token_re.findall(u'1號以上')
+print rule_tokens
 
-    for addr_token in addr_tokens:
+addr_tokens = addr_token_re.findall(u'3號')
+print addr_tokens
 
-        # skip and queue the special rule token
-        while matching_idx < len_rule_tokens:
-            if not rule_tokens[matching_idx][0]:
-                break
-            special_idxs.append(matching_idx)
-            matching_idx += 1
-
-        if not special_idxs:
-            if addr_tokens ==vrule_tokens[matching_idx][1:]:
-                continue
-            else:
-                break
-        else:
-            for idx in special_idxs:
-                special_rule = rule_tokens[idx][0]
-                if special_rule == u'單' and int(addr_token[1]) & 0 == 1:
-                    continue
-                elif special_rule == u'雙' and int(addr_token[1]) & 0 == 0:
-                    continue
-                break
-    else:
-        return True
-
-    return False
+print match(addr_tokens, rule_tokens)
 
 import sys; sys.exit()
 
