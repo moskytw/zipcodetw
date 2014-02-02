@@ -85,10 +85,15 @@ class Address(object):
         return number_diff
 
 addr1 = Address('臺北市信義區市府路1號')
+print addr1.tokens
 addr2 = Address('臺北市信義區市府路2號')
+print addr2.tokens
 addr3 = Address('臺北市信義區市府路2-1號')
+print addr3.tokens
 addr4 = Address('臺北市信義區市府路2-5號')
+print addr4.tokens
 addr5 = Address('臺北市信義區另一條路1號')
+print addr5.tokens
 
 print addr1 < addr2
 print addr2 < addr3
