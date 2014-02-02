@@ -49,8 +49,6 @@ class Address(object):
                 self.number_pair = Address.get_number_pair(self.tokens[self.first_number_token_idx])
                 break
             self.first_number_token_idx += 1
-        else:
-            self.first_number_token_idx = len_tokens
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
