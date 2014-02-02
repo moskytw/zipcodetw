@@ -127,5 +127,7 @@ class AddressRule(Address):
                 return False
             if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.extract_no_pair(self.tokens[self.first_no_token_idx+1]):
                 return False
+            if rule_token == u'附號全' and not addr.number_pair[1] > 0:
+                return False
 
         return True
