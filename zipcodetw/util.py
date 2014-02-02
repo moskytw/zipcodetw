@@ -24,6 +24,7 @@ class Address(object):
     def tokenize(addr_str):
         if isinstance(addr_str, str):
             addr_str = addr_str.decode('utf-8')
+        addr_str = addr_str.replace(u' ', '').replace(u'　', '')
         return tuple(Address.TOKEN_RE.findall(addr_str))
 
     @staticmethod
