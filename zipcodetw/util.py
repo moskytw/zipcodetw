@@ -71,7 +71,11 @@ class AddressRule(Address):
         |
         附號全
         |
-        [連全單雙至]
+        [連至](?=\d)
+        |
+        [單雙](?=[\d全])
+        |
+        全(?=$)
     ''', re.X)
 
     @staticmethod

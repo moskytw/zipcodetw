@@ -106,9 +106,16 @@ def test_address_rule_rule_tokens():
     assert addr.tokens == ((u'', u'', u'臺中', u'市'), (u'', u'', u'西屯', u'區'), (u'', u'', u'西屯', u'路'), (u'', u'', u'３', u'段'), (u'', u'', u'西平南', u'巷'), (u'1', u'3', u'', u'號'))
     assert addr.rule_tokens == (u'及以上附號',)
 
-def test_address_rule_rule_tokens_harder():
-    pass
+def test_address_rule_rule_tokens_tricky_input():
+
+    addr = AddressRule('新北市,中和區,連城路,雙 268之   1號以下')
+    assert addr.tokens == ((u'', u'', u'新北', u'市'), (u'', u'', u'中和', u'區'), (u'', u'', u'連城', u'路'), (u'268', u'1', u'', u'號'))
+    assert addr.rule_tokens == (u'雙', u'以下')
+
+    addr = AddressRule('新北市,泰山區,全興路,全')
+    assert addr.tokens == ((u'', u'', u'新北', u'市'), (u'', u'', u'泰山', u'區'), (u'', u'', u'全興', u'路'))
+    assert addr.rule_tokens == (u'全',)
 
 if __name__ == '__main__':
     import uniout
-    test_address_rule_rule_tokens_harder()
+    test_address_rule_rule_tokens_tricky_input()
