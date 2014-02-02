@@ -38,12 +38,34 @@ rule_token_re = re.compile(u'''
 #import sys; sys.exit()
 
 def match(addr_tokens, rule_tokens):
-    pass
 
-rule_tokens = rule_token_re.findall(u'1號以上')
+    special_rule_tokens = []
+    unit_rule_tokens = []
+    for rule_token in rule_tokens:
+        if rule_token[0]:
+            special_rule_tokens.append(rule_token)
+        else:
+            unit_rule_tokens.append(rule_token)
+
+    for addr_token, unit_rule_token in zip(addr_tokens[:-1], unit_rule_tokens[:-1]):
+        if addr_token != unit_rule_token[1:]:
+            break
+    else:
+        for special_rule_token in special_rule_tokens:
+            if special_rule_token[0] == u'以上' and int(addr_token[-2]) >= int(unit_rule_tokens[-1][-2]):
+                continue
+            elif special_rule_token[0] == u'以下' and int(addr_token[-2]) <= int(unit_rule_tokens[-1][-2]):
+                continue
+            break
+        else:
+            return True
+
+    return False
+
+rule_tokens = rule_token_re.findall(u'3巷3號以上')
 print rule_tokens
 
-addr_tokens = addr_token_re.findall(u'3號')
+addr_tokens = addr_token_re.findall(u'3巷3號')
 print addr_tokens
 
 print match(addr_tokens, rule_tokens)
