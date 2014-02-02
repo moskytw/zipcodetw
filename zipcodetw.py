@@ -27,7 +27,7 @@ class Address(object):
         return tuple(Address.TOKEN_RE.findall(addr_str))
 
     @staticmethod
-    def get_number_pair(token):
+    def extract_no_pair(token):
         return (
             int(token[Address.NUMBER]     or 0),
             int(token[Address.SUB_NUMBER] or 0)
@@ -43,7 +43,7 @@ class Address(object):
         len_tokens = len(self.tokens)
         while self.first_number_token_idx < len_tokens:
             if self.tokens[self.first_number_token_idx][Address.NUMBER]:
-                self.number_pair = Address.get_number_pair(self.tokens[self.first_number_token_idx])
+                self.number_pair = Address.extract_no_pair(self.tokens[self.first_number_token_idx])
                 break
             self.first_number_token_idx += 1
 
@@ -118,7 +118,7 @@ class AddressRule(Address):
                 return False
             if u'以下' in rule_token and not addr.number_pair <= self.number_pair:
                 return False
-            if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.get_number_pair(self.tokens[self.first_number_token_idx+1]):
+            if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.extract_no_pair(self.tokens[self.first_number_token_idx+1]):
                 return False
 
         return True
