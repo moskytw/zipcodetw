@@ -108,8 +108,6 @@ class AddressRule(Address):
         if not self.rule_tokens:
             return cmp_val == 0
 
-        print addr.number_pair, self.number_pair
-
         for rule_token in self.rule_tokens:
 
             if rule_token == u'單' and not addr.number_pair[0] & 1 == 1:
