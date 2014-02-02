@@ -37,22 +37,22 @@ class Address(object):
 
         self.addr_str = addr_str
         self.tokens = Address.tokenize(addr_str)
-        self.first_number_token_idx = 0
+        self.first_no_token_idx = 0
         self.number_pair = (0, 0)
 
         len_tokens = len(self.tokens)
-        while self.first_number_token_idx < len_tokens:
-            if self.tokens[self.first_number_token_idx][Address.NUMBER]:
-                self.number_pair = Address.extract_no_pair(self.tokens[self.first_number_token_idx])
+        while self.first_no_token_idx < len_tokens:
+            if self.tokens[self.first_no_token_idx][Address.NUMBER]:
+                self.number_pair = Address.extract_no_pair(self.tokens[self.first_no_token_idx])
                 break
-            self.first_number_token_idx += 1
+            self.first_no_token_idx += 1
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
 
     def __cmp__(self, other):
 
-        for i in range(self.first_number_token_idx):
+        for i in range(self.first_no_token_idx):
             if self.tokens[i] != other.tokens[i]:
                 raise ValueError("incompatible")
 
@@ -118,7 +118,7 @@ class AddressRule(Address):
                 return False
             if u'以下' in rule_token and not addr.number_pair <= self.number_pair:
                 return False
-            if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.extract_no_pair(self.tokens[self.first_number_token_idx+1]):
+            if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.extract_no_pair(self.tokens[self.first_no_token_idx+1]):
                 return False
 
         return True
