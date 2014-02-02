@@ -116,6 +116,50 @@ def test_address_rule_rule_tokens_tricky_input():
     assert addr.tokens == ((u'', u'', u'新北', u'市'), (u'', u'', u'泰山', u'區'), (u'', u'', u'全興', u'路'))
     assert addr.rule_tokens == (u'全',)
 
+def test_address_rule_match():
+
+    addr = Address(u'臺北市大安區市府路5號')
+
+    # 全單雙
+    assert     AddressRule(u'臺北市大安區市府路全').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路單全').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路雙全').match(addr)
+
+    # 以上 & 以下
+    assert not AddressRule(u'臺北市大安區市府路6號以上').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路6號以下').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號以上').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號以下').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路4號以上').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路4號以下').match(addr)
+
+    # 至
+    assert not AddressRule(u'臺北市大安區市府路1號至4號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路1號至5號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號至9號').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路6號至9號').match(addr)
+
+    # 附號
+    assert not AddressRule(u'臺北市大安區市府路6號及以上附號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路6號含附號以下').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號及以上附號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號含附號').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路5附號全').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路5號含附號以下').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路4號及以上附號').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路4號含附號以下').match(addr)
+
+    # 單雙 x 以上, 至, 以下
+    assert     AddressRule(u'臺北市大安區市府路單5號以上').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路雙5號以上').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路單1號至5號').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路雙1號至5號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路單5號至9號').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路雙5號至9號').match(addr)
+    assert     AddressRule(u'臺北市大安區市府路單5號以下').match(addr)
+    assert not AddressRule(u'臺北市大安區市府路雙5號以下').match(addr)
+
 if __name__ == '__main__':
     import uniout
-    test_address_rule_rule_tokens_tricky_input()
+    test_address_rule_match()
