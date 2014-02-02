@@ -33,7 +33,7 @@ class Address(object):
     @staticmethod
     def extract_no_pair(token):
         return (
-            int(token[Address.NO]     or 0),
+            int(token[Address.NO]    or 0),
             int(token[Address.SUBNO] or 0)
         )
 
