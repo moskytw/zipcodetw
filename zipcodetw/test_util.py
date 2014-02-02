@@ -53,6 +53,28 @@ def test_address_compare_subno():
     assert Address('臺北市大安區市府路1號') < addr
     assert Address('臺北市大安區市府路9號') > addr
 
+def test_address_compare_unit():
+
+    addr = Address('桃園縣,中壢市,普義,49號')
+    assert Address('桃園縣,中壢市,普義,49號') == addr
+    assert Address('桃園縣,中壢市,普義路,49號') == addr
+
+    addr = Address('臺北市大安區市府路5號')
+
+    try:
+        Address('臺北市大安區另一條路5號') == addr
+    except ValueError:
+        pass
+    else:
+        assert 0
+
+    try:
+        assert Address('臺北市大安區市府巷5號') == addr
+    except ValueError:
+        pass
+    else:
+        assert 0
+
 from zipcodetw.util import AddressRule
 
 def test_address_rule_rule_tokens():
@@ -97,9 +119,8 @@ def test_address_rule_rule_tokens():
     assert addr.tokens == ((u'', u'', u'臺北', u'市'), (u'', u'', u'大同', u'區'), (u'', u'', u'哈密', u'街'), (u'68', u'', u'', u'巷'), (u'70', u'', u'', u'號'))
     assert addr.rule_tokens == (u'雙', u'至', u'含附號全')
 
-    # NOTE: It was 普義 (without 里).
-    addr = AddressRule('桃園縣,中壢市,普義里,連  49號含附號以下')
-    assert addr.tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u'里'), (u'49', u'', u'', u'號'))
+    addr = AddressRule('桃園縣,中壢市,普義,連  49號含附號以下')
+    assert addr.tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''), (u'49', u'', u'', u'號'))
     assert addr.rule_tokens == (u'連', u'含附號以下')
 
     addr = AddressRule('臺中市,西屯區,西屯路３段西平南巷,　   1之   3號及以上附號')
@@ -162,4 +183,4 @@ def test_address_rule_match():
 
 if __name__ == '__main__':
     import uniout
-    test_address_rule_match()
+    test_address_compare_unit()

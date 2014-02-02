@@ -12,7 +12,11 @@ class Address(object):
             |
             (?P<name>.+?)
         )
-        (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
+        (?:
+            [,，]
+            |
+            (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])[,，]?
+        )
     ''', re.X)
 
     NO    = 0
@@ -24,7 +28,7 @@ class Address(object):
     def normalize(s):
         if isinstance(s, str):
             s = s.decode('utf-8')
-        return s.replace(u' ', u'').replace(u'　', u'').replace(u',', u'').replace(u'，', u'')
+        return s.replace(u' ', u'').replace(u'　', u'')
 
     @staticmethod
     def tokenize(addr_str):
@@ -57,8 +61,17 @@ class Address(object):
     def __cmp__(self, other):
 
         for i in range(self.first_no_token_idx):
-            if self.tokens[i] != other.tokens[i]:
-                raise ValueError('incomparable addresses')
+
+            my_token = self.tokens[i]
+            his_token = other.tokens[i]
+
+            if my_token[Address.UNIT] and his_token[Address.UNIT]:
+                if my_token == his_token:
+                    continue
+            elif my_token[Address.NAME] == his_token[Address.NAME]:
+                continue
+
+            raise ValueError('incomparable addresses')
 
         return cmp(self.number_pair, other.number_pair)
 
