@@ -54,7 +54,7 @@ class Address(object):
 
         for i in range(self.first_no_token_idx):
             if self.tokens[i] != other.tokens[i]:
-                raise ValueError("incompatible")
+                raise ValueError('incomparable addresses')
 
         return cmp(self.number_pair, other.number_pair)
 
