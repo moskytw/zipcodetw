@@ -62,13 +62,13 @@ class Address(object):
 class AddressRule(Address):
 
     RULE_TOKEN_RE = re.compile(u'''
-        [連全單雙至]
+        及以上附號|含附號以下|含附號全|含附號
         |
         以下|以上
         |
-        含附號|及以上附號|含附號以下
-        |
         附號全
+        |
+        [連全單雙至]
     ''', re.X)
 
     @staticmethod
