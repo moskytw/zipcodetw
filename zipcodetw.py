@@ -101,12 +101,12 @@ class AddressRule(Address):
     def match(self, addr):
 
         try:
-            cmp_val = cmp(self, addr)
+            cmp_result = cmp(self, addr)
         except ValueError:
             return False
 
         if not self.rule_tokens:
-            return cmp_val == 0
+            return cmp_result == 0
 
         for rule_token in self.rule_tokens:
 
