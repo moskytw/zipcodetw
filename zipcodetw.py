@@ -49,8 +49,9 @@ def match(addr_tokens, rule_tokens):
 
     for addr_token, unit_rule_token in zip(addr_tokens[:-1], unit_rule_tokens):
         if addr_token != unit_rule_token[1:]:
-            break
-    else:
+            return False
+
+    if special_rule_tokens:
         for special_rule_token in special_rule_tokens:
             if special_rule_token[0] == u'單' and int(addr_tokens[-1][-2]) & 1 == 1:
                 continue
@@ -62,16 +63,19 @@ def match(addr_tokens, rule_tokens):
                 continue
             elif special_rule_token[0] == u'至' and int(unit_rule_tokens[-2][-2]) <= int(addr_tokens[-1][-2]) <= int(unit_rule_tokens[-1][-2]):
                 continue
-            break
+            return False
         else:
             return True
 
-    return False
+    if addr_tokens[-1] != unit_rule_tokens[-1][1:]:
+        return False
 
-rule_tokens = rule_token_re.findall(u'3巷1號至10號')
+    return True
+
+rule_tokens = rule_token_re.findall(u'3巷2號至5號')
 print rule_tokens
 
-addr_tokens = addr_token_re.findall(u'3巷3號')
+addr_tokens = addr_token_re.findall(u'3巷4號')
 print addr_tokens
 
 print match(addr_tokens, rule_tokens)
