@@ -77,18 +77,18 @@ class AddressRule(Address):
         if isinstance(addr_rule_str, str):
             addr_rule_str = addr_rule_str.decode('utf-8')
 
-        rule_tokens = []
+        rule_tokens_list = []
 
         def extract_token(m):
             token = m.group()
-            rule_tokens.append(token)
+            rule_tokens_list.append(token)
             if token == u'附號全':
                 return u'號'
             return ''
 
         addr_str = AddressRule.RULE_TOKEN_RE.sub(extract_token, addr_rule_str)
 
-        return (rule_tokens, addr_str)
+        return (tuple(rule_tokens_list), addr_str)
 
     def __init__(self, addr_rule_str):
 
