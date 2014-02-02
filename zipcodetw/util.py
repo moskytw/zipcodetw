@@ -41,6 +41,24 @@ class Address(object):
             int(token[Address.SUBNO] or 0)
         )
 
+    @staticmethod
+    def is_comparable(a, b):
+
+        for i in range(a.first_no_token_idx):
+
+            a_token = a.tokens[i]
+            b_token = b.tokens[i]
+
+            if a_token[Address.UNIT] and b_token[Address.UNIT]:
+                if a_token == b_token:
+                    continue
+            elif a_token[Address.NAME] == b_token[Address.NAME]:
+                continue
+
+            return False
+
+        return True
+
     def __init__(self, addr_str):
 
         self.addr_str = addr_str
@@ -57,23 +75,6 @@ class Address(object):
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
-
-    def __cmp__(self, other):
-
-        for i in range(self.first_no_token_idx):
-
-            my_token = self.tokens[i]
-            his_token = other.tokens[i]
-
-            if my_token[Address.UNIT] and his_token[Address.UNIT]:
-                if my_token == his_token:
-                    continue
-            elif my_token[Address.NAME] == his_token[Address.NAME]:
-                continue
-
-            raise ValueError('incomparable addresses')
-
-        return cmp(self.number_pair, other.number_pair)
 
 class AddressRule(Address):
 
@@ -120,13 +121,11 @@ class AddressRule(Address):
 
     def match(self, addr):
 
-        try:
-            cmp_result = cmp(self, addr)
-        except ValueError:
+        if not Address.is_comparable(self, addr):
             return False
 
         if not self.rule_tokens:
-            return cmp_result == 0
+            return self.number_pair == addr.number_pair
 
         for rule_token in self.rule_tokens:
 

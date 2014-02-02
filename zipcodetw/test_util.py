@@ -27,53 +27,16 @@ def test_address_tokenize_subno():
     # another type of subno
     assert Address(u'臺北市大安區市府路1-1號').tokens == expected_tokens
 
-def test_address_compare():
+def test_address_is_comparable():
 
-    addr = Address('臺北市大安區市府路5號')
+    addr = Address('桃園縣,中壢市,普義,1號')
+    assert Address.is_comparable(Address('桃園縣,中壢市,普義,2號'), addr)
+    assert Address.is_comparable(Address('桃園縣,中壢市,普義路,3號'), addr)
 
-    # general
-    assert Address('臺北市大安區市府路1號') < addr
-    assert Address('臺北市大安區市府路5號') == addr
-    assert Address('臺北市大安區市府路9號') > addr
-
-    # with subno
-    assert Address('臺北市大安區市府路4-9號') < addr
-    assert Address('臺北市大安區市府路5-1號') > addr
-
-def test_address_compare_subno():
-
-    addr = Address('臺北市大安區市府路5-5號')
-
-    # general
-    assert Address('臺北市大安區市府路5-1號') < addr
-    assert Address('臺北市大安區市府路5-5號') == addr
-    assert Address('臺北市大安區市府路5-9號') > addr
-
-    # without subno
-    assert Address('臺北市大安區市府路1號') < addr
-    assert Address('臺北市大安區市府路9號') > addr
-
-def test_address_compare_unit():
-
-    addr = Address('桃園縣,中壢市,普義,49號')
-    assert Address('桃園縣,中壢市,普義,49號') == addr
-    assert Address('桃園縣,中壢市,普義路,49號') == addr
-
-    addr = Address('臺北市大安區市府路5號')
-
-    try:
-        Address('臺北市大安區另一條路5號') == addr
-    except ValueError:
-        pass
-    else:
-        assert 0
-
-    try:
-        assert Address('臺北市大安區市府巷5號') == addr
-    except ValueError:
-        pass
-    else:
-        assert 0
+    addr = Address('臺北市大安區市府路1號')
+    assert     Address.is_comparable(Address('臺北市大安區市府路2號'), addr)
+    assert not Address.is_comparable(Address('臺北市大安區另一條路3號'), addr)
+    assert not Address.is_comparable(Address('臺北市大安區市府巷4號'), addr)
 
 from zipcodetw.util import AddressRule
 
