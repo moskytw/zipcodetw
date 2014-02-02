@@ -34,38 +34,16 @@ class Address(object):
     def tokenize(addr_str):
         return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
-    @staticmethod
-    def extract_no_pair(token):
-        return (
-            int(token[Address.NO]    or 0),
-            int(token[Address.SUBNO] or 0)
-        )
-
-    @staticmethod
-    def is_comparable(a, b):
-
-        for i in range(a.first_no_token_idx):
-
-            if a.tokens[i] == b.tokens[i]:
-                continue
-
-            return False
-
-        return True
-
     def __init__(self, addr_str):
 
         self.addr_str = addr_str
         self.tokens = Address.tokenize(addr_str)
-        self.first_no_token_idx = 0
-        self.number_pair = (0, 0)
 
-        len_tokens = len(self.tokens)
-        while self.first_no_token_idx < len_tokens:
-            if self.tokens[self.first_no_token_idx][Address.NO]:
-                self.number_pair = Address.extract_no_pair(self.tokens[self.first_no_token_idx])
-                break
-            self.first_no_token_idx += 1
+    def extract_no_pair(self, idx=-1):
+        return (
+            int(self.tokens[idx][Address.NO]    or 0),
+            int(self.tokens[idx][Address.SUBNO] or 0)
+        )
 
     def __repr__(self):
         return 'Address(%r)' % self.addr_str
@@ -115,25 +93,37 @@ class AddressRule(Address):
 
     def match(self, addr):
 
-        if not Address.is_comparable(self, addr):
-            return False
+        his_no_pair = addr.extract_no_pair()
 
-        if not self.rule_tokens:
-            return self.number_pair == addr.number_pair
+        if self.tokens:
+
+            start_unit = self.tokens[0][Address.UNIT]
+            for i, his_token in enumerate(addr.tokens):
+                if his_token[Address.UNIT] == start_unit:
+                    break
+
+            j = -1-(u'至' in self.rule_tokens)
+            for my_token, his_token in zip(self.tokens[:j], addr.tokens[i:]):
+                if my_token != his_token:
+                    return False
+
+            my_no_pair = self.extract_no_pair()
+            if not self.rule_tokens:
+                return his_no_pair == my_no_pair
 
         for rule_token in self.rule_tokens:
 
-            if rule_token == u'單' and not addr.number_pair[0] & 1 == 1:
+            if rule_token == u'單' and not his_no_pair[0] & 1 == 1:
                 return False
-            if rule_token == u'雙' and not addr.number_pair[0] & 1 == 0:
+            if rule_token == u'雙' and not his_no_pair[0] & 1 == 0:
                 return False
-            if u'以上' in rule_token and not addr.number_pair >= self.number_pair:
+            if u'以上' in rule_token and not his_no_pair >= my_no_pair:
                 return False
-            if u'以下' in rule_token and not addr.number_pair <= self.number_pair:
+            if u'以下' in rule_token and not his_no_pair <= my_no_pair:
                 return False
-            if rule_token == u'至' and not self.number_pair <= addr.number_pair <= Address.extract_no_pair(self.tokens[self.first_no_token_idx+1]):
+            if rule_token == u'至' and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair:
                 return False
-            if rule_token == u'附號全' and not addr.number_pair[1] > 0:
+            if rule_token == u'附號全' and not his_no_pair[1] > 0:
                 return False
 
         return True

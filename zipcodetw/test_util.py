@@ -27,13 +27,6 @@ def test_address_tokenize_subno():
     # another type of subno
     assert Address(u'臺北市大安區市府路1-1號').tokens == expected_tokens
 
-def test_address_is_comparable():
-
-    addr = Address('臺北市大安區市府路1號')
-    assert     Address.is_comparable(Address('臺北市大安區市府路2號'), addr)
-    assert not Address.is_comparable(Address('臺北市大安區另一條路3號'), addr)
-    assert not Address.is_comparable(Address('臺北市大安區市府巷4號'), addr)
-
 from zipcodetw.util import AddressRule
 
 def test_address_rule_rule_tokens():
@@ -140,6 +133,50 @@ def test_address_rule_match():
     assert     AddressRule(u'臺北市大安區市府路單5號以下').match(addr)
     assert not AddressRule(u'臺北市大安區市府路雙5號以下').match(addr)
 
+def test_address_rule_match_without_detail():
+
+    addr = Address(u'臺北市大安區市府路5號')
+
+    # 全單雙
+    assert     AddressRule(u'全').match(addr)
+    assert     AddressRule(u'單全').match(addr)
+    assert not AddressRule(u'雙全').match(addr)
+
+    # 以上 & 以下
+    assert not AddressRule(u'6號以上').match(addr)
+    assert     AddressRule(u'6號以下').match(addr)
+    assert     AddressRule(u'5號以上').match(addr)
+    assert     AddressRule(u'5號').match(addr)
+    assert     AddressRule(u'5號以下').match(addr)
+    assert     AddressRule(u'4號以上').match(addr)
+    assert not AddressRule(u'4號以下').match(addr)
+
+    # 至
+    assert not AddressRule(u'1號至4號').match(addr)
+    assert     AddressRule(u'1號至5號').match(addr)
+    assert     AddressRule(u'5號至9號').match(addr)
+    assert not AddressRule(u'6號至9號').match(addr)
+
+    # 附號
+    assert not AddressRule(u'6號及以上附號').match(addr)
+    assert     AddressRule(u'6號含附號以下').match(addr)
+    assert     AddressRule(u'5號及以上附號').match(addr)
+    assert     AddressRule(u'5號含附號').match(addr)
+    assert not AddressRule(u'5附號全').match(addr)
+    assert     AddressRule(u'5號含附號以下').match(addr)
+    assert     AddressRule(u'4號及以上附號').match(addr)
+    assert not AddressRule(u'4號含附號以下').match(addr)
+
+    # 單雙 x 以上, 至, 以下
+    assert     AddressRule(u'單5號以上').match(addr)
+    assert not AddressRule(u'雙5號以上').match(addr)
+    assert     AddressRule(u'單1號至5號').match(addr)
+    assert not AddressRule(u'雙1號至5號').match(addr)
+    assert     AddressRule(u'單5號至9號').match(addr)
+    assert not AddressRule(u'雙5號至9號').match(addr)
+    assert     AddressRule(u'單5號以下').match(addr)
+    assert not AddressRule(u'雙5號以下').match(addr)
+
 if __name__ == '__main__':
     import uniout
-    test_address_compare_unit()
+    test_address_rule_match_without_detail()
