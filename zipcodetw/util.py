@@ -21,11 +21,14 @@ class Address(object):
     UNIT = 3
 
     @staticmethod
+    def normalize(s):
+        if isinstance(s, str):
+            s = s.decode('utf-8')
+        return s.replace(u' ', u'').replace(u'　', u'').replace(u',', u'').replace(u'，', u'')
+
+    @staticmethod
     def tokenize(addr_str):
-        if isinstance(addr_str, str):
-            addr_str = addr_str.decode('utf-8')
-        addr_str = addr_str.replace(u' ', u'').replace(u'　', u'').replace(u',', u'').replace(u'，', u'')
-        return tuple(Address.TOKEN_RE.findall(addr_str))
+        return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
     @staticmethod
     def extract_no_pair(token):
@@ -74,8 +77,7 @@ class AddressRule(Address):
     @staticmethod
     def extract_tokens(addr_rule_str):
 
-        if isinstance(addr_rule_str, str):
-            addr_rule_str = addr_rule_str.decode('utf-8')
+        addr_rule_str = Address.normalize(addr_rule_str)
 
         rule_tokens_list = []
 
