@@ -15,10 +15,10 @@ class Address(object):
         (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
     ''', re.X)
 
-    NO = 0
+    NO    = 0
     SUBNO = 1
-    NAME = 2
-    UNIT = 3
+    NAME  = 2
+    UNIT  = 3
 
     @staticmethod
     def normalize(s):
