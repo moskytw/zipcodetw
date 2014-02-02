@@ -114,7 +114,6 @@ class AddressRule(Address):
 
         his_no_pair = addr.last_no_pair
         my_no_pair = self.last_no_pair
-
         for rule_token in self.rule_tokens:
             if (
                 (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
