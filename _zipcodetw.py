@@ -40,12 +40,14 @@ class Address(object):
 
     def extract_no_pair(self, idx):
         try:
-            return (
-                int(self.tokens[idx][Address.NO]    or 0),
-                int(self.tokens[idx][Address.SUBNO] or 0)
-            )
+            token = self.tokens[idx]
         except IndexError:
             return (0, 0)
+        else:
+            return (
+                int(token[Address.NO]    or 0),
+                int(token[Address.SUBNO] or 0)
+            )
 
     def __init__(self, addr_str=None, tokens=None, last_no_pair=None):
 
