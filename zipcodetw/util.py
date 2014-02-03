@@ -150,3 +150,67 @@ class Rule(Address):
                 return False
 
         return True
+
+from collections import defaultdict
+import csv
+from itertools import izip
+
+class Directory(object):
+
+    def __init__(self):
+        self.tokens_zipcodes_map = defaultdict(list)
+        self.zipcode_rule_strs_map = defaultdict(list)
+
+    def load(self, zipcode, addr_str, rule_str):
+
+        tokens = Address.tokenize(addr_str)
+        for i in range(len(tokens), 0, -1):
+            self.tokens_zipcodes_map[tokens[:i]].append(zipcode)
+
+        self.zipcode_rule_strs_map[zipcode].append(addr_str+rule_str)
+
+    def load_chp_csv(self, lines, skip_first=True):
+
+        lines_iter = iter(lines)
+
+        if skip_first:
+            next(lines_iter)
+
+        for row in csv.reader(lines_iter):
+            self.load(row[0], ''.join(row[1:-1]), row[-1])
+
+    def find(self, addr_str):
+
+        addr = Address(addr_str)
+
+        for i in range(len(addr.tokens), 0, -1):
+            zipcodes = self.tokens_zipcodes_map.get(addr.tokens[:i])
+            if zipcodes is not None:
+                break
+        else:
+            return []
+
+        if addr.last_no_pair == (0, 0):
+            return zipcodes
+
+        for zipcode in zipcodes:
+            for rule_str in self.zipcode_rule_strs_map[zipcode]:
+                if Rule(rule_str).match(addr):
+                    return [zipcode]
+
+        return zipcodes
+
+    def fuzzy_find(self, addr_str):
+
+        zipcodes = self.find(addr_str)
+
+        if len(zipcodes) == 1:
+            return zipcodes[0]
+
+        zipcode_slices = []
+        for col in izip(*zipcodes):
+            if any(col[0] != c for c in col):
+                break
+            zipcode_slices.append(col[0])
+
+        return ''.join(zipcode_slices)
