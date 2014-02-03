@@ -17,12 +17,11 @@ def print_report(target_dict):
         lenv_count_map[len(v)] += 1
     total_count = sum(lenv_count_map.itervalues())
 
+    cum_pct = .0
     for lenv, count in sorted(lenv_count_map.iteritems(), key=lambda k: k[1], reverse=True):
-        print '{:>6,} | {:>6,} | {:>5.2f}%'.format(
-            lenv,
-            count,
-            100.*count/total_count,
-        )
+        pct = 100.*count/total_count
+        cum_pct += pct
+        print '{:>6,} | {:>6,} | {:>5.2f}% | {:>5.2f}%'.format(lenv, count, pct, cum_pct)
     print
 
     print 'Total  : {:>6,}'.format(total_count)
