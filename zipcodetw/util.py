@@ -47,14 +47,22 @@ class Address(object):
         except IndexError:
             return (0, 0)
 
-    def __init__(self, addr_str):
+    def __init__(self, addr_str=None, tokens=None, last_no_pair=None):
 
-        self.addr_str = addr_str
+        if addr_str is  None:
+            assert not (tokens is None or last_no_pair is None)
+            self.tokens = tokens
+            self.last_no_pair = last_no_pair
+            return
+
         self.tokens = Address.tokenize(addr_str)
         self.last_no_pair = self.extract_no_pair(-1)
 
     def __repr__(self):
-        return 'Address(%r)' % self.addr_str
+        return 'Address(tokens=%r, last_no_pair=%r)' % (
+            self.tokens,
+            self.last_no_pair
+        )
 
 class AddressRule(Address):
 
@@ -90,14 +98,23 @@ class AddressRule(Address):
 
         return (tuple(rule_tokens_list), addr_str)
 
-    def __init__(self, addr_rule_str):
+    def __init__(self, addr_rule_str=None, tokens=None, last_no_pair=None, rule_tokens=None):
 
-        self.addr_rule_str = addr_rule_str
+        if addr_rule_str is None:
+            assert not rule_tokens is None
+            self.rule_tokens = rule_tokens
+            Address.__init__(self, tokens=tokens, last_no_pair=last_no_pair)
+            return
+
         self.rule_tokens, addr_str = AddressRule.extract_tokens(addr_rule_str)
         Address.__init__(self, addr_str)
 
     def __repr__(self):
-        return 'AddressRule(%r)' % self.addr_rule_str
+        return 'AddressRule(tokens=%r, last_no_pair=%r, rule_tokens=%r)' % (
+            self.tokens,
+            self.last_no_pair,
+            self.rule_tokens
+        )
 
     def match(self, addr):
 

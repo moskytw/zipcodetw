@@ -35,6 +35,12 @@ def test_address_flat():
     assert Address.flat(tokens, 3) == (u'臺北市', u'大安區', u'市府路')
     assert Address.flat(tokens) == (u'臺北市', u'大安區', u'市府路', u'1號')
 
+def test_address_repr():
+
+    repr_str = "Address(tokens=((u'', u'', u'\u81fa\u5317', u'\u5e02'), (u'', u'', u'\u5927\u5b89', u'\u5340'), (u'', u'', u'\u5e02\u5e9c', u'\u8def'), (u'1', u'', u'', u'\u865f')), last_no_pair=(1, 0))"
+    assert repr(Address('臺北市大安區市府路1號')) == repr_str
+    assert repr(eval(repr_str)) == repr_str
+
 from zipcodetw.util import AddressRule
 
 def test_address_rule_rule_tokens():
@@ -185,6 +191,13 @@ def test_address_rule_match_without_detail():
     assert     AddressRule(u'單5號以下').match(addr)
     assert not AddressRule(u'雙5號以下').match(addr)
 
+def test_address_rule_repr():
+
+    repr_str = "AddressRule(tokens=((u'', u'', u'\u81fa\u5317', u'\u5e02'), (u'', u'', u'\u5927\u5b89', u'\u5340'), (u'', u'', u'\u5e02\u5e9c', u'\u8def'), (u'1', u'', u'', u'\u865f')), last_no_pair=(1, 0), rule_tokens=(u'\u4ee5\u4e0a',))"
+    assert repr(AddressRule('臺北市大安區市府路1號以上')) == repr_str
+    assert repr(eval(repr_str)) == repr_str
+
 if __name__ == '__main__':
     import uniout
-    test_address_flat()
+    test_rule_repr()
+    test_address_rule_repr()
