@@ -118,22 +118,22 @@ class Rule(Address):
 
     def match(self, addr):
 
-        last_to_match_idx = len(self.tokens)
-        last_to_match_idx -= (self.last_no_pair != (0, 0) and u'全' not in self.rule_tokens)
-        last_to_match_idx -= (u'至' in self.rule_tokens)
+        last_must_match_idx = len(self.tokens)
+        last_must_match_idx -= (self.last_no_pair != (0, 0) and u'全' not in self.rule_tokens)
+        last_must_match_idx -= (u'至' in self.rule_tokens)
 
-        my_tokens_to_match = self.tokens[:last_to_match_idx]
-        if my_tokens_to_match:
+        my_tokens_must_match = self.tokens[:last_must_match_idx]
+        if my_tokens_must_match:
 
-            if len(addr.tokens) < len(my_tokens_to_match):
+            if len(addr.tokens) < len(my_tokens_must_match):
                 return False
 
-            start_unit = my_tokens_to_match[0][Address.UNIT]
+            start_unit = my_tokens_must_match[0][Address.UNIT]
             for i, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
                     break
 
-            for my_token, his_token in zip(my_tokens_to_match, addr.tokens[i:]):
+            for my_token, his_token in zip(my_tokens_must_match, addr.tokens[i:]):
                 if my_token != his_token:
                     return False
 
