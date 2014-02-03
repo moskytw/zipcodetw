@@ -1,7 +1,7 @@
 The ZIP Code Finder for Taiwan
 ==============================
 
-This package lets you find the ZIP code quickly by an address.
+This package lets you find the ZIP code quickly by any Taiwan address.
 
 The main features:
 
