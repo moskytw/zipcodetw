@@ -1,7 +1,7 @@
 The ZIP Code Finder for Taiwan
 ==============================
 
-It converts address to ZIP code quickly.
+This package lets you find the ZIP code quickly by an address.
 
 The main features:
 
@@ -12,8 +12,9 @@ The main features:
 Usage
 -----
 
->>> import zipcodetw
+Find the ZIP code gradually:
 
+>>> import zipcodetw
 >>> zipcodetw.find('臺北市')
 '1'
 >>> zipcodetw.find('臺北市信義區')
@@ -22,6 +23,8 @@ Usage
 '110'
 >>> zipcodetw.find('臺北市信義區市府路1號')
 '11008'
+
+Find all possible ZIP codes:
 
 >>> zipcodetw.find_zipcodes('臺北市信義區市府路')
 ['11060', '11008', '11073', '11001', '11073']
