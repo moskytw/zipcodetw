@@ -27,6 +27,14 @@ def test_address_tokenize_subno():
     # another type of subno
     assert Address(u'臺北市大安區市府路1-1號').tokens == expected_tokens
 
+def test_address_flat():
+
+    tokens = Address.tokenize('臺北市大安區市府路1號')
+    assert Address.flat(tokens, 1) == (u'臺北市', )
+    assert Address.flat(tokens, 2) == (u'臺北市', u'大安區')
+    assert Address.flat(tokens, 3) == (u'臺北市', u'大安區', u'市府路')
+    assert Address.flat(tokens) == (u'臺北市', u'大安區', u'市府路', u'1號')
+
 from zipcodetw.util import AddressRule
 
 def test_address_rule_rule_tokens():
@@ -179,4 +187,4 @@ def test_address_rule_match_without_detail():
 
 if __name__ == '__main__':
     import uniout
-    test_address_rule_match_without_detail()
+    test_address_flat()

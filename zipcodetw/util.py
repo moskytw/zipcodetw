@@ -34,6 +34,10 @@ class Address(object):
     def tokenize(addr_str):
         return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
+    @staticmethod
+    def flat(tokens, n=None):
+        return tuple(u''.join(token) for token in tokens[:n])
+
     def extract_no_pair(self, idx):
         try:
             return (
