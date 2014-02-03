@@ -13,9 +13,9 @@ class Address(object):
             (?P<name>.+?)
         )
         (?:
-            [,，]
+            (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
             |
-            (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])[,，]?
+            (?=\d)
         )
     ''', re.X)
 
@@ -28,7 +28,7 @@ class Address(object):
     def normalize(s):
         if isinstance(s, str):
             s = s.decode('utf-8')
-        return s.replace(u' ', u'').replace(u'　', u'')
+        return s.replace(u' ', u'').replace(u'　', u'').replace(u',', u'').replace(u'，', u'')
 
     @staticmethod
     def tokenize(addr_str):
