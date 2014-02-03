@@ -28,7 +28,13 @@ def print_report(target_dict):
     print 'Total  : {:>6,}'.format(total_count)
 
 if __name__ == '__main__':
+
+    from time import time
+
+    start = time()
     import zipcodetw
+    end = time()
+
     print '# Tokens -> Zipcodes'
     print
     print_report(zipcodetw._dir.tokens_zipcodes_map)
@@ -38,3 +44,7 @@ if __name__ == '__main__':
     print '# Zipcode -> Rule Strs'
     print
     print_report(zipcodetw._dir.zipcode_rule_strs_map)
+    print
+    print
+
+    print 'Took {:.4f}s to load.'.format(end-start)
