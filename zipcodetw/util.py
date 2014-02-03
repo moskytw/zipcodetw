@@ -171,7 +171,7 @@ class Directory(object):
         for i in range(len(tokens), 0, -1):
             self.tokens_zipcodes_map[tokens[:i]].append(zipcode)
 
-        self.zipcode_rule_strs_map[zipcode].append(addr_str+rule_str)
+        self.zipcode_rule_strs_map[zipcode].append(rule_str)
 
     def load_chp_csv(self, lines, skip_first=True):
 
