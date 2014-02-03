@@ -29,14 +29,16 @@ Find all possible ZIP codes:
 >>> zipcodetw.find_zipcodes('臺北市信義區市府路')
 ['11060', '11008', '11073', '11001', '11073']
 
-Have fun. :)
-
 Installation
 ------------
+
+It is easy to install this package from PyPI:
 
 .. code-block:: bash
 
     $ sudo pip install zipcodetw
+
+Have fun! :)
 
 Data
 ----
