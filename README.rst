@@ -14,20 +14,24 @@ Usage
 
 Find the ZIP code gradually:
 
->>> import zipcodetw
->>> zipcodetw.find('臺北市')
-'1'
->>> zipcodetw.find('臺北市信義區')
-'110'
->>> zipcodetw.find('臺北市信義區市府路')
-'110'
->>> zipcodetw.find('臺北市信義區市府路1號')
-'11008'
+.. code-block:: python
+
+    >>> import zipcodetw
+    >>> zipcodetw.find('臺北市')
+    '1'
+    >>> zipcodetw.find('臺北市信義區')
+    '110'
+    >>> zipcodetw.find('臺北市信義區市府路')
+    '110'
+    >>> zipcodetw.find('臺北市信義區市府路1號')
+    '11008'
 
 Find all possible ZIP codes:
 
->>> zipcodetw.find_zipcodes('臺北市信義區市府路')
-['11060', '11008', '11073', '11001', '11073']
+.. code-block:: python
+
+    >>> zipcodetw.find_zipcodes('臺北市信義區市府路')
+    ['11060', '11008', '11073', '11001', '11073']
 
 Installation
 ------------
