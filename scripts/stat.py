@@ -26,6 +26,7 @@ def print_report(target_dict):
     print
 
     print 'Total  : {:>6,}'.format(total_count)
+    print 'Average: {:>9,.2f}'.format(1.*total_count/len(lenv_count_map))
 
 if __name__ == '__main__':
 
