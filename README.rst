@@ -31,7 +31,7 @@ Find all possible ZIP codes:
 .. code-block:: python
 
     >>> zipcodetw.find_zipcodes('臺北市信義區市府路')
-    ['11060', '11008', '11073', '11001', '11073']
+    set(['11060', '11001', '11008', '11073'])
 
 Installation
 ------------

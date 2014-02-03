@@ -189,17 +189,17 @@ from itertools import izip
 class Directory(object):
 
     def __init__(self):
-        self.tokens_zipcodes_map = defaultdict(list)
-        self.zipcode_rule_strs_map = defaultdict(list)
+        self.tokens_zipcodes_map = defaultdict(set)
+        self.zipcode_rule_strs_map = defaultdict(set)
 
     def load(self, zipcode, addr_str, rule_str):
 
         tokens = Address.tokenize(addr_str)
         for i in range(len(tokens), 0, -1):
-            self.tokens_zipcodes_map[tokens[:i]].append(zipcode)
+            self.tokens_zipcodes_map[tokens[:i]].add(zipcode)
 
         # multiple rows may map to a same zip code
-        self.zipcode_rule_strs_map[zipcode].append(addr_str+rule_str)
+        self.zipcode_rule_strs_map[zipcode].add(addr_str+rule_str)
 
     def load_chp_csv(self, lines, skip_first=True):
 
@@ -220,7 +220,7 @@ class Directory(object):
             if zipcodes:
                 break
         else:
-            return []
+            return set()
 
         if addr.last_no_pair == (0, 0):
             return zipcodes
@@ -228,7 +228,7 @@ class Directory(object):
         for zipcode in zipcodes:
             for rule_str in self.zipcode_rule_strs_map[zipcode]:
                 if Rule(rule_str).match(addr):
-                    return [zipcode]
+                    return set([zipcode])
 
         return zipcodes
 
@@ -237,7 +237,7 @@ class Directory(object):
         zipcodes = self.find_zipcodes(addr_str)
 
         if len(zipcodes) == 1:
-            return zipcodes[0]
+            return zipcodes.pop()
 
         zipcode_slices = []
         for col in izip(*zipcodes):
