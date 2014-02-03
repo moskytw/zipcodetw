@@ -31,4 +31,4 @@ Have fun. :)
 Data
 ----
 
-The ZIP code data are provided by Chunghwa Post. The CSV are available here: http://www.post.gov.tw/post/internet/down/index.html#1808
+The ZIP code data are provided by Chunghwa Post. The CSV is available here: http://www.post.gov.tw/post/internet/down/index.html#1808
