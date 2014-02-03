@@ -210,7 +210,7 @@ class Directory(object):
             next(lines_iter)
 
         for row in csv.reader(lines_iter):
-            self.load(row[0], ','.join(row[1:-1]), row[-1])
+            self.load(row[0], ''.join(row[1:-1]), row[-1])
 
     def find_zipcodes(self, addr_str):
 
