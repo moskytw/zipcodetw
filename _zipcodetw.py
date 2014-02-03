@@ -145,6 +145,7 @@ class Rule(Address):
 
     def match(self, addr):
 
+        # the part reserves for rule tokens
         my_last_idx = len(self.tokens)
         my_last_idx -= (bool(self.rule_tokens) and u'全' not in self.rule_tokens)
         my_last_idx -= (u'至' in self.rule_tokens)
@@ -152,6 +153,7 @@ class Rule(Address):
         my_tokens_to_match = self.tokens[:my_last_idx]
         if my_tokens_to_match:
 
+            # the addr's units bigger than rule's are ignorable
             start_unit = my_tokens_to_match[0][Address.UNIT]
             for his_start_idx, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
@@ -168,6 +170,7 @@ class Rule(Address):
             if not self.rule_tokens:
                 return True
 
+        # check the rule tokens
         his_no_pair = addr.last_no_pair
         my_no_pair = self.last_no_pair
         for rule_token in self.rule_tokens:
@@ -202,7 +205,6 @@ class Directory(object):
         for i in range(len(tokens), 0, -1):
             self.tokens_zipcodes_map[tokens[:i]].add(zipcode)
 
-        # multiple rows may map to a same zip code
         self.zipcode_rule_strs_map[zipcode].add(addr_str+rule_str)
 
     def load_chp_csv(self, lines, skip_first=True):
@@ -219,6 +221,7 @@ class Directory(object):
 
         addr = Address(addr_str)
 
+        # if the addr is correct, it runs only once
         for i in range(len(addr.tokens), 0, -1):
             zipcodes = self.tokens_zipcodes_map.get(addr.tokens[:i])
             if zipcodes:
@@ -226,9 +229,11 @@ class Directory(object):
         else:
             return set()
 
+        # skip the matching check if the addr is not detail enough
         if addr.tokens[-1][Address.UNIT] not in u'巷弄號樓':
             return zipcodes
 
+        # check the addr matches which zipcode
         for zipcode in zipcodes:
             for rule_str in self.zipcode_rule_strs_map[zipcode]:
                 if Rule(rule_str).match(addr):
@@ -243,6 +248,7 @@ class Directory(object):
         if len(zipcodes) == 1:
             return zipcodes.pop()
 
+        # find the common part of the zipcodes
         zipcode_slices = []
         for col in izip(*zipcodes):
             if any(col[0] != c for c in col):
