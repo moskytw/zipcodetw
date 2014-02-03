@@ -197,7 +197,14 @@ def test_rule_match_without_detail():
     assert     Rule(u'單5號以下').match(addr)
     assert not Rule(u'雙5號以下').match(addr)
 
+def test_rule_match_short_target():
+
+    rule = Rule('臺北市中正區丹陽街全')
+    assert not rule.match(Address('臺北市'))
+    assert not rule.match(Address('臺北市中正區'))
+    assert not rule.match(Address('臺北市中正區仁愛路１段'))
+    assert not rule.match(Address('臺北市中正區仁愛路１段1號'))
+
 if __name__ == '__main__':
     import uniout
-    test_rule_repr()
-    test_rule_repr()
+    test_rule_match_short_target()

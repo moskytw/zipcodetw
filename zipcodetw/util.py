@@ -118,8 +118,11 @@ class Rule(Address):
 
     def match(self, addr):
 
-        my_tokens_to_match = self.tokens[:-1-(u'至' in self.rule_tokens)]
+        my_tokens_to_match = self.tokens[:-(self.last_no_pair != (0, 0))-(u'至' in self.rule_tokens) or None]
         if my_tokens_to_match:
+
+            if len(addr.tokens) < len(my_tokens_to_match):
+                return False
 
             start_unit = my_tokens_to_match[0][Address.UNIT]
             for i, his_token in enumerate(addr.tokens):
