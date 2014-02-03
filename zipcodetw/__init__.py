@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = '0.1'
-
 from os.path import dirname, join
-from _zipcodetw import Directory
+from _zipcodetw import Directory, __version__
 
 _ROOT = dirname(__file__)
 
