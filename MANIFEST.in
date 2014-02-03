@@ -1,4 +1,3 @@
 global-include README* LICENSE*
 include README.rst LICENSE.txt
-include zipcodetw/*.csv
 global-exclude *.pyc
