@@ -64,7 +64,7 @@ class Address(object):
             self.last_no_pair
         )
 
-class AddressRule(Address):
+class Rule(Address):
 
     RULE_TOKEN_RE = re.compile(u'''
         及以上附號|含附號以下|含附號全|含附號
@@ -81,9 +81,9 @@ class AddressRule(Address):
     ''', re.X)
 
     @staticmethod
-    def extract_tokens(addr_rule_str):
+    def extract_tokens(rule_str):
 
-        addr_rule_str = Address.normalize(addr_rule_str)
+        rule_str = Address.normalize(rule_str)
 
         rule_tokens_list = []
 
@@ -94,23 +94,23 @@ class AddressRule(Address):
                 return u'號'
             return ''
 
-        addr_str = AddressRule.RULE_TOKEN_RE.sub(extract_token, addr_rule_str)
+        addr_str = Rule.RULE_TOKEN_RE.sub(extract_token, rule_str)
 
         return (tuple(rule_tokens_list), addr_str)
 
-    def __init__(self, addr_rule_str=None, tokens=None, last_no_pair=None, rule_tokens=None):
+    def __init__(self, rule_str=None, tokens=None, last_no_pair=None, rule_tokens=None):
 
-        if addr_rule_str is None:
+        if rule_str is None:
             assert not rule_tokens is None
             self.rule_tokens = rule_tokens
             Address.__init__(self, tokens=tokens, last_no_pair=last_no_pair)
             return
 
-        self.rule_tokens, addr_str = AddressRule.extract_tokens(addr_rule_str)
+        self.rule_tokens, addr_str = Rule.extract_tokens(rule_str)
         Address.__init__(self, addr_str)
 
     def __repr__(self):
-        return 'AddressRule(tokens=%r, last_no_pair=%r, rule_tokens=%r)' % (
+        return 'Rule(tokens=%r, last_no_pair=%r, rule_tokens=%r)' % (
             self.tokens,
             self.last_no_pair,
             self.rule_tokens
