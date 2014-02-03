@@ -145,27 +145,28 @@ class Rule(Address):
 
     def match(self, addr):
 
-        last_must_match_idx = len(self.tokens)
-        last_must_match_idx -= (bool(self.rule_tokens) and u'全' not in self.rule_tokens)
-        last_must_match_idx -= (u'至' in self.rule_tokens)
+        my_last_idx = len(self.tokens)
+        my_last_idx -= (bool(self.rule_tokens) and u'全' not in self.rule_tokens)
+        my_last_idx -= (u'至' in self.rule_tokens)
 
-        my_tokens_must_match = self.tokens[:last_must_match_idx]
-        if my_tokens_must_match:
+        my_tokens_to_match = self.tokens[:my_last_idx]
+        if my_tokens_to_match:
 
-            if len(addr.tokens) < len(my_tokens_must_match):
-                return False
-
-            start_unit = my_tokens_must_match[0][Address.UNIT]
-            for i, his_token in enumerate(addr.tokens):
+            start_unit = my_tokens_to_match[0][Address.UNIT]
+            for his_start_idx, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
                     break
 
-            for my_token, his_token in zip(my_tokens_must_match, addr.tokens[i:]):
+            his_tokens_to_match = addr.tokens[his_start_idx:]
+            if len(my_tokens_to_match) > len(his_tokens_to_match):
+                return False
+
+            for my_token, his_token in zip(my_tokens_to_match, his_tokens_to_match):
                 if my_token != his_token:
                     return False
 
             if not self.rule_tokens:
-                return addr.last_no_pair == self.last_no_pair
+                return True
 
         his_no_pair = addr.last_no_pair
         my_no_pair = self.last_no_pair
