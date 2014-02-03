@@ -220,6 +220,7 @@ class Directory(object):
 
         # if the addr is correct, it runs only once
         for i in range(len(addr.tokens), 0, -1):
+            # 85% -> only one zipcode
             zipcodes = self.tokens_zipcodes_map.get(addr.tokens[:i])
             if zipcodes:
                 break
@@ -232,6 +233,7 @@ class Directory(object):
 
         # check the addr matches which zipcode
         for zipcode in zipcodes:
+            # 60% -> 1~10 rule_str
             for rule_str in self.zipcode_rule_strs_map[zipcode]:
                 if Rule(rule_str).match(addr):
                     return set([zipcode])
