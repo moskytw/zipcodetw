@@ -268,14 +268,14 @@ class TestDirectory(object):
         self.dir_ = Directory()
         self.dir_.load_chp_csv(chp_csv_lines)
 
-    def test_find(self):
+    def test_find_zipcodes(self):
 
         assert self.dir_.find_zipcodes('臺北市') == ['10058', '10079', '10070', '10079', '10068', '10068', '10051', '10041', '10051', '10041', '10002', '10051', '10048', '10001', '10043', '10042', '10010', '10042', '10065', '10066', '10068', '10069', '10067', '10072', '10055', '10051', '10052', '10055', '10060', '10056', '10056', '10062', '10063']
         assert self.dir_.find_zipcodes('臺北市中正區') == ['10058', '10079', '10070', '10079', '10068', '10068', '10051', '10041', '10051', '10041', '10002', '10051', '10048', '10001', '10043', '10042', '10010', '10042', '10065', '10066', '10068', '10069', '10067', '10072', '10055', '10051', '10052', '10055', '10060', '10056', '10056', '10062', '10063']
         assert self.dir_.find_zipcodes('臺北市中正區仁愛路１段') == ['10051', '10052']
         assert self.dir_.find_zipcodes('臺北市中正區仁愛路１段1號') == ['10051']
 
-    def test_fuzzy_find(self):
+    def test_find(self):
 
         assert self.dir_.find('臺北市') == '100'
         assert self.dir_.find('臺北市中正區') == '100'
@@ -286,5 +286,5 @@ if __name__ == '__main__':
     import uniout
     test_dir = TestDirectory()
     test_dir.setup()
+    test_dir.test_find_zipcodes()
     test_dir.test_find()
-    test_dir.test_fuzzy_find()
