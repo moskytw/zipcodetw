@@ -28,6 +28,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 
+    py_modules = ['_zipcodetw'],
     packages = find_packages(),
 
 )

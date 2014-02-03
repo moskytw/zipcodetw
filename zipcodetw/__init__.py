@@ -4,7 +4,7 @@
 __version__ = '0.1'
 
 from os.path import join, normpath
-from zipcodetw.util import Directory
+from _zipcodetw import Directory
 
 _package_dir = normpath(join(__file__, '..'))
 
