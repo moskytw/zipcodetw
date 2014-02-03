@@ -24,11 +24,33 @@ class Address(object):
     NAME  = 2
     UNIT  = 3
 
+    PAIRS_TO_NORMALIZE = (
+        # the chars to remove
+        (u' ' , u''),
+        (u'　', u''),
+        (u',' , u''),
+        (u'，', u''),
+        # unity the chars
+        (u'台', u'臺'),
+        (u'０', u'0'),
+        (u'１', u'1'),
+        (u'２', u'2'),
+        (u'３', u'3'),
+        (u'４', u'4'),
+        (u'５', u'5'),
+        (u'６', u'6'),
+        (u'７', u'7'),
+        (u'８', u'8'),
+        (u'９', u'9'),
+    )
+
     @staticmethod
     def normalize(s):
         if isinstance(s, str):
             s = s.decode('utf-8')
-        return s.replace(u' ', u'').replace(u'　', u'').replace(u',', u'').replace(u'，', u'')
+        for from_, to in Address.PAIRS_TO_NORMALIZE:
+            s = s.replace(from_, to)
+        return s
 
     @staticmethod
     def tokenize(addr_str):
