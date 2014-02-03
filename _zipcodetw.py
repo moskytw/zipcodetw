@@ -191,7 +191,7 @@ class Directory(object):
 
         for i in range(len(addr.tokens), 0, -1):
             zipcodes = self.tokens_zipcodes_map.get(addr.tokens[:i])
-            if zipcodes is not None:
+            if zipcodes:
                 break
         else:
             return []
