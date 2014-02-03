@@ -179,7 +179,7 @@ class Directory(object):
         for row in csv.reader(lines_iter):
             self.load(row[0], ''.join(row[1:-1]), row[-1])
 
-    def find(self, addr_str):
+    def find_zipcodes(self, addr_str):
 
         addr = Address(addr_str)
 
@@ -200,9 +200,9 @@ class Directory(object):
 
         return zipcodes
 
-    def fuzzy_find(self, addr_str):
+    def find(self, addr_str):
 
-        zipcodes = self.find(addr_str)
+        zipcodes = self.find_zipcodes(addr_str)
 
         if len(zipcodes) == 1:
             return zipcodes[0]
