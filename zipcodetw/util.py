@@ -118,7 +118,11 @@ class Rule(Address):
 
     def match(self, addr):
 
-        my_tokens_to_match = self.tokens[:-(self.last_no_pair != (0, 0))-(u'至' in self.rule_tokens) or None]
+        last_to_match_idx = len(self.tokens)
+        last_to_match_idx -= (self.last_no_pair != (0, 0) and u'全' not in self.rule_tokens)
+        last_to_match_idx -= (u'至' in self.rule_tokens)
+
+        my_tokens_to_match = self.tokens[:last_to_match_idx]
         if my_tokens_to_match:
 
             if len(addr.tokens) < len(my_tokens_to_match):

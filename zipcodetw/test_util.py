@@ -205,6 +205,25 @@ def test_rule_match_short_target():
     assert not rule.match(Address('臺北市中正區仁愛路１段'))
     assert not rule.match(Address('臺北市中正區仁愛路１段1號'))
 
+def test_rule_match_rule_all():
+
+    rule = Rule('臺北市,中正區,八德路１段,全')
+    assert     rule.match(Address('臺北市中正區八德路１段1號'))
+    assert     rule.match(Address('臺北市中正區八德路１段9號'))
+    assert not rule.match(Address('臺北市中正區八德路２段1號'))
+    assert not rule.match(Address('臺北市中正區八德路２段9號'))
+
+    rule = Rule('臺北市,中正區,三元街,單全')
+    assert     rule.match(Address('臺北市中正區三元街1號'))
+    assert not rule.match(Address('臺北市中正區三元街2號'))
+    assert not rule.match(Address('臺北市中正區大埔街1號'))
+
+    rule = Rule('臺北市,大同區,哈密街,　  45巷全')
+    assert     rule.match(Address('臺北市大同區哈密街45巷1號'))
+    assert     rule.match(Address('臺北市大同區哈密街45巷9號'))
+    assert not rule.match(Address('臺北市大同區哈密街46巷1號'))
+    assert not rule.match(Address('臺北市大同區哈密街46巷9號'))
+
 from zipcodetw.util import Directory
 
 class TestDirectory(object):
