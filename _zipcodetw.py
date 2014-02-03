@@ -198,9 +198,6 @@ class Directory(object):
 
     def load(self, zipcode, addr_str, rule_str):
 
-        addr_str = Address.normalize(addr_str)
-        rule_str = Address.normalize(rule_str)
-
         tokens = Address.tokenize(addr_str)
         for i in range(len(tokens), 0, -1):
             self.tokens_zipcodes_map[tokens[:i]].add(zipcode)
