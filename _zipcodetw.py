@@ -226,7 +226,7 @@ class Directory(object):
         else:
             return set()
 
-        if addr.last_no_pair == (0, 0):
+        if addr.tokens[-1][Address.UNIT] not in u'巷弄號樓':
             return zipcodes
 
         for zipcode in zipcodes:
