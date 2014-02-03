@@ -1,5 +1,7 @@
+#
 *.pyc
-*.pylint
-*.swp
-build
-venv
+/docs/_build
+
+#
+/zipcodetw.egg-info
+/dist
