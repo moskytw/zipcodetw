@@ -31,6 +31,13 @@ Find all possible ZIP codes:
 
 Have fun. :)
 
+Installation
+------------
+
+.. code-block:: bash
+
+    $ sudo pip install zipcodetw
+
 Data
 ----
 
