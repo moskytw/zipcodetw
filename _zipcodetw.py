@@ -15,7 +15,7 @@ class Address(object):
         (?:
             (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
             |
-            (?=\d)
+            (?=\d|$)
         )
     ''', re.X)
 

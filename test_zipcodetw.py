@@ -35,6 +35,11 @@ def test_address_init_subno():
     # another type of subno
     assert Address(u'臺北市大安區市府路1-1號').tokens == expected_tokens
 
+def test_address_init_tricky_input():
+
+    assert Address(u'桃園縣中壢市普義').tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''))
+    assert Address(u'桃園縣中壢市普義10號').tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''), (u'10', u'', u'', u'號'))
+
 def test_address_repr():
 
     repr_str = "Address(tokens=((u'', u'', u'\u81fa\u5317', u'\u5e02'), (u'', u'', u'\u5927\u5b89', u'\u5340'), (u'', u'', u'\u5e02\u5e9c', u'\u8def'), (u'1', u'', u'', u'\u865f')), last_no_pair=(1, 0))"
