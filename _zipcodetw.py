@@ -155,7 +155,7 @@ class Rule(Address):
         my_no_pair = self.extract_no_pair(-1)
         for rule_token in self.rule_tokens:
             if (
-                (his_no_pair == (0, 0)) or
+                (rule_token == u'全'     and not his_no_pair != (0, 0)) or
                 (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
                 (rule_token == u'雙'     and not his_no_pair[0] & 1 == 0) or
                 (rule_token == u'至'     and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair) or
