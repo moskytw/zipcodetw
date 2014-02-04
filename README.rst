@@ -5,7 +5,7 @@ This package lets you find the ZIP code quickly by any Taiwan address.
 
 The main features:
 
-1. Fast. It uses tokenization to build the ZIP code index.
+1. Fast. It builds ZIP code index by tokenizating the addresses and rules.
 2. Gradual. It allows a partial address to match partial ZIP code.
 3. Lightweight. It depends on nothing.
 
