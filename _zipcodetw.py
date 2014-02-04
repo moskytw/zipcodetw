@@ -160,17 +160,24 @@ class Rule(Address):
                     return False
 
         # check the rule tokens
-        his_no_pair = addr.extract_no_pair(-1)
-        my_no_pair = self.extract_no_pair(-1)
-        for rule_token in self.rule_tokens:
+        his_no_pair     = addr.extract_no_pair(-1)
+        my_no_pair      = self.extract_no_pair(-1)
+        my_asst_no_pair = self.extract_no_pair(-2)
+        for rt in self.rule_tokens:
             if (
-                (rule_token == u'全'     and not his_no_pair != (0, 0)) or
-                (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
-                (rule_token == u'雙'     and not his_no_pair[0] & 1 == 0) or
-                (rule_token == u'至'     and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair) or
-                (rule_token == u'附號全' and not his_no_pair[1] > 0) or
-                (u'以上' in rule_token   and not his_no_pair >= my_no_pair) or
-                (u'以下' in rule_token   and not his_no_pair <= my_no_pair)
+                (rt == u'全'         and not his_no_pair > (0, 0)) or
+                (rt == u'單'         and not his_no_pair[0] & 1 == 1) or
+                (rt == u'雙'         and not his_no_pair[0] & 1 == 0) or
+                (rt == u'以上'       and not his_no_pair >= my_no_pair) or
+                (rt == u'以下'       and not his_no_pair <= my_no_pair) or
+                (rt == u'至'         and not (
+                    my_asst_no_pair <= his_no_pair <= my_no_pair or
+                    u'含附號全' in self.rule_tokens and his_no_pair[0] == my_no_pair[0]
+                )) or
+                (rt == u'含附號'     and not  his_no_pair[0] == my_no_pair[0]) or
+                (rt == u'附號全'     and not (his_no_pair[0] == my_no_pair[0] and his_no_pair[1] > 0)) or
+                (rt == u'及以上附號' and not  his_no_pair >= my_no_pair) or
+                (rt == u'含附號以下' and not (his_no_pair <= my_no_pair  or his_no_pair[0] == my_no_pair[0]))
             ):
                 return False
 

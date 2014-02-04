@@ -262,6 +262,43 @@ def test_rule_match_tricky_input():
     assert not rule2.match(addr2)
     assert not rule2.match(addr3)
 
+def test_rule_match_subno():
+
+    rule = Rule('臺北市,中正區,杭州南路１段,　  14號含附號')
+    assert     rule.match(Address('臺北市中正區杭州南路1段14號'))
+    assert     rule.match(Address('臺北市中正區杭州南路1段14-1號'))
+    assert not rule.match(Address('臺北市中正區杭州南路1段15號'))
+
+    rule = Rule('臺北市,大同區,哈密街,　  47附號全')
+    assert not rule.match(Address('臺北市大同區哈密街47號'))
+    assert     rule.match(Address('臺北市大同區哈密街47-1號'))
+    assert not rule.match(Address('臺北市大同區哈密街48號'))
+
+    rule = Rule('臺北市,大同區,哈密街,雙  68巷至  70號含附號全')
+    assert     rule.match(Address('臺北市大同區哈密街68巷'))
+    assert     rule.match(Address('臺北市大同區哈密街68-1號'))
+    assert not rule.match(Address('臺北市大同區哈密街69號'))
+    assert not rule.match(Address('臺北市大同區哈密街69-1巷'))
+    assert     rule.match(Address('臺北市大同區哈密街70號'))
+    assert     rule.match(Address('臺北市大同區哈密街70-1號'))
+    assert not rule.match(Address('臺北市大同區哈密街71號'))
+
+    rule = Rule('桃園縣,中壢市,普義,連  49號含附號以下')
+    assert     rule.match(Address('桃園縣中壢市普義48-1號'))
+    assert     rule.match(Address('桃園縣中壢市普義48號'))
+    assert     rule.match(Address('桃園縣中壢市普義49-1號'))
+    assert     rule.match(Address('桃園縣中壢市普義49號'))
+    assert not rule.match(Address('桃園縣中壢市普義50-1號'))
+    assert not rule.match(Address('桃園縣中壢市普義50號'))
+
+    rule = Rule('臺中市,西屯區,西屯路３段西平南巷,　   1之   3號及以上附號')
+    assert not rule.match(Address('臺中市西屯區西屯路3段西平南巷1號'))
+    assert not rule.match(Address('臺中市西屯區西屯路3段西平南巷1-1號'))
+    assert not rule.match(Address('臺中市西屯區西屯路3段西平南巷1-2號'))
+    assert     rule.match(Address('臺中市西屯區西屯路3段西平南巷1-3號'))
+    assert     rule.match(Address('臺中市西屯區西屯路3段西平南巷1-4號'))
+    assert     rule.match(Address('臺中市西屯區西屯路3段西平南巷1-5號'))
+
 from _zipcodetw import Directory
 
 class TestDirectory(object):
@@ -322,4 +359,4 @@ class TestDirectory(object):
 
 if __name__ == '__main__':
     import uniout
-    test_rule_match_tricky_input()
+    test_rule_match_subno()
