@@ -126,11 +126,11 @@ class Rule(Address):
         self.rule_tokens, addr_str = Rule.extract_tokens(rule_str)
         Address.__init__(self, addr_str)
 
-    def flat_rule_tokens(self, n=None):
-        return Address._flat(self.rule_tokens, n)
+    def flat(self, n=None, m=None):
+        return Address.flat(self, n)+Address._flat(self.rule_tokens, m)
 
     def __repr__(self):
-        return 'Rule(%r)' % (self.flat()+self.flat_rule_tokens())
+        return 'Rule(%r)' % self.flat()
 
     def match(self, addr):
 
