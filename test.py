@@ -367,6 +367,42 @@ class TestDirectory(object):
 
     def test_find(self):
 
+        # It retuns a partial zipcode when the address doesn't match any rule in
+        # our directory.
+
+        # 10043,臺北市,中正區,中華路１段,單  25之   3號以下
+        assert self.dir_.find('臺北市中正區中華路１段25號') == '10043'
+        assert self.dir_.find('臺北市中正區中華路１段25-2號') == '10043'
+        assert self.dir_.find('臺北市中正區中華路１段25-3號') == '10043'
+        assert self.dir_.find('臺北市中正區中華路１段25-4號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段26號') == '100'
+
+        # 10042,臺北市,中正區,中華路１段,單  27號至  47號
+        assert self.dir_.find('臺北市中正區中華路１段25號') == '10043'
+        assert self.dir_.find('臺北市中正區中華路１段26號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段27號') == '10042'
+        assert self.dir_.find('臺北市中正區中華路１段28號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段29號') == '10042'
+        assert self.dir_.find('臺北市中正區中華路１段45號') == '10042'
+        assert self.dir_.find('臺北市中正區中華路１段46號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段47號') == '10042'
+        assert self.dir_.find('臺北市中正區中華路１段48號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段49號') == '10010'
+
+        # 10010,臺北市,中正區,中華路１段,　  49號
+        assert self.dir_.find('臺北市中正區中華路１段48號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段49號') == '10010'
+        assert self.dir_.find('臺北市中正區中華路１段50號') == '100'
+
+        # 10042,臺北市,中正區,中華路１段,單  51號以上
+        assert self.dir_.find('臺北市中正區中華路１段49號') == '10010'
+        assert self.dir_.find('臺北市中正區中華路１段50號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段51號') == '10042'
+        assert self.dir_.find('臺北市中正區中華路１段52號') == '100'
+        assert self.dir_.find('臺北市中正區中華路１段53號') == '10042'
+
+    def test_find_gradually(self):
+
         assert self.dir_.find('臺北市') == '100'
         assert self.dir_.find('臺北市中正區') == '100'
         assert self.dir_.find('臺北市中正區仁愛路１段') == '1005'
@@ -374,4 +410,6 @@ class TestDirectory(object):
 
 if __name__ == '__main__':
     import uniout
-    test_rule_match_subno()
+    test_dir = TestDirectory()
+    test_dir.setup()
+    test_dir.test_find()
