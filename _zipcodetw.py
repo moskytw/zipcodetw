@@ -59,17 +59,6 @@ class Address(object):
     def tokenize(addr_str):
         return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
-    def extract_no_pair(self, idx):
-        try:
-            token = self.tokens[idx]
-        except IndexError:
-            return (0, 0)
-        else:
-            return (
-                int(token[Address.NO]    or 0),
-                int(token[Address.SUBNO] or 0)
-            )
-
     def __init__(self, addr_str):
         self.tokens = Address.tokenize(addr_str)
 
@@ -83,6 +72,17 @@ class Address(object):
 
     def __repr__(self):
         return 'Address(%r)' % self.flat()
+
+    def extract_no_pair(self, idx):
+        try:
+            token = self.tokens[idx]
+        except IndexError:
+            return (0, 0)
+        else:
+            return (
+                int(token[Address.NO]    or 0),
+                int(token[Address.SUBNO] or 0)
+            )
 
 class Rule(Address):
 
