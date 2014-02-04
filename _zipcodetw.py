@@ -72,7 +72,6 @@ class Address(object):
 
     def __init__(self, addr_str):
         self.tokens = Address.tokenize(addr_str)
-        self.last_no_pair = self.extract_no_pair(-1)
 
     @staticmethod
     def _flat(tokens, n):
@@ -156,8 +155,8 @@ class Rule(Address):
                 return True
 
         # check the rule tokens
-        his_no_pair = addr.last_no_pair
-        my_no_pair = self.last_no_pair
+        his_no_pair = addr.extract_no_pair(-1)
+        my_no_pair = self.extract_no_pair(-1)
         for rule_token in self.rule_tokens:
             if (
                 (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
