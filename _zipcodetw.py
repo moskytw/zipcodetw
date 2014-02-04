@@ -193,13 +193,13 @@ class Directory(object):
         self.tokens_zipcodes_map = defaultdict(set)
         self.zipcode_rule_strs_map = defaultdict(set)
 
-    def load(self, zipcode, addr_str, rule_str):
+    def load(self, zipcode, addr_str, tail_rule_str):
 
         tokens = Address.tokenize(addr_str)
         for i in range(len(tokens), 0, -1):
             self.tokens_zipcodes_map[tokens[:i]].add(zipcode)
 
-        self.zipcode_rule_strs_map[zipcode].add(addr_str+rule_str)
+        self.zipcode_rule_strs_map[zipcode].add(addr_str+tail_rule_str)
 
     def load_chp_csv(self, lines, skip_first=True):
 
