@@ -59,10 +59,6 @@ class Address(object):
     def tokenize(addr_str):
         return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
-    @staticmethod
-    def flat(tokens, n=None):
-        return tuple(u''.join(token) for token in tokens[:n])
-
     def extract_no_pair(self, idx):
         try:
             token = self.tokens[idx]
@@ -84,6 +80,13 @@ class Address(object):
 
         self.tokens = Address.tokenize(addr_str)
         self.last_no_pair = self.extract_no_pair(-1)
+
+    @staticmethod
+    def _flat(tokens, n):
+        return u''.join(u''.join(token) for token in tokens[:n])
+
+    def flat(self, n=None):
+        return Address._flat(self.tokens, n)
 
     def __repr__(self):
         return 'Address(tokens=%r, last_no_pair=%r)' % (
@@ -135,6 +138,9 @@ class Rule(Address):
 
         self.rule_tokens, addr_str = Rule.extract_tokens(rule_str)
         Address.__init__(self, addr_str)
+
+    def flat_rule_tokens(self, n=None):
+        return Address._flat(self.rule_tokens, n)
 
     def __repr__(self):
         return 'Rule(tokens=%r, last_no_pair=%r, rule_tokens=%r)' % (

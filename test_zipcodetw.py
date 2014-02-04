@@ -3,14 +3,6 @@
 
 from _zipcodetw import Address
 
-def test_address_flat():
-
-    tokens = Address.tokenize('臺北市大安區市府路1號')
-    assert Address.flat(tokens, 1) == (u'臺北市', )
-    assert Address.flat(tokens, 2) == (u'臺北市', u'大安區')
-    assert Address.flat(tokens, 3) == (u'臺北市', u'大安區', u'市府路')
-    assert Address.flat(tokens) == (u'臺北市', u'大安區', u'市府路', u'1號')
-
 def test_address_init():
 
     expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'', u'', u'號'))
@@ -46,6 +38,14 @@ def test_address_init_normalization():
     assert Address(u'臺北市大安區市府路1號').tokens == expected_tokens
     assert Address(u'台北市大安區市府路1號').tokens == expected_tokens
     assert Address(u'台北市大安區市府路１號').tokens == expected_tokens
+
+def test_address_flat():
+
+    addr = Address('臺北市大安區市府路1號')
+    assert addr.flat(1) == addr.flat(-3) == u'臺北市'
+    assert addr.flat(2) == addr.flat(-2) == u'臺北市大安區'
+    assert addr.flat(3) == addr.flat(-1) == u'臺北市大安區市府路'
+    assert addr.flat() == u'臺北市大安區市府路1號'
 
 def test_address_repr():
 
