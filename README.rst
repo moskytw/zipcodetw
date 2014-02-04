@@ -1,13 +1,13 @@
 The ZIP Code Finder for Taiwan
 ==============================
 
-This package lets you find a corresponding ZIP code of any address in Taiwan.
+This package lets you find ZIP code by address in Taiwan.
 
 The main features:
 
 1. Fast. It builds ZIP code index by tokenization.
-2. Gradual. It returns partial ZIP code rather than noting if your address is
-   not detailed enoguh.
+2. Gradual. It returns partial ZIP code rather than noting when address is not
+   detailed enoguh.
 3. Lightweight. It depends on nothing.
 
 Usage
