@@ -32,6 +32,9 @@ def test_address_init_tricky_input():
     assert Address(u'桃園縣中壢市普義').tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''))
     assert Address(u'桃園縣中壢市普義10號').tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''), (u'10', u'', u'', u'號'))
 
+    assert Address(u'臺北市中山區敬業1路').tokens == ((u'', u'', u'臺北', u'市'), (u'', u'', u'中山', u'區'), (u'', u'', u'敬業1', u'路'))
+    assert Address(u'臺北市中山區敬業1路10號').tokens == ((u'', u'', u'臺北', u'市'), (u'', u'', u'中山', u'區'), (u'', u'', u'敬業1', u'路'), (u'10', u'', u'', u'號'))
+
 def test_address_init_normalization():
 
     expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'', u'', u'號'))
