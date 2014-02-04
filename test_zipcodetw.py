@@ -245,6 +245,23 @@ def test_rule_match_rule_all():
     assert not rule.match(Address('臺北市大同區哈密街46巷1號'))
     assert not rule.match(Address('臺北市大同區哈密街46巷9號'))
 
+def test_rule_match_tricky_input():
+
+    rule1 = Rule('信義路一段雙全')
+    rule2 = Rule('信義路一段')
+
+    addr1 = Address('信義路一段')
+    addr2 = Address('信義路一段1號')
+    addr3 = Address('信義路一段2號')
+
+    assert not rule1.match(addr1)
+    assert not rule1.match(addr2)
+    assert     rule1.match(addr3)
+
+    assert     rule2.match(addr1)
+    assert not rule2.match(addr2)
+    assert not rule2.match(addr3)
+
 from _zipcodetw import Directory
 
 class TestDirectory(object):
@@ -305,7 +322,4 @@ class TestDirectory(object):
 
 if __name__ == '__main__':
     import uniout
-    test_dir = TestDirectory()
-    test_dir.setup()
-    test_dir.test_find_zipcodes()
-    test_dir.test_find()
+    test_rule_match_tricky_input()

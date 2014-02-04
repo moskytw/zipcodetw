@@ -130,6 +130,9 @@ class Rule(Address):
         my_last_idx -= (bool(self.rule_tokens) and u'全' not in self.rule_tokens)
         my_last_idx -= (u'至' in self.rule_tokens)
 
+        his_last_idx = len(addr.tokens)
+        his_last_idx -= bool(self.rule_tokens)
+
         my_tokens_to_match = self.tokens[:my_last_idx]
         if my_tokens_to_match:
 
@@ -139,8 +142,8 @@ class Rule(Address):
                 if his_token[Address.UNIT] == start_unit:
                     break
 
-            his_tokens_to_match = addr.tokens[his_start_idx:]
-            if len(my_tokens_to_match) > len(his_tokens_to_match):
+            his_tokens_to_match = addr.tokens[his_start_idx:his_last_idx]
+            if len(my_tokens_to_match) != len(his_tokens_to_match):
                 return False
 
             for my_token, his_token in zip(my_tokens_to_match, his_tokens_to_match):
@@ -152,6 +155,7 @@ class Rule(Address):
         my_no_pair = self.extract_no_pair(-1)
         for rule_token in self.rule_tokens:
             if (
+                (his_no_pair == (0, 0)) or
                 (rule_token == u'單'     and not his_no_pair[0] & 1 == 1) or
                 (rule_token == u'雙'     and not his_no_pair[0] & 1 == 0) or
                 (rule_token == u'至'     and not self.extract_no_pair(-2) <= his_no_pair <= my_no_pair) or
