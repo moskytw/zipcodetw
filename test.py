@@ -6,26 +6,14 @@ from _zipcodetw import Address
 def test_address_init():
 
     expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'', u'', u'號'))
-
-    # standard
     assert Address(u'臺北市大安區市府路1號').tokens == expected_tokens
-    # 8-bit string
     assert Address('臺北市大安區市府路1號').tokens == expected_tokens
-    # with spaces and commas
-    assert Address('臺北市,　大　安區，市府路 1 號').tokens == expected_tokens
 
 def test_address_init_subno():
 
     expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'1', u'', u'號'))
-
-    # standard
     assert Address(u'臺北市大安區市府路1之1號').tokens == expected_tokens
-    # 8-bit string
     assert Address('臺北市大安區市府路1之1號').tokens == expected_tokens
-    # with spaces and commas
-    assert Address('臺北市,　大　安區，市府路 1 之 1 號').tokens == expected_tokens
-    # another type of subno
-    assert Address(u'臺北市大安區市府路1-1號').tokens == expected_tokens
 
 def test_address_init_tricky_input():
 
@@ -37,10 +25,13 @@ def test_address_init_tricky_input():
 
 def test_address_init_normalization():
 
-    expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'', u'', u'號'))
-    assert Address(u'臺北市大安區市府路1號').tokens == expected_tokens
-    assert Address(u'台北市大安區市府路1號').tokens == expected_tokens
-    assert Address(u'台北市大安區市府路１號').tokens == expected_tokens
+    expected_tokens = ((u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'1', u'', u'號'))
+    assert Address(u'臺北市大安區市府路1之1號').tokens == expected_tokens
+    assert Address(u'台北市大安區市府路1之1號').tokens == expected_tokens
+    assert Address(u'臺北市大安區市府路１之１號').tokens == expected_tokens
+    assert Address(u'臺北市　大安區　市府路 1 之 1 號').tokens == expected_tokens
+    assert Address(u'臺北市，大安區，市府路 1 之 1 號').tokens == expected_tokens
+    assert Address(u'臺北市, 大安區, 市府路 1 之 1 號').tokens == expected_tokens
 
 def test_address_flat():
 
