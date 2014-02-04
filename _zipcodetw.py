@@ -63,17 +63,18 @@ class Address(object):
         self.tokens = Address.tokenize(addr_str)
 
     @staticmethod
-    def _flat(tokens, n):
+    def flat_tokens(tokens, n):
+        # the tokens may be a set
         if n: tokens = tokens[:n]
         return u''.join(u''.join(token) for token in tokens)
 
     def flat(self, n=None):
-        return Address._flat(self.tokens, n)
+        return Address.flat_tokens(self.tokens, n)
 
     def __repr__(self):
         return 'Address(%r)' % self.flat()
 
-    def extract_no_pair(self, idx):
+    def get_no_pair(self, idx):
         try:
             token = self.tokens[idx]
         except IndexError:
@@ -97,7 +98,7 @@ class Rule(Address):
     ''', re.X)
 
     @staticmethod
-    def extract_tokens(rule_str):
+    def parse(rule_str):
 
         rule_str = Address.normalize(rule_str)
 
@@ -123,11 +124,11 @@ class Rule(Address):
         return (rule_tokens, addr_str)
 
     def __init__(self, rule_str):
-        self.rule_tokens, addr_str = Rule.extract_tokens(rule_str)
+        self.rule_tokens, addr_str = Rule.parse(rule_str)
         Address.__init__(self, addr_str)
 
     def flat(self, n=None, m=None):
-        return Address.flat(self, n)+Address._flat(self.rule_tokens, m)
+        return Address.flat(self, n)+Address.flat_tokens(self.rule_tokens, m)
 
     def __repr__(self):
         return 'Rule(%r)' % self.flat()
@@ -136,8 +137,8 @@ class Rule(Address):
 
         # the part reserves for rule tokens
         my_last_idx = len(self.tokens)
-        my_last_idx -= (bool(self.rule_tokens) and u'全' not in self.rule_tokens)
-        my_last_idx -= (u'至' in self.rule_tokens)
+        my_last_idx -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
+        my_last_idx -= u'至' in self.rule_tokens
 
         his_last_idx = len(addr.tokens)
         his_last_idx -= bool(self.rule_tokens)
@@ -160,9 +161,9 @@ class Rule(Address):
                     return False
 
         # check the rule tokens
-        his_no_pair     = addr.extract_no_pair(-1)
-        my_no_pair      = self.extract_no_pair(-1)
-        my_asst_no_pair = self.extract_no_pair(-2)
+        his_no_pair     = addr.get_no_pair(-1)
+        my_no_pair      = self.get_no_pair(-1)
+        my_asst_no_pair = self.get_no_pair(-2)
         for rt in self.rule_tokens:
             if (
                 (rt == u'全'         and not his_no_pair > (0, 0)) or
@@ -183,8 +184,8 @@ class Rule(Address):
 
         return True
 
-from collections import defaultdict
 import csv
+from collections import defaultdict
 from itertools import izip
 
 class Directory(object):
