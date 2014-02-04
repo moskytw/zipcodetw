@@ -103,11 +103,19 @@ class Rule(Address):
         rule_tokens_list = []
 
         def extract_token(m):
+
             token = m.group()
-            rule_tokens_list.append(token)
-            if token == u'附號全':
-                return u'號'
-            return ''
+            retval = u''
+
+            if token == u'連':
+                token = u''
+            elif token == u'附號全':
+                retval = u'號'
+
+            if token:
+                rule_tokens_list.append(token)
+
+            return retval
 
         addr_str = Rule.RULE_TOKEN_RE.sub(extract_token, rule_str)
 

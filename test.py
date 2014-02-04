@@ -86,7 +86,7 @@ def test_rule_init():
 
     rule = Rule('臺北市,中正區,仁愛路１段,連   2之   4號以上')
     assert rule.tokens == ((u'', u'', u'臺北', u'市'), (u'', u'', u'中正', u'區'), (u'', u'', u'仁愛', u'路'), (u'', u'', u'1', u'段'), (u'2', u'4', u'', u'號'))
-    assert rule.rule_tokens == (u'連', u'以上')
+    assert rule.rule_tokens == ( u'以上',)
 
     rule = Rule('臺北市,中正區,杭州南路１段,　  14號含附號')
     assert rule.tokens == ((u'', u'', u'臺北', u'市'), (u'', u'', u'中正', u'區'), (u'', u'', u'杭州南', u'路'), (u'', u'', u'1', u'段'), (u'14', u'', u'', u'號'))
@@ -102,7 +102,7 @@ def test_rule_init():
 
     rule = Rule('桃園縣,中壢市,普義,連  49號含附號以下')
     assert rule.tokens == ((u'', u'', u'桃園', u'縣'), (u'', u'', u'中壢', u'市'), (u'', u'', u'普義', u''), (u'49', u'', u'', u'號'))
-    assert rule.rule_tokens == (u'連', u'含附號以下')
+    assert rule.rule_tokens == (u'含附號以下',)
 
     rule = Rule('臺中市,西屯區,西屯路３段西平南巷,　   1之   3號及以上附號')
     assert rule.tokens == ((u'', u'', u'臺中', u'市'), (u'', u'', u'西屯', u'區'), (u'', u'', u'西屯', u'路'), (u'', u'', u'3', u'段'), (u'', u'', u'西平南', u'巷'), (u'1', u'3', u'', u'號'))
