@@ -48,10 +48,9 @@ Then, have fun. :)
 Report Bug
 ----------
 
-It lets machine understand address and find ZIP code by it in directory. But
-machine may misunderstand -- In fact, I might write some bad code. If you get
-any wrong result, please feel free to report to me. Here is my email: mosky.tw
-AT gmail.com. Thank you!
+It lets machine understand an address and use the address to find the ZIP code. But machine is stupid, it may still misunderstand ... In fact, I might write some bad code.
+
+So, if you get wrong reuslt, please feel free to email me: mosky.tw AT gmail.com.
 
 Data
 ----
