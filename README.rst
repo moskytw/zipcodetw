@@ -1,12 +1,13 @@
 The ZIP Code Finder for Taiwan
 ==============================
 
-This package lets you find the ZIP code quickly by any Taiwan address.
+This package lets you find a corresponding ZIP code of any address in Taiwan.
 
 The main features:
 
-1. Fast. It builds ZIP code index by tokenizating the addresses and rules.
-2. Gradual. It allows a partial address to match partial ZIP code.
+1. Fast. It builds ZIP code index by tokenization.
+2. Gradual. It returns partial ZIP code rather than noting if your address is
+   not detailed enoguh.
 3. Lightweight. It depends on nothing.
 
 Usage
@@ -42,9 +43,10 @@ It is easy to install this package from PyPI:
 
     $ sudo pip install zipcodetw
 
-Have fun! :)
+Have fun. :)
 
 Data
 ----
 
-The ZIP code data are provided by Chunghwa Post. The CSV is available here: http://www.post.gov.tw/post/internet/down/index.html#1808
+The ZIP code directory we use is provided by Chunghwa Post, and is available
+from: http://www.post.gov.tw/post/internet/down/index.html#1808
