@@ -117,6 +117,8 @@ def test_rule_repr():
 
 def test_rule_match():
 
+    # standard address w/ standard rules
+
     addr = Address(u'臺北市大安區市府路5號')
 
     # 全單雙
@@ -159,7 +161,9 @@ def test_rule_match():
     assert     Rule(u'臺北市大安區市府路單5號以下').match(addr)
     assert not Rule(u'臺北市大安區市府路雙5號以下').match(addr)
 
-def test_rule_match_without_detail():
+def test_rule_match_tail_rules():
+
+    # standard address w/ tail rules
 
     addr = Address(u'臺北市大安區市府路5號')
 
@@ -203,7 +207,9 @@ def test_rule_match_without_detail():
     assert     Rule(u'單5號以下').match(addr)
     assert not Rule(u'雙5號以下').match(addr)
 
-def test_rule_match_short_target():
+def test_rule_match_gradual_address():
+
+    # standard rule w/ gradual addresses
 
     rule = Rule('臺北市中正區丹陽街全')
     assert not rule.match(Address('臺北市'))
@@ -218,6 +224,8 @@ def test_rule_match_short_target():
     assert     rule.match(Address('臺北市中正區仁愛路１段1號'))
 
 def test_rule_match_rule_all():
+
+    # Be careful of the 全! It will bite you!
 
     rule = Rule('臺北市,中正區,八德路１段,全')
     assert     rule.match(Address('臺北市中正區八德路１段1號'))
@@ -238,7 +246,9 @@ def test_rule_match_rule_all():
 
 def test_rule_match_tricky_input():
 
+    # The address matched by it must have a even number.
     rule1 = Rule('信義路一段雙全')
+    # The address matched by it shall be exactly same.
     rule2 = Rule('信義路一段')
 
     addr1 = Address('信義路一段')
