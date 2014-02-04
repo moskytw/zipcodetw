@@ -45,6 +45,14 @@ It is easy to install this package from PyPI:
 
 Have fun. :)
 
+Report Bug
+----------
+
+It lets machine understand address and find zipcode by it in directory. But
+machine may misunderstand -- In fact, I might write some bad code. If you get
+any wrong result, please feel free to report to me. Here is my email: mosky.tw
+-AT- gmail.com .
+
 Data
 ----
 
