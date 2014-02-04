@@ -75,7 +75,8 @@ class Address(object):
 
     @staticmethod
     def _flat(tokens, n):
-        return u''.join(u''.join(token) for token in tokens[:n])
+        if n: tokens = tokens[:n]
+        return u''.join(u''.join(token) for token in tokens)
 
     def flat(self, n=None):
         return Address._flat(self.tokens, n)
@@ -100,7 +101,7 @@ class Rule(Address):
 
         rule_str = Address.normalize(rule_str)
 
-        rule_tokens_list = []
+        rule_tokens = set()
 
         def extract_token(m):
 
@@ -113,13 +114,13 @@ class Rule(Address):
                 retval = u'號'
 
             if token:
-                rule_tokens_list.append(token)
+                rule_tokens.add(token)
 
             return retval
 
         addr_str = Rule.RULE_TOKEN_RE.sub(extract_token, rule_str)
 
-        return (tuple(rule_tokens_list), addr_str)
+        return (rule_tokens, addr_str)
 
     def __init__(self, rule_str):
         self.rule_tokens, addr_str = Rule.extract_tokens(rule_str)
