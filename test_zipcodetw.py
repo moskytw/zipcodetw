@@ -49,7 +49,7 @@ def test_address_flat():
 
 def test_address_repr():
 
-    repr_str = "Address(tokens=((u'', u'', u'\u81fa\u5317', u'\u5e02'), (u'', u'', u'\u5927\u5b89', u'\u5340'), (u'', u'', u'\u5e02\u5e9c', u'\u8def'), (u'1', u'', u'', u'\u865f')), last_no_pair=(1, 0))"
+    repr_str = "Address(u'\u81fa\u5317\u5e02\u5927\u5b89\u5340\u5e02\u5e9c\u8def1\u865f')"
     assert repr(Address('臺北市大安區市府路1號')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
@@ -117,7 +117,7 @@ def test_rule_init_tricky_input():
 
 def test_rule_repr():
 
-    repr_str = "Rule(tokens=((u'', u'', u'\u81fa\u5317', u'\u5e02'), (u'', u'', u'\u5927\u5b89', u'\u5340'), (u'', u'', u'\u5e02\u5e9c', u'\u8def'), (u'1', u'', u'', u'\u865f')), last_no_pair=(1, 0), rule_tokens=(u'\u4ee5\u4e0a',))"
+    repr_str = "Rule(u'\u81fa\u5317\u5e02\u5927\u5b89\u5340\u5e02\u5e9c\u8def1\u865f\u4ee5\u4e0a')"
     assert repr(Rule('臺北市大安區市府路1號以上')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
