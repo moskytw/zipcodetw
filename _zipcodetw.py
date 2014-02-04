@@ -137,7 +137,7 @@ class Rule(Address):
         my_tokens_to_match = self.tokens[:my_last_idx]
         if my_tokens_to_match:
 
-            # the addr's units bigger than rule's are ignorable
+            # the addr's tokens whose unit bigger than rule's are ignorable
             start_unit = my_tokens_to_match[0][Address.UNIT]
             for his_start_idx, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
