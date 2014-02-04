@@ -151,9 +151,6 @@ class Rule(Address):
                 if my_token != his_token:
                     return False
 
-            if not self.rule_tokens:
-                return True
-
         # check the rule tokens
         his_no_pair = addr.extract_no_pair(-1)
         my_no_pair = self.extract_no_pair(-1)
