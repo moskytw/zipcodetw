@@ -253,3 +253,5 @@ class Directory(object):
             gzipcode = self.tokens_gzipcode_map[k]
             if gzipcode:
                 return gzipcode
+
+        return ''
