@@ -21,7 +21,7 @@ def print_report(target_dict):
     for lenv, count in sorted(lenv_count_map.iteritems(), key=lambda k: k[1], reverse=True):
         pct = 100.*count/total_count
         cum_pct += pct
-        print '{:>6,} | {:>6,} | {:>5.2f}% | {:>5.2f}%'.format(lenv, count, pct, cum_pct)
+        print '{:>6,} | {:>6,} | {:>6.2f}% | {:>6.2f}%'.format(lenv, count, pct, cum_pct)
     print
 
     print 'Total  : {:>6,}'.format(total_count)
