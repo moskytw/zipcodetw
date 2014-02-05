@@ -10,7 +10,7 @@ end = time()
 
 print 'The package took {:.2f} seconds to load.'.format(end-start)
 
-def benchmark_find():
+def test_find():
 
     zipcodetw.find('台北市')
     zipcodetw.find('台北市中正區')
@@ -31,4 +31,4 @@ def benchmark_find():
     zipcodetw.find('臺南市中西區府前路1段226號')
 
 n = 1000
-print 'Timeit benchmark_find took {:.2f} seconds.'.format(timeit(benchmark_find, number=n))
+print 'Timeit test_find with n={} took {:.2f} seconds.'.format(n, timeit(test_find, number=n))
