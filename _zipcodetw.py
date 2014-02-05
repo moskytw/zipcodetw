@@ -61,10 +61,10 @@ class Address(object):
 
             found = m.group()
 
-            if found in Rule.TO_REMOVE_SET:
+            if found in Address.TO_REMOVE_SET:
                 return u''
-            if found in Rule.TO_REPLACE_MAP:
-                return Rule.TO_REPLACE_MAP[found]
+            if found in Address.TO_REPLACE_MAP:
+                return Address.TO_REPLACE_MAP[found]
 
             len_found = len(found)
 
@@ -72,11 +72,11 @@ class Address(object):
             if len_found == 1 and 65296 <= ord(found) <= 65305:
                 return unichr(ord(found)-65248)
             if len_found == 2:
-                return u'1'+Rule.TO_REPLACE_MAP[found[1]]
+                return u'1'+Address.TO_REPLACE_MAP[found[1]]
             if len_found == 3:
-                return Rule.TO_REPLACE_MAP[found[0]]+Rule.TO_REPLACE_MAP[found[2]]
+                return Address.TO_REPLACE_MAP[found[0]]+Address.TO_REPLACE_MAP[found[2]]
 
-        s = Rule.TO_REPLACE_RE.sub(replace, s)
+        s = Address.TO_REPLACE_RE.sub(replace, s)
 
         return s
 
