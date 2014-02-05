@@ -217,6 +217,7 @@ class Directory(object):
 
         tokens = Address.tokenize(addr_str)
 
+        # (a, b, c)
         self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
         # (a, b, c) -> (a, b, c) ... (a,)
