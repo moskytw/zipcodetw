@@ -41,7 +41,7 @@ if __name__ == '__main__':
     print
     print
 
-    print '# Tokens -> Rule Strs and Zipcode Pair'
+    print '# Tokens -> Rule Str and Zipcode Pairs'
     print
     print_report(zipcodetw._dir.tokens_rzpairs_map)
     print
