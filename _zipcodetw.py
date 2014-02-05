@@ -75,7 +75,7 @@ class Address(object):
     def __repr__(self):
         return 'Address(%r)' % self.flat()
 
-    def get_no_pair(self, idx):
+    def parse_no_token(self, idx):
         try:
             token = self.tokens[idx]
         except IndexError:
@@ -162,9 +162,9 @@ class Rule(Address):
                     return False
 
         # check the rule tokens
-        his_no_pair     = addr.get_no_pair(-1)
-        my_no_pair      = self.get_no_pair(-1)
-        my_asst_no_pair = self.get_no_pair(-2)
+        his_no_pair     = addr.parse_no_token(-1)
+        my_no_pair      = self.parse_no_token(-1)
+        my_asst_no_pair = self.parse_no_token(-2)
         for rt in self.rule_tokens:
             if (
                 (rt == u'全'         and not his_no_pair > (0, 0)) or
