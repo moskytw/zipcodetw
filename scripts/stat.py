@@ -47,4 +47,4 @@ if __name__ == '__main__':
     print
     print
 
-    print 'Took {:.4f}s to load.'.format(end-start)
+    print 'Took {:.2f}s to load.'.format(end-start)
