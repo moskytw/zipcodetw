@@ -34,10 +34,22 @@ def test_address_init_normalization():
     assert Address(u'臺北市, 大安區, 市府路 1 之 1 號').tokens == expected_tokens
     assert Address(u'臺北市, 大安區, 市府路 1 - 1 號').tokens == expected_tokens
 
+def test_address_init_normalization_chinese_number():
+
     assert Address.normalize(u'八德路') == u'八德路'
+    assert Address.normalize(u'三元街') == u'三元街'
+
     assert Address.normalize(u'三號') == u'3號'
-    assert Address.normalize(u'十五號') == u'15號'
-    assert Address.normalize(u'三十五號') == u'35號'
+    assert Address.normalize(u'十八號') == u'18號'
+    assert Address.normalize(u'三十八號') == u'38號'
+
+    assert Address.normalize(u'三段') == u'3段'
+    assert Address.normalize(u'十八路') == u'18路'
+    assert Address.normalize(u'三十八街') == u'38街'
+
+    assert Address.normalize(u'信義路一段') == u'信義路1段'
+    assert Address.normalize(u'敬業一路') == u'敬業1路'
+    assert Address.normalize(u'愛富三街') == u'愛富3街'
 
 def test_address_flat():
 
