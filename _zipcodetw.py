@@ -10,7 +10,7 @@ class Address(object):
     TOKEN_RE = re.compile(u'''
         (?:
             (?P<no>\d+)
-            (?:[之-](?P<subno>\d+))?
+            (?P<subno>之\d+)?
             (?=[巷弄號樓])
             |
             (?P<name>.+?)
@@ -35,6 +35,7 @@ class Address(object):
         (u'，', u''),
         # unity the chars
         (u'台', u'臺'),
+        (u'-' , u'之'),
         (u'０', u'0'),
         (u'１', u'1'),
         (u'２', u'2'),
@@ -81,8 +82,8 @@ class Address(object):
             return (0, 0)
         else:
             return (
-                int(token[Address.NO]    or 0),
-                int(token[Address.SUBNO] or 0)
+                int(token[Address.NO]        or 0),
+                int(token[Address.SUBNO][1:] or 0)
             )
 
 class Rule(Address):
