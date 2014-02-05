@@ -59,4 +59,4 @@ v0.2
 3. Better matching logic for sub-number
 4. ``zipcodetw.find_zipcodes`` was removed.
 5. Internal API was changed a lot.
-5. More tests
+6. More tests
