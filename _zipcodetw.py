@@ -31,6 +31,8 @@ class Address(object):
     [ 　,，台-]
     |
     [０-９]
+    |
+    [一二三四五六七八九]?十?[一二三四五六七八九](?=[段路街巷弄號樓])
     ''', re.X)
 
     TO_REMOVE_SET = set(u' 　,，')
@@ -38,6 +40,15 @@ class Address(object):
     TO_REPLACE_MAP = {
         u'-' : u'之',
         u'台': u'臺',
+        u'一': u'1',
+        u'二': u'2',
+        u'三': u'3',
+        u'四': u'4',
+        u'五': u'5',
+        u'六': u'6',
+        u'七': u'7',
+        u'八': u'8',
+        u'九': u'9',
     }
 
     @staticmethod
@@ -60,6 +71,10 @@ class Address(object):
             # 65296 = '０'; 65305 = '９'; 65248 = '０'-'0'
             if len_found == 1 and 65296 <= ord(found) <= 65305:
                 return unichr(ord(found)-65248)
+            if len_found == 2:
+                return u'1'+Rule.TO_REPLACE_MAP[found[1]]
+            if len_found == 3:
+                return Rule.TO_REPLACE_MAP[found[0]]+Rule.TO_REPLACE_MAP[found[2]]
 
         s = Rule.TO_REPLACE_RE.sub(replace, s)
 

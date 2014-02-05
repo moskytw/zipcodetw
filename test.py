@@ -34,6 +34,11 @@ def test_address_init_normalization():
     assert Address(u'臺北市, 大安區, 市府路 1 之 1 號').tokens == expected_tokens
     assert Address(u'臺北市, 大安區, 市府路 1 - 1 號').tokens == expected_tokens
 
+    assert Address.normalize(u'八德路') == u'八德路'
+    assert Address.normalize(u'三號') == u'3號'
+    assert Address.normalize(u'十五號') == u'15號'
+    assert Address.normalize(u'三十五號') == u'35號'
+
 def test_address_flat():
 
     addr = Address('臺北市大安區市府路1之1號')
