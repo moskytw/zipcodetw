@@ -207,23 +207,23 @@ class Directory(object):
 
     def __init__(self):
 
-        # gzipcode = gradual_zipcode
-        self.tokens_gzipcode_map = defaultdict(str)
-
         # rzpair = (rule_str, zipcode)
         self.tokens_rzpairs_map = defaultdict(list)
+
+        # gzipcode = gradual_zipcode
+        self.tokens_gzipcode_map = defaultdict(str)
 
     def load(self, zipcode, addr_str, tail_rule_str):
 
         tokens = Address.tokenize(addr_str)
+
+        self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
         # (a, b, c) -> (a, b, c) ... (a,)
         for i in range(len(tokens), 0, -1):
             k = tokens[:i]
             orig = self.tokens_gzipcode_map[k]
             self.tokens_gzipcode_map[k] = Directory.get_common_part(orig, zipcode)
-
-        self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
     def load_chp_csv(self, lines, skip_first=True):
 
