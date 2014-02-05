@@ -55,8 +55,8 @@ v0.2
 ~~~~
 
 1. ``zipcodetw.find`` is 8x faster now!
-2. Better tokenizing logic
-3. Better matching logic for sub-number
+2. It has a better tokenizing logic; and
+3. a better matching logic for sub-number now.
 4. ``zipcodetw.find_zipcodes`` was removed.
 5. Internal API was changed a lot.
-6. More tests
+6. The tests are better now.
