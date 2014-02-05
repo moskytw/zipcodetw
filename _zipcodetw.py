@@ -243,9 +243,9 @@ class Directory(object):
 
             k = addr.tokens[:i]
 
-            tz_pairs = self.tokens_rzpairs_map[k]
-            if tz_pairs:
-                for rule_str, zipcode in tz_pairs:
+            rzpairs = self.tokens_rzpairs_map[k]
+            if rzpairs:
+                for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
                         return zipcode
 
