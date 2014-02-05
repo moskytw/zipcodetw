@@ -47,3 +47,16 @@ Data
 
 The ZIP code directory we use is provided by Chunghwa Post, and is available
 from: http://www.post.gov.tw/post/internet/down/index.html#1808
+
+Changelog
+---------
+
+v0.2
+~~~~
+
+1. ``zipcodetw.find`` is 8x faster now!
+2. Better tokenizing logic
+3. Better matching logic for sub-number
+4. ``zipcodetw.find_zipcodes`` was removed.
+5. Internal API was changed a lot.
+5. More tests
