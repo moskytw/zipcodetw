@@ -27,33 +27,42 @@ class Address(object):
     NAME  = 2
     UNIT  = 3
 
-    PAIRS_TO_NORMALIZE = (
-        # the chars to remove
-        (u' ' , u''),
-        (u'　', u''),
-        (u',' , u''),
-        (u'，', u''),
-        # unity the chars
-        (u'台', u'臺'),
-        (u'-' , u'之'),
-        (u'０', u'0'),
-        (u'１', u'1'),
-        (u'２', u'2'),
-        (u'３', u'3'),
-        (u'４', u'4'),
-        (u'５', u'5'),
-        (u'６', u'6'),
-        (u'７', u'7'),
-        (u'８', u'8'),
-        (u'９', u'9'),
-    )
+    TO_REPLACE_RE = re.compile(u'''
+    [ 　,，台-]
+    |
+    [０-９]
+    ''', re.X)
+
+    TO_REMOVE_SET = set(u' 　,，')
+
+    TO_REPLACE_MAP = {
+        u'-' : u'之',
+        u'台': u'臺',
+    }
 
     @staticmethod
     def normalize(s):
+
         if isinstance(s, str):
             s = s.decode('utf-8')
-        for from_, to in Address.PAIRS_TO_NORMALIZE:
-            s = s.replace(from_, to)
+
+        def replace(m):
+
+            found = m.group()
+
+            if found in Rule.TO_REMOVE_SET:
+                return u''
+            if found in Rule.TO_REPLACE_MAP:
+                return Rule.TO_REPLACE_MAP[found]
+
+            len_found = len(found)
+
+            # 65296 = '０'; 65305 = '９'; 65248 = '０'-'0'
+            if len_found == 1 and 65296 <= ord(found) <= 65305:
+                return unichr(ord(found)-65248)
+
+        s = Rule.TO_REPLACE_RE.sub(replace, s)
+
         return s
 
     @staticmethod
