@@ -19,8 +19,6 @@ The main features:
 Usage
 -----
 
-Find the ZIP code gradually:
-
 .. code-block:: python
 
     >>> import zipcodetw
@@ -32,13 +30,6 @@ Find the ZIP code gradually:
     '110'
     >>> zipcodetw.find('臺北市信義區市府路1號')
     '11008'
-
-Find all possible ZIP codes:
-
-.. code-block:: python
-
-    >>> zipcodetw.find_zipcodes('臺北市信義區市府路')
-    set(['11060', '11001', '11008', '11073'])
 
 Installation
 ------------
