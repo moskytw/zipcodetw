@@ -35,15 +35,15 @@ if __name__ == '__main__':
     import zipcodetw
     end = time()
 
-    print '# Tokens -> Zipcodes'
+    print '# Tokens -> Gradual Zipcode'
     print
-    print_report(zipcodetw._dir.tokens_zipcodes_map)
+    print_report(zipcodetw._dir.tokens_gzipcode_map)
     print
     print
 
-    print '# Zipcode -> Rule Strs'
+    print '# Tokens -> Rule Strs and Zipcode Pair'
     print
-    print_report(zipcodetw._dir.zipcode_rule_strs_map)
+    print_report(zipcodetw._dir.tokens_rzpairs_map)
     print
     print
 

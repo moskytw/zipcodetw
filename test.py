@@ -358,13 +358,6 @@ class TestDirectory(object):
         self.dir_ = Directory()
         self.dir_.load_chp_csv(chp_csv_lines)
 
-    def test_find_zipcodes(self):
-
-        assert self.dir_.find_zipcodes('臺北市') == set(['10048', '10062', '10060', '10066', '10001', '10002', '10065', '10041', '10068', '10069', '10072', '10067', '10042', '10070', '10043', '10058', '10079', '10056', '10055', '10052', '10051', '10010', '10063'])
-        assert self.dir_.find_zipcodes('臺北市中正區') == set(['10048', '10062', '10060', '10066', '10001', '10002', '10065', '10041', '10068', '10069', '10072', '10067', '10042', '10070', '10043', '10058', '10079', '10056', '10055', '10052', '10051', '10010', '10063'])
-        assert self.dir_.find_zipcodes('臺北市中正區仁愛路１段') == set(['10052', '10051'])
-        assert self.dir_.find_zipcodes('臺北市中正區仁愛路１段1號') == set(['10051'])
-
     def test_find(self):
 
         # It retuns a partial zipcode when the address doesn't match any rule in

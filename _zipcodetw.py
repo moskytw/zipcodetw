@@ -190,17 +190,39 @@ from itertools import izip
 
 class Directory(object):
 
+    @staticmethod
+    def get_common_part(str_a, str_b):
+
+        if not str_a: return str_b
+        if not str_b: return str_a
+
+        common_chars = []
+        for char_a, char_b in izip(str_a, str_b):
+            if char_a != char_b:
+                break
+            common_chars.append(char_a)
+
+        return ''.join(common_chars)
+
     def __init__(self):
-        self.tokens_zipcodes_map = defaultdict(set)
-        self.zipcode_rule_strs_map = defaultdict(set)
+
+        # gzipcode = gradual_zipcode
+        self.tokens_gzipcode_map = defaultdict(str)
+
+        # rzpair = (rule_str, zipcode)
+        self.tokens_rzpairs_map = defaultdict(list)
 
     def load(self, zipcode, addr_str, tail_rule_str):
 
         tokens = Address.tokenize(addr_str)
-        for i in range(len(tokens), 0, -1):
-            self.tokens_zipcodes_map[tokens[:i]].add(zipcode)
 
-        self.zipcode_rule_strs_map[zipcode].add(addr_str+tail_rule_str)
+        # (a, b, c) -> (a, b, c) ... (a,)
+        for i in range(len(tokens), 0, -1):
+            k = tokens[:i]
+            orig = self.tokens_gzipcode_map[k]
+            self.tokens_gzipcode_map[k] = Directory.get_common_part(orig, zipcode)
+
+        self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
     def load_chp_csv(self, lines, skip_first=True):
 
@@ -212,44 +234,20 @@ class Directory(object):
         for row in csv.reader(lines_iter):
             self.load(row[0], ''.join(row[1:-1]), row[-1])
 
-    def find_zipcodes(self, addr_str):
+    def find(self, addr_str):
 
         addr = Address(addr_str)
 
-        # if the addr is correct, it runs only once
         for i in range(len(addr.tokens), 0, -1):
-            # 85% -> only one zipcode
-            zipcodes = self.tokens_zipcodes_map.get(addr.tokens[:i])
-            if zipcodes:
-                break
-        else:
-            return set()
 
-        # skip the matching check if the addr is not detail enough
-        if addr.tokens[-1][Address.UNIT] not in u'巷弄號樓':
-            return zipcodes
+            k = addr.tokens[:i]
 
-        # check the addr matches which zipcode
-        for zipcode in zipcodes:
-            # 60% -> 1~10 rule_str
-            for rule_str in self.zipcode_rule_strs_map[zipcode]:
-                if Rule(rule_str).match(addr):
-                    return set([zipcode])
+            tz_pairs = self.tokens_rzpairs_map[k]
+            if tz_pairs:
+                for rule_str, zipcode in tz_pairs:
+                    if Rule(rule_str).match(addr):
+                        return zipcode
 
-        return zipcodes
-
-    def find(self, addr_str):
-
-        zipcodes = self.find_zipcodes(addr_str)
-
-        if len(zipcodes) == 1:
-            return zipcodes.pop()
-
-        # find the common part of the zipcodes
-        zipcode_slices = []
-        for col in izip(*zipcodes):
-            if any(col[0] != c for c in col):
-                break
-            zipcode_slices.append(col[0])
-
-        return ''.join(zipcode_slices)
+            gzipcode = self.tokens_gzipcode_map[k]
+            if gzipcode:
+                return gzipcode
