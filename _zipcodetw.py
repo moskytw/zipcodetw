@@ -197,13 +197,13 @@ class Directory(object):
         if not str_a: return str_b
         if not str_b: return str_a
 
-        common_chars = []
-        for char_a, char_b in izip(str_a, str_b):
-            if char_a != char_b:
+        for i in range(min(len(str_a), len(str_b))):
+            if str_a[i] != str_b[i]:
                 break
-            common_chars.append(char_a)
+        else:
+            i += 1
 
-        return ''.join(common_chars)
+        return str_a[:i]
 
     def __init__(self):
 
