@@ -42,12 +42,6 @@ It is available on PyPI:
 
 Just install it and have fun. :)
 
-Report Bug
-----------
-
-If you find it returns a wrong ZIP code, please feel free to report to me. My
-email is mosky.tw AT gmail.com.
-
 Data
 ----
 
