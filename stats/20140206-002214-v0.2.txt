@@ -1,8 +1,11 @@
-# Tokens -> Rule Str and Zipcode Pairs
+Took 1.35s to load.
 
-Pairs Number: 42,440
+# Tokens -> Rule Str, Zipcode Pairs (smaller is better)
 
-Count Length of Each Key and Value Pair:
+Length of This Dict: 42,440
+
+Count of Each Length of Input, Output Pair:
+
  (1, 1)  |       3 |   0.01% |   0.01%
  (2, 1)  |       3 |   0.01% |   0.01%
  (3, 1)  |  31,818 |  74.97% |  74.99%
@@ -70,11 +73,12 @@ Total  : 42,440
 Average:    684.52
 
 
-# Tokens -> Gradual Zipcode
+# Tokens -> Gradual Zipcode (bigger is better)
 
-Pairs Number: 44,751
+Length of This Dict: 44,751
 
-Count Length of Each Key and Value Pair:
+Count of Each Length of Input, Output Pair:
+
  (1, 5)  |       3 |   0.01% |   0.01%
  (1, 3)  |       2 |   0.00% |   0.01%
  (1, 2)  |       3 |   0.01% |   0.02%
@@ -98,6 +102,3 @@ Count Length of Each Key and Value Pair:
 
 Total  : 44,751
 Average:  2,237.55
-
-
-Took 1.40s to load.
