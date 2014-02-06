@@ -4,7 +4,7 @@
 from collections import defaultdict
 from pprint import pprint
 
-def print_report(target_dict):
+def print_report(target_dict, key=None):
 
     len_pairs = len(target_dict)
     print 'Pairs Number: {:>6,}'.format(len_pairs)
@@ -18,7 +18,7 @@ def print_report(target_dict):
     total_count = sum(lenkv_count_map.itervalues())
 
     cum_pct = .0
-    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=lambda k: k[0]):
+    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=key):
         pct = 100.*count/total_count
         cum_pct += pct
         print ' {:7} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenkv, count, pct, cum_pct)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     print '# Tokens -> Gradual Zipcode'
     print
-    print_report(zipcodetw._dir.tokens_gzipcode_map)
+    print_report(zipcodetw._dir.tokens_gzipcode_map, key=lambda p: (p[0][0], -p[0][1]))
     print
     print
 
