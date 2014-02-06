@@ -54,9 +54,9 @@ Changelog
 v0.3
 ~~~~
 
-1. It also normalizes Chinese numerals now.
-2. It builds 3x size of index for middle tokens; but
-3. slows down initiation time to 1.3x.
+1. It also normalizes Chinese numerals; and
+2. builds 3x size of index for middle tokens now!
+3. But initiation time increases to 1.3x.
 4. ``zipcodetw.find`` is 1.05x faster.
 
 v0.2
