@@ -66,6 +66,8 @@ class Address(object):
             # 65296 = '０'; 65305 = '９'; 65248 = '０'-'0'
             if len_found == 1 and 65296 <= ord(found) <= 65305:
                 return unichr(ord(found)-65248)
+
+            # for '十一' to '九十九'
             if len_found == 2:
                 return u'1'+Address.TO_REPLACE_MAP[found[1]]
             if len_found == 3:
