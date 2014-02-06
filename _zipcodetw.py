@@ -174,7 +174,8 @@ class Rule(Address):
             for his_token in addr.tokens:
                 if his_token[Address.UNIT] != start_unit:
                     his_start_pos += 1
-                break
+                else:
+                    break
 
             his_tokens_to_match = addr.tokens[his_start_pos:his_end_pos]
             if len(my_tokens_to_match) != len(his_tokens_to_match):
