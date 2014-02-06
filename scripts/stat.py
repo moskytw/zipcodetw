@@ -7,25 +7,26 @@ from pprint import pprint
 def print_report(target_dict, key=None):
 
     len_pairs = len(target_dict)
-    print 'Pairs Number: {:>6,}'.format(len_pairs)
+    print 'Length of This Dict: {:>6,}'.format(len_pairs)
     print
 
-    print 'Count Length of Each Key and Value Pair:'
-
-    lenkv_count_map = defaultdict(int)
+    lenio_count_map = defaultdict(int)
     for k, v in target_dict.iteritems():
-        lenkv_count_map[(len(k), len(v))] += 1
-    total_count = sum(lenkv_count_map.itervalues())
+        lenio_count_map[(len(k), len(v))] += 1
+    total_count = sum(lenio_count_map.itervalues())
+
+    print 'Count of Each Length of Input, Output Pair:'
+    print
 
     cum_pct = .0
-    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=key):
+    for lenio, count in sorted(lenio_count_map.iteritems(), key=key):
         pct = 100.*count/total_count
         cum_pct += pct
-        print ' {:7} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenkv, count, pct, cum_pct)
+        print ' {:7} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenio, count, pct, cum_pct)
     print
 
     print 'Total  : {:>6,}'.format(total_count)
-    print 'Average: {:>9,.2f}'.format(1.*total_count/len(lenkv_count_map))
+    print 'Average: {:>9,.2f}'.format(1.*total_count/len(lenio_count_map))
 
 if __name__ == '__main__':
 
@@ -35,16 +36,15 @@ if __name__ == '__main__':
     import zipcodetw
     end = time()
 
-    print '# Tokens -> Rule Str and Zipcode Pairs'
+    print 'Took {:.2f}s to load.'.format(end-start)
+    print
+
+    print '# Tokens -> Rule Str, Zipcode Pairs (smaller is better)'
     print
     print_report(zipcodetw._dir.tokens_rzpairs_map)
     print
     print
 
-    print '# Tokens -> Gradual Zipcode'
+    print '# Tokens -> Gradual Zipcode (bigger is better)'
     print
     print_report(zipcodetw._dir.tokens_gzipcode_map, key=lambda p: (p[0][0], -p[0][1]))
-    print
-    print
-
-    print 'Took {:.2f}s to load.'.format(end-start)
