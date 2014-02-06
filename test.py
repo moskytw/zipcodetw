@@ -441,14 +441,12 @@ class TestDirectory(object):
         assert self.dir_.find('左營區') == '813'
         assert self.dir_.find('大中一路') == '81362'
         assert self.dir_.find('大中二路') == '813'
-        # TODO
-        #assert self.dir_.find('左營區大中一路') == '813'
-        #assert self.dir_.find('左營區大中二路') == '813'
+        assert self.dir_.find('左營區大中一路') == '81362'
+        assert self.dir_.find('左營區大中二路') == '813'
 
         assert self.dir_.find('小港區') == '812'
         assert self.dir_.find('豐街') == '81245'
-        # TODO
-        #assert self.dir_.find('小港區豐街') == '812'
+        assert self.dir_.find('小港區豐街') == '81245'
 
 if __name__ == '__main__':
     import uniout

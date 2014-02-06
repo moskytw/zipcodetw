@@ -244,25 +244,17 @@ class Directory(object):
         # (a, b, c)
         self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
-        # (a, b, c) -> (a,) ... (a, b, c)
-        for l in range(1, len(tokens)+1):
-            k = tokens[:l]
-            orig = self.tokens_gzipcode_map[k]
-            comm = Directory.get_common_part(orig, zipcode)
-            if comm:
-                self.tokens_gzipcode_map[k] = comm
-            else:
-                del self.tokens_gzipcode_map[k]
-
-        # (a, b, c) -> (b,) ... (c,)
-        for i in range(1, len(tokens)):
-            k = tokens[i:i+1]
-            orig = self.tokens_gzipcode_map[k]
-            comm = Directory.get_common_part(orig, zipcode)
-            if comm:
-                self.tokens_gzipcode_map[k] = comm
-            else:
-                del self.tokens_gzipcode_map[k]
+        # (a, b, c) -> (a,); (a, b); (a, b, c); (b,); (b, c); (c,)
+        len_tokens = len(tokens)
+        for f in range(len_tokens):
+            for l in range(f, len_tokens):
+                k = tokens[f:l+1]
+                orig = self.tokens_gzipcode_map[k]
+                comm = Directory.get_common_part(orig, zipcode)
+                if comm:
+                    self.tokens_gzipcode_map[k] = comm
+                else:
+                    del self.tokens_gzipcode_map[k]
 
     def load_chp_csv(self, lines, skip_first=True):
 
