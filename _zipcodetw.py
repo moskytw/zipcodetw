@@ -248,7 +248,21 @@ class Directory(object):
         for i in range(len(tokens), 0, -1):
             k = tokens[:i]
             orig = self.tokens_gzipcode_map[k]
-            self.tokens_gzipcode_map[k] = Directory.get_common_part(orig, zipcode)
+            comm = Directory.get_common_part(orig, zipcode)
+            if comm:
+                self.tokens_gzipcode_map[k] = comm
+            else:
+                del self.tokens_gzipcode_map[k]
+
+        # (a, b, c) -> (b,) ... (c,)
+        for i in range(1, len(tokens)):
+            k = tokens[i:i+1]
+            orig = self.tokens_gzipcode_map[k]
+            comm = Directory.get_common_part(orig, zipcode)
+            if comm:
+                self.tokens_gzipcode_map[k] = comm
+            else:
+                del self.tokens_gzipcode_map[k]
 
     def load_chp_csv(self, lines, skip_first=True):
 

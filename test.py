@@ -371,7 +371,24 @@ class TestDirectory(object):
 10056,臺北市,中正區,仁愛路２段,單  39號至  49號
 10056,臺北市,中正區,仁愛路２段,雙  48之   1號至  64號
 10062,臺北市,中正區,仁愛路２段,單  51號以上
-10063,臺北市,中正區,仁愛路２段,雙  66號以上'''.split('\n')
+10063,臺北市,中正區,仁愛路２段,雙  66號以上
+81245,高雄市,小港區,豐田街,全
+81245,高雄市,小港區,豐登街,全
+81245,高雄市,小港區,豐善街,全
+81245,高雄市,小港區,豐街,全
+81245,高雄市,小港區,豐點街,全
+81257,高雄市,小港區,寶山街,全
+81362,高雄市,左營區,大中一路,單 331號以上
+81362,高雄市,左營區,大中一路,雙 386號以上
+81362,高雄市,左營區,大中二路,單 241號以下
+81368,高雄市,左營區,大中二路,雙 200號以下
+81369,高雄市,左營區,大中二路,雙 202號至 698號
+81369,高雄市,左營區,大中二路,單 243號至 479號
+81365,高雄市,左營區,大中二路,單 481號以上
+81354,高雄市,左營區,大中二路,雙 700號以上
+81357,高雄市,左營區,大順一路,單  91號至  95號
+81357,高雄市,左營區,大順一路,雙  96號至 568號
+81357,高雄市,左營區,大順一路,單 201號至 389巷'''.split('\n')
 
         self.dir_ = Directory()
         self.dir_.load_chp_csv(chp_csv_lines)
@@ -419,8 +436,22 @@ class TestDirectory(object):
         assert self.dir_.find('臺北市中正區仁愛路１段') == '1005'
         assert self.dir_.find('臺北市中正區仁愛路１段1號') == '10051'
 
+    def test_find_middle_token(self):
+
+        assert self.dir_.find('左營區') == '813'
+        assert self.dir_.find('大中一路') == '81362'
+        assert self.dir_.find('大中二路') == '813'
+        # TODO
+        #assert self.dir_.find('左營區大中一路') == '813'
+        #assert self.dir_.find('左營區大中二路') == '813'
+
+        assert self.dir_.find('小港區') == '812'
+        assert self.dir_.find('豐街') == '81245'
+        # TODO
+        #assert self.dir_.find('小港區豐街') == '812'
+
 if __name__ == '__main__':
     import uniout
     test_dir = TestDirectory()
     test_dir.setup()
-    test_dir.test_find()
+    test_dir.test_find_middle_token()
