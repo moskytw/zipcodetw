@@ -51,6 +51,14 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 Changelog
 ---------
 
+v0.3
+~~~~
+
+1. It also normalizes Chinese numerals now.
+2. It builds 3x size of index for middle tokens; but
+3. slows down initiation time to 1.3x.
+4. ``zipcodetw.find`` is 1.05x faster.
+
 v0.2
 ~~~~
 
