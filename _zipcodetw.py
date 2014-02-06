@@ -158,23 +158,23 @@ class Rule(Address):
     def match(self, addr):
 
         # the part reserves for rule tokens
-        my_last_idx = len(self.tokens)
-        my_last_idx -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
-        my_last_idx -= u'至' in self.rule_tokens
+        my_end_pos = len(self.tokens)
+        my_end_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
+        my_end_pos -= u'至' in self.rule_tokens
 
-        his_last_idx = len(addr.tokens)
-        his_last_idx -= bool(self.rule_tokens)
+        his_end_pos = len(addr.tokens)
+        his_end_pos -= bool(self.rule_tokens)
 
-        my_tokens_to_match = self.tokens[:my_last_idx]
+        my_tokens_to_match = self.tokens[:my_end_pos]
         if my_tokens_to_match:
 
             # the addr's tokens whose unit bigger than rule's are ignorable
             start_unit = my_tokens_to_match[0][Address.UNIT]
-            for his_start_idx, his_token in enumerate(addr.tokens):
+            for his_start_pos, his_token in enumerate(addr.tokens):
                 if his_token[Address.UNIT] == start_unit:
                     break
 
-            his_tokens_to_match = addr.tokens[his_start_idx:his_last_idx]
+            his_tokens_to_match = addr.tokens[his_start_pos:his_end_pos]
             if len(my_tokens_to_match) != len(his_tokens_to_match):
                 return False
 
