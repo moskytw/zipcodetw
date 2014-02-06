@@ -10,22 +10,22 @@ def print_report(target_dict):
     print 'Pairs Number: {:>6,}'.format(len_pairs)
     print
 
-    print 'Count Each Lengths of Values:'
+    print 'Count Length of Each Key and Value Pair:'
 
-    lenv_count_map = defaultdict(int)
+    lenkv_count_map = defaultdict(int)
     for k, v in target_dict.iteritems():
-        lenv_count_map[len(v)] += 1
-    total_count = sum(lenv_count_map.itervalues())
+        lenkv_count_map[(len(k), len(v))] += 1
+    total_count = sum(lenkv_count_map.itervalues())
 
     cum_pct = .0
-    for lenv, count in sorted(lenv_count_map.iteritems(), key=lambda k: k[1], reverse=True):
+    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=lambda k: k[1], reverse=True):
         pct = 100.*count/total_count
         cum_pct += pct
-        print ' {:>2,} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenv, count, pct, cum_pct)
+        print ' {:7} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenkv, count, pct, cum_pct)
     print
 
     print 'Total  : {:>6,}'.format(total_count)
-    print 'Average: {:>9,.2f}'.format(1.*total_count/len(lenv_count_map))
+    print 'Average: {:>9,.2f}'.format(1.*total_count/len(lenkv_count_map))
 
 if __name__ == '__main__':
 
