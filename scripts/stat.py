@@ -18,7 +18,7 @@ def print_report(target_dict):
     total_count = sum(lenkv_count_map.itervalues())
 
     cum_pct = .0
-    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=lambda k: k[1], reverse=True):
+    for lenkv, count in sorted(lenkv_count_map.iteritems(), key=lambda k: k[0]):
         pct = 100.*count/total_count
         cum_pct += pct
         print ' {:7} | {:>7,} | {:>6.2f}% | {:>6.2f}%'.format(lenkv, count, pct, cum_pct)
