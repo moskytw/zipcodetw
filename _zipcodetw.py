@@ -244,9 +244,9 @@ class Directory(object):
         # (a, b, c)
         self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
 
-        # (a, b, c) -> (a, b, c) ... (a,)
-        for i in range(len(tokens), 0, -1):
-            k = tokens[:i]
+        # (a, b, c) -> (a,) ... (a, b, c)
+        for l in range(1, len(tokens)+1):
+            k = tokens[:l]
             orig = self.tokens_gzipcode_map[k]
             comm = Directory.get_common_part(orig, zipcode)
             if comm:
