@@ -19,7 +19,7 @@ def build(chp_csv_path, db_path):
     dir_ = Directory(db_path)
     dir_.load_chp_csv(open(chp_csv_path))
     print 'Done.'
-    print 'It took %s to build.' % datetime.now()-start
+    print 'It took %s to build.' % (datetime.now()-start)
 
 if __name__ == '__main__':
     try:
