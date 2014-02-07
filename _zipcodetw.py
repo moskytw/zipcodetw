@@ -209,8 +209,9 @@ class Rule(Address):
 
         return True
 
+import sqlite3
 import csv
-from collections import defaultdict
+from functools import wraps
 
 class Directory(object):
 
@@ -229,32 +230,98 @@ class Directory(object):
 
         return str_a[:i]
 
-    def __init__(self):
+    def __init__(self, db_path):
+        self.conn = sqlite3.connect(db_path)
+        self.cur = None
 
-        # rzpair = (rule_str, zipcode)
-        self.tokens_rzpairs_map = defaultdict(list)
+    def with_active_cursor(method):
 
-        # gzipcode = gradual_zipcode
-        self.tokens_gzipcode_map = defaultdict(lambda: None)
+        @wraps(method)
+        def method_with_active_cursor(self, *args, **kargs):
+            self.cur = self.conn.cursor()
+            try:
+                retval = method(self, *args, **kargs)
+            except:
+                self.conn.rollback()
+                raise
+            else:
+                self.conn.commit()
+            finally:
+                self.cur.close()
+            return retval
 
-    def load(self, zipcode, addr_str, tail_rule_str):
+        return method_with_active_cursor
+
+    @with_active_cursor
+    def create_tables(self):
+
+        self.cur.execute('''
+            create table precise (
+                tokens_str text,
+                rule_str   text,
+                zipcode    text,
+                primary key (tokens_str, rule_str)
+            );
+        ''')
+
+        self.cur.execute('''
+            create table gradual (
+                tokens_str text primary key,
+                gradual_zipcode text
+            );
+        ''')
+
+    @with_active_cursor
+    def put_precise(self, tokens, rule_str, zipcode):
+
+        self.cur.execute('insert or ignore into precise values (?, ?, ?);', (
+            Address.flat_tokens(tokens),
+            rule_str,
+            zipcode
+        ))
+
+        return self.cur.rowcount
+
+    @with_active_cursor
+    def put_gradual(self, tokens, zipcode):
+
+        tokens_str = Address.flat_tokens(tokens)
+
+        self.cur.execute('''
+            select gradual_zipcode
+            from   gradual
+            where  tokens_str = ?;
+        ''', (tokens_str,))
+        row = self.cur.fetchone()
+        if row is None:
+            stored_zipcode = None
+        else:
+            stored_zipcode = row[0]
+
+        self.cur.execute('replace into gradual values (?, ?);', (
+            tokens_str,
+            Directory.get_common_part(stored_zipcode, zipcode),
+        ))
+
+        return self.cur.rowcount
+
+    def put(self, addr_str, tail_rule_str, zipcode):
 
         tokens = Address.tokenize(addr_str)
 
         # (a, b, c)
-        self.tokens_rzpairs_map[tokens].append((addr_str+tail_rule_str, zipcode))
+        self.put_precise(tokens, addr_str+tail_rule_str, zipcode)
 
         # (a, b, c) -> (a,); (a, b); (a, b, c); (b,); (b, c); (c,)
         len_tokens = len(tokens)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
                 for s in range(1, 2+(f == 0 and l == 2)):
-                    k = tokens[f:l+1:s]
-                    orig = self.tokens_gzipcode_map[k]
-                    comm = Directory.get_common_part(orig, zipcode)
-                    self.tokens_gzipcode_map[k] = comm
+                    self.put_gradual(tokens[f:l+1:s], zipcode)
 
     def load_chp_csv(self, lines, skip_first=True):
+
+        self.create_tables()
 
         lines_iter = iter(lines)
 
@@ -262,7 +329,34 @@ class Directory(object):
             next(lines_iter)
 
         for row in csv.reader(lines_iter):
-            self.load(row[0], ''.join(row[1:-1]), row[-1])
+            self.put(
+                ''.join(row[1:-1]).decode('utf-8'),
+                row[-1].decode('utf-8'),
+                row[0].decode('utf-8'),
+            )
+
+    @with_active_cursor
+    def get_rule_str_zipcode_pairs(self, tokens):
+
+        self.cur.execute('''
+            select rule_str, zipcode
+            from   precise
+            where tokens_str = ?;
+        ''', (Address.flat_tokens(tokens),))
+
+        return self.cur.fetchall()
+
+    @with_active_cursor
+    def get_gradual_zipcode(self, tokens):
+
+        self.cur.execute('''
+            select gradual_zipcode
+            from   gradual
+            where  tokens_str = ?;
+        ''', (Address.flat_tokens(tokens),))
+
+        row = self.cur.fetchone()
+        return row and row[0] or None
 
     def find(self, addr_str):
 
@@ -272,13 +366,13 @@ class Directory(object):
 
             k = addr.tokens[:i]
 
-            rzpairs = self.tokens_rzpairs_map[k]
+            rzpairs = self.get_rule_str_zipcode_pairs(k)
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
                         return zipcode
 
-            gzipcode = self.tokens_gzipcode_map[k]
+            gzipcode = self.get_gradual_zipcode(k)
             if gzipcode:
                 return gzipcode
 

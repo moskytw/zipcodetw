@@ -30,7 +30,7 @@ setup(
 
     py_modules = ['_zipcodetw'],
     packages = find_packages(),
-    package_data = {'zipcodetw': ['*.csv']}
+    package_data = {'zipcodetw': ['*.db']}
 
 )
 
