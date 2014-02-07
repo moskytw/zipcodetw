@@ -62,17 +62,19 @@ For example,
 
 .. code-block:: bash
 
+    >>> # Chinese numerals are normalized.
     >>> zipcodetw.find('臺北市中山區敬業1路1號')
     '10462'
     >>> zipcodetw.find('臺北市中山區敬業一路1號')
     '10462'
 
+    >>> # Find by middle token(s)
     >>> zipcodetw.find('松山區')
     '105'
-    >>> zipcodetw.find('左營區')
-    '813'
-    >>> zipcodetw.find('沅陵街')
-    '10045'
+    >>> zipcodetw.find('秀山街')
+    ''
+    >>> zipcodetw.find('中正區秀山街')
+    '10042'
 
 v0.2
 ~~~~
