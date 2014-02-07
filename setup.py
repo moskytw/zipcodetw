@@ -3,12 +3,12 @@
 
 from setuptools import setup, find_packages
 
-import _zipcodetw
+import zipcodetw
 
 setup(
 
     name = 'zipcodetw',
-    version = _zipcodetw.__version__,
+    version = zipcodetw.__version__,
     description = 'Find Taiwan ZIP code by address fuzzily.',
     long_description = open('README.rst').read(),
 
