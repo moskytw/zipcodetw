@@ -9,7 +9,7 @@ setup(
 
     name = 'zipcodetw',
     version = _zipcodetw.__version__,
-    description = 'Find Taiwan ZIP code by address quickly.',
+    description = 'Find Taiwan ZIP code by address fuzzily.',
     long_description = open('README.rst').read(),
 
     author = 'Mosky',
