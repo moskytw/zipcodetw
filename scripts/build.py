@@ -5,7 +5,7 @@ from datetime import datetime
 from zipcodetw.util import Directory
 
 def build(chp_csv_path, db_path):
-    '''Build ZIP code index in SQLite from Chunghwa Post's CSV file.
+    '''Build a ZIP code index in SQLite from a Chunghwa Post's CSV file.
 
     Options:
 
