@@ -25,24 +25,24 @@ Find ZIP code gradually:
 
     >>> import zipcodetw
     >>> zipcodetw.find('臺北市')
-    '1'
+    u'1'
     >>> zipcodetw.find('臺北市信義區')
-    '110'
+    u'110'
     >>> zipcodetw.find('臺北市信義區市府路')
-    '110'
+    u'110'
     >>> zipcodetw.find('臺北市信義區市府路1號')
-    '11008'
+    u'11008'
 
 After v0.3, you can find ZIP code fuzzier:
 
 .. code-block:: bash
 
     >>> zipcodetw.find('松山區')
-    '105'
+    u'105'
     >>> zipcodetw.find('秀山街')
-    ''
+    u''
     >>> zipcodetw.find('台北市秀山街')
-    '10042'
+    u'10042'
 
 Installation
 ------------
@@ -72,6 +72,7 @@ v0.4
 3. ``zipcodetw.find`` is ~1.9x slower, i.e. ~2ms each call; and
 4. has bigger package size.
 5. All code was moved into ``zipcodetw`` package.
+6. ``zipcodetw.find`` now returns unicode instead of string.
 
 v0.3
 ~~~~
