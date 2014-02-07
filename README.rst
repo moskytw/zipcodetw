@@ -35,7 +35,7 @@ Find ZIP code gradually:
 
 After v0.3, you can find ZIP code fuzzier:
 
-.. code-block:: bash
+.. code-block:: python
 
     >>> zipcodetw.find('松山區')
     u'105'
