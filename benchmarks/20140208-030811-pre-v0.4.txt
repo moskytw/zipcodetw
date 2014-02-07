@@ -1,0 +1,6 @@
+The package took 0.03 seconds to load.
+Timeit test_find with n=1000 took 2.13 seconds.
+The package took 0.03 seconds to load.
+Timeit test_find with n=1000 took 2.26 seconds.
+The package took 0.03 seconds to load.
+Timeit test_find with n=1000 took 2.13 seconds.
