@@ -67,7 +67,7 @@ Changelog
 v0.4
 ~~~~
 
-1. It uses SQLite instead of memory to store index; so
+1. It shipped with an index compiled in SQLite; so
 2. initiation time is ~680x faster, i.e. ~30ms each import; and
 3. ``zipcodetw.find`` is ~1.9x slower, i.e. ~2ms each call; and
 4. has bigger package size.
