@@ -85,7 +85,7 @@ class Address(object):
         self.tokens = Address.tokenize(addr_str)
 
     @staticmethod
-    def flat_tokens(tokens, n):
+    def flat_tokens(tokens, n=None):
         # the tokens may be a set
         if n: tokens = tokens[:n]
         return u''.join(u''.join(token) for token in tokens)
