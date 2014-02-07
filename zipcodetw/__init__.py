@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+__version__ = '0.3'
+
 from os.path import dirname, join
-from _zipcodetw import Directory, __version__
+from .util import Directory
 
 _project_root = dirname(__file__)
 

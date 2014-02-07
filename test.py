@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from _zipcodetw import Address
+from zipcodetw.util import Address
 
 def test_address_init():
 
@@ -65,7 +65,7 @@ def test_address_repr():
     assert repr(Address('臺北市大安區市府路1號')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
-from _zipcodetw import Rule
+from zipcodetw.util import Rule
 
 def test_rule_init():
 
@@ -332,7 +332,7 @@ def test_rule_match_subno():
     assert     rule.match(Address('臺中市西屯區西屯路3段西平南巷4號'))
     assert     rule.match(Address('臺中市西屯區西屯路3段西平南巷4-1號'))
 
-from _zipcodetw import Directory
+from zipcodetw.util import Directory
 
 class TestDirectory(object):
 
