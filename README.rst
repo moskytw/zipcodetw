@@ -69,7 +69,7 @@ v0.3
 
 1. It also normalizes Chinese numerals; and
 2. builds full index for middle tokens now!
-3. But initiation time increases to ~1.65x.
+3. But initiation time increases to ~1.7x.
 
 v0.2
 ~~~~
