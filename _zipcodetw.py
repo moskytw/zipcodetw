@@ -211,7 +211,6 @@ class Rule(Address):
 
 import csv
 from collections import defaultdict
-from itertools import izip
 
 class Directory(object):
 
