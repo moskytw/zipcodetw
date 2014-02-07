@@ -383,6 +383,7 @@ class TestDirectory(object):
 20248,基隆市,中正區,環港街,全
 20243,基隆市,中正區,豐稔街,全
 20249,基隆市,中正區,觀海街,全
+36046,苗栗縣,苗栗市,大埔街,全
 81245,高雄市,小港區,豐田街,全
 81245,高雄市,小港區,豐登街,全
 81245,高雄市,小港區,豐善街,全
@@ -460,6 +461,10 @@ class TestDirectory(object):
         assert self.dir_.find('小港區豐街') == '81245'
 
         assert self.dir_.find('中正區') == ''
+
+        assert self.dir_.find('大埔街') == ''
+        assert self.dir_.find('台北市大埔街') == '10068'
+        assert self.dir_.find('苗栗縣大埔街') == '36046'
 
 if __name__ == '__main__':
     import uniout
