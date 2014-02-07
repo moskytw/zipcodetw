@@ -249,10 +249,11 @@ class Directory(object):
         len_tokens = len(tokens)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
-                k = tokens[f:l+1]
-                orig = self.tokens_gzipcode_map[k]
-                comm = Directory.get_common_part(orig, zipcode)
-                self.tokens_gzipcode_map[k] = comm
+                for s in range(1, 3):
+                    k = tokens[f:l+1:s]
+                    orig = self.tokens_gzipcode_map[k]
+                    comm = Directory.get_common_part(orig, zipcode)
+                    self.tokens_gzipcode_map[k] = comm
 
     def load_chp_csv(self, lines, skip_first=True):
 
