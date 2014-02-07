@@ -73,7 +73,7 @@ For example,
     '105'
     >>> zipcodetw.find('秀山街')
     ''
-    >>> zipcodetw.find('中正區秀山街')
+    >>> zipcodetw.find('台北市秀山街')
     '10042'
 
 v0.2
