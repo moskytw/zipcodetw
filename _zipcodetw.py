@@ -218,9 +218,10 @@ class Directory(object):
     @staticmethod
     def get_common_part(str_a, str_b):
 
-        if not str_a: return str_b
-        if not str_b: return str_a
+        if str_a is None: return str_b
+        if str_b is None: return str_a
 
+        i = 0 # for the case range is empty
         for i in range(min(len(str_a), len(str_b))):
             if str_a[i] != str_b[i]:
                 break
@@ -235,7 +236,7 @@ class Directory(object):
         self.tokens_rzpairs_map = defaultdict(list)
 
         # gzipcode = gradual_zipcode
-        self.tokens_gzipcode_map = defaultdict(str)
+        self.tokens_gzipcode_map = defaultdict(lambda: None)
 
     def load(self, zipcode, addr_str, tail_rule_str):
 
@@ -251,10 +252,7 @@ class Directory(object):
                 k = tokens[f:l+1]
                 orig = self.tokens_gzipcode_map[k]
                 comm = Directory.get_common_part(orig, zipcode)
-                if comm:
-                    self.tokens_gzipcode_map[k] = comm
-                else:
-                    del self.tokens_gzipcode_map[k]
+                self.tokens_gzipcode_map[k] = comm
 
     def load_chp_csv(self, lines, skip_first=True):
 
