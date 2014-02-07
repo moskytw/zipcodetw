@@ -60,6 +60,8 @@ v0.3
 
 For example,
 
+.. code-block:: bash
+
     >>> zipcodetw.find('臺北市中山區敬業1路1號')
     '10462'
     >>> zipcodetw.find('臺北市中山區敬業一路1號')
