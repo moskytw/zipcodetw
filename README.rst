@@ -14,7 +14,7 @@ The main features:
 1. Fast. It builds ZIP code index by tokenization.
 2. Gradual. It returns partial ZIP code rather than noting when address is not
    detailed enoguh.
-3. Lightweight. It depends on nothing.
+3. Stand-alone. It depends on nothing.
 
 Usage
 -----
