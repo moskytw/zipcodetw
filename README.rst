@@ -19,6 +19,8 @@ The main features:
 Usage
 -----
 
+Find ZIP code gradually:
+
 .. code-block:: python
 
     >>> import zipcodetw
@@ -30,6 +32,17 @@ Usage
     '110'
     >>> zipcodetw.find('臺北市信義區市府路1號')
     '11008'
+
+After v0.3, you can find ZIP code fuzzier:
+
+.. code-block:: bash
+
+    >>> zipcodetw.find('松山區')
+    '105'
+    >>> zipcodetw.find('秀山街')
+    ''
+    >>> zipcodetw.find('台北市秀山街')
+    '10042'
 
 Installation
 ------------
@@ -57,24 +70,6 @@ v0.3
 1. It also normalizes Chinese numerals; and
 2. builds full index for middle tokens now!
 3. But initiation time increases to ~1.65x.
-
-For example,
-
-.. code-block:: bash
-
-    >>> # Chinese numerals are normalized.
-    >>> zipcodetw.find('臺北市中山區敬業1路1號')
-    '10462'
-    >>> zipcodetw.find('臺北市中山區敬業一路1號')
-    '10462'
-
-    >>> # Find by middle token(s)
-    >>> zipcodetw.find('松山區')
-    '105'
-    >>> zipcodetw.find('秀山街')
-    ''
-    >>> zipcodetw.find('台北市秀山街')
-    '10042'
 
 v0.2
 ~~~~
