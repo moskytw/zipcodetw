@@ -374,4 +374,4 @@ class Directory(object):
             if gzipcode:
                 return gzipcode
 
-        return ''
+        return u''
