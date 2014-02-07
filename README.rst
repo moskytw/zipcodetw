@@ -64,6 +64,15 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 Changelog
 ---------
 
+v0.4
+~~~~
+
+1. It uses SQLite instead of memory to store index; so
+2. initiation time is ~680x faster, i.e. ~30ms each import; and
+3. ``zipcodetw.find`` is ~1.9x slower, i.e. ~2ms each call; and
+4. has bigger package size.
+5. All code was moved into ``zipcodetw`` package.
+
 v0.3
 ~~~~
 
