@@ -58,6 +58,20 @@ v0.3
 2. builds full index for middle tokens now!
 3. But initiation time increases to 1.3x.
 
+For example,
+
+    >>> zipcodetw.find('臺北市中山區敬業1路1號')
+    '10462'
+    >>> zipcodetw.find('臺北市中山區敬業一路1號')
+    '10462'
+
+    >>> zipcodetw.find('松山區')
+    '105'
+    >>> zipcodetw.find('左營區')
+    '813'
+    >>> zipcodetw.find('沅陵街')
+    '10045'
+
 v0.2
 ~~~~
 
