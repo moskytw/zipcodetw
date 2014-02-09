@@ -94,7 +94,7 @@ class Address(object):
     def __repr__(self):
         return 'Address(%r)' % self.flat()
 
-    def parse_token(self, idx):
+    def parse(self, idx):
         try:
             token = self.tokens[idx]
         except IndexError:
@@ -118,7 +118,7 @@ class Rule(Address):
     ''', re.X)
 
     @staticmethod
-    def parse(rule_str):
+    def part(rule_str):
 
         rule_str = Address.normalize(rule_str)
 
@@ -144,7 +144,7 @@ class Rule(Address):
         return (rule_tokens, addr_str)
 
     def __init__(self, rule_str):
-        self.rule_tokens, addr_str = Rule.parse(rule_str)
+        self.rule_tokens, addr_str = Rule.part(rule_str)
         Address.__init__(self, addr_str)
 
     def flat(self, n=None, m=None):
@@ -184,9 +184,9 @@ class Rule(Address):
                     return False
 
         # check the rule tokens
-        his_no_pair     = addr.parse_token(-1)
-        my_no_pair      = self.parse_token(-1)
-        my_asst_no_pair = self.parse_token(-2)
+        his_no_pair     = addr.parse(-1)
+        my_no_pair      = self.parse(-1)
+        my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
             if (
                 (rt == u'全'         and not his_no_pair > (0, 0)) or
@@ -320,7 +320,7 @@ class Directory(object):
         self.cur.execute('''
             select rule_str, zipcode
             from   precise
-            where tokens_str = ?;
+            where  tokens_str = ?;
         ''', (Address.flat_tokens(tokens),))
 
         return self.cur.fetchall()
