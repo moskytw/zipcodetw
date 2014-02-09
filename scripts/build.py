@@ -13,11 +13,11 @@ def build(chp_csv_path, db_path):
          -o, --db-path       The path of output SQLite.
     '''
 
-    print 'It may take about 10 mins.'
     print 'Processing ...'
     start = datetime.now()
     dir_ = Directory(db_path)
     dir_.load_chp_csv(open(chp_csv_path))
+    dir_.commit()
     print 'Done.'
     print 'It took %s to build.' % (datetime.now()-start)
 

@@ -230,27 +230,11 @@ class Directory(object):
 
     def __init__(self, db_path):
         self.conn = sqlite3.connect(db_path)
-        self.cur = None
+        self.cur = self.conn.cursor()
 
-    def with_active_cursor(method):
+    def commit(self):
+        self.conn.commit()
 
-        @wraps(method)
-        def method_with_active_cursor(self, *args, **kargs):
-            self.cur = self.conn.cursor()
-            try:
-                retval = method(self, *args, **kargs)
-            except:
-                self.conn.rollback()
-                raise
-            else:
-                self.conn.commit()
-            finally:
-                self.cur.close()
-            return retval
-
-        return method_with_active_cursor
-
-    @with_active_cursor
     def create_tables(self):
 
         self.cur.execute('''
@@ -269,7 +253,6 @@ class Directory(object):
             );
         ''')
 
-    @with_active_cursor
     def put_precise(self, tokens, rule_str, zipcode):
 
         self.cur.execute('insert or ignore into precise values (?, ?, ?);', (
@@ -280,7 +263,6 @@ class Directory(object):
 
         return self.cur.rowcount
 
-    @with_active_cursor
     def put_gradual(self, tokens, zipcode):
 
         tokens_str = Address.flat_tokens(tokens)
@@ -333,7 +315,6 @@ class Directory(object):
                 row[0].decode('utf-8'),
             )
 
-    @with_active_cursor
     def get_rule_str_zipcode_pairs(self, tokens):
 
         self.cur.execute('''
@@ -344,7 +325,6 @@ class Directory(object):
 
         return self.cur.fetchall()
 
-    @with_active_cursor
     def get_gradual_zipcode(self, tokens):
 
         self.cur.execute('''
