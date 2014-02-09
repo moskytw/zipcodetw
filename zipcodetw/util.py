@@ -239,17 +239,17 @@ class Directory(object):
 
         self.cur.execute('''
             create table precise (
-                tokens_str text,
-                rule_str   text,
-                zipcode    text,
-                primary key (tokens_str, rule_str)
+                addr_str text,
+                rule_str text,
+                zipcode  text,
+                primary key (addr_str, rule_str)
             );
         ''')
 
         self.cur.execute('''
             create table gradual (
-                tokens_str text primary key,
-                gradual_zipcode text
+                addr_str text primary key,
+                zipcode  text
             );
         ''')
 
@@ -265,13 +265,13 @@ class Directory(object):
 
     def put_gradual(self, tokens, zipcode):
 
-        tokens_str = Address.flat_tokens(tokens)
+        addr_str = Address.flat_tokens(tokens)
 
         self.cur.execute('''
-            select gradual_zipcode
+            select zipcode
             from   gradual
-            where  tokens_str = ?;
-        ''', (tokens_str,))
+            where  addr_str = ?;
+        ''', (addr_str,))
         row = self.cur.fetchone()
         if row is None:
             stored_zipcode = None
@@ -279,7 +279,7 @@ class Directory(object):
             stored_zipcode = row[0]
 
         self.cur.execute('replace into gradual values (?, ?);', (
-            tokens_str,
+            addr_str,
             Directory.get_common_part(stored_zipcode, zipcode),
         ))
 
@@ -320,7 +320,7 @@ class Directory(object):
         self.cur.execute('''
             select rule_str, zipcode
             from   precise
-            where  tokens_str = ?;
+            where  addr_str = ?;
         ''', (Address.flat_tokens(tokens),))
 
         return self.cur.fetchall()
@@ -328,9 +328,9 @@ class Directory(object):
     def get_gradual_zipcode(self, tokens):
 
         self.cur.execute('''
-            select gradual_zipcode
+            select zipcode
             from   gradual
-            where  tokens_str = ?;
+            where  addr_str = ?;
         ''', (Address.flat_tokens(tokens),))
 
         row = self.cur.fetchone()
