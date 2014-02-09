@@ -285,12 +285,12 @@ class Directory(object):
 
         return self.cur.rowcount
 
-    def put(self, addr_str, tail_rule_str, zipcode):
+    def put(self, head_addr_str, tail_rule_str, zipcode):
 
-        tokens = Address.tokenize(addr_str)
+        tokens = Address.tokenize(head_addr_str)
 
         # (a, b, c)
-        self.put_precise(tokens, addr_str+tail_rule_str, zipcode)
+        self.put_precise(tokens, head_addr_str+tail_rule_str, zipcode)
 
         # (a, b, c) -> (a,); (a, b); (a, b, c); (b,); (b, c); (c,)
         len_tokens = len(tokens)
