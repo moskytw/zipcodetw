@@ -14,7 +14,7 @@ class zipcodetw_install(install):
     def run(self):
         print 'Building ZIP code index ... '
         sys.stdout.flush()
-        zipcodetw.builder.build_index_from_chp_csv(
+        zipcodetw.builder.build(
             join(zipcodetw._package_root, '201311.csv')
         )
         install.run(self)

@@ -306,6 +306,22 @@ class Directory(object):
                         zipcode
                     )
 
+    def load_chp_csv(self, chp_csv_lines):
+
+        self.create_tables()
+
+        lines_iter = iter(chp_csv_lines)
+        next(lines_iter)
+
+        for row in csv.reader(lines_iter):
+            self.put(
+                ''.join(row[1:-1]).decode('utf-8'),
+                row[-1].decode('utf-8'),
+                row[0].decode('utf-8'),
+            )
+
+        self.commit()
+
     def get_rule_str_zipcode_pairs(self, addr_str):
 
         self.cur.execute('''
