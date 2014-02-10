@@ -125,7 +125,7 @@ class Rule(Address):
 
         rule_tokens = set()
 
-        def extract_token(m):
+        def extract(m):
 
             token = m.group()
             retval = u''
@@ -140,7 +140,7 @@ class Rule(Address):
 
             return retval
 
-        addr_str = Rule.RULE_TOKEN_RE.sub(extract_token, rule_str)
+        addr_str = Rule.RULE_TOKEN_RE.sub(extract, rule_str)
 
         return (rule_tokens, addr_str)
 
