@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import csv
 from . import _chp_csv_path, _db_path
 from .util import Directory
 
