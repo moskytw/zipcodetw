@@ -29,7 +29,7 @@ setup(
     ],
 
     packages = find_packages(),
-    package_data = {'zipcodetw': ['*.db']}
+    package_data = {'zipcodetw': ['*.csv']}
 
 )
 
