@@ -82,14 +82,15 @@ class Address(object):
     def __init__(self, addr_str):
         self.tokens = Address.tokenize(addr_str)
 
-    @staticmethod
-    def flat_tokens(tokens, n=None):
-        # the tokens may be a set
-        if n: tokens = tokens[:n]
-        return u''.join(u''.join(token) for token in tokens)
+    def __len__(self):
+        return len(self.tokens)
 
-    def flat(self, n=None):
-        return Address.flat_tokens(self.tokens, n)
+    def flat(self, slice_arg=None, *other_slice_args):
+        return u''.join(
+            u''.join(token) for token in self.tokens[
+                slice(slice_arg, *other_slice_args)
+            ]
+        )
 
     def __repr__(self):
         return 'Address(%r)' % self.flat()
@@ -147,8 +148,8 @@ class Rule(Address):
         self.rule_tokens, addr_str = Rule.part(rule_str)
         Address.__init__(self, addr_str)
 
-    def flat(self, n=None, m=None):
-        return Address.flat(self, n)+Address.flat_tokens(self.rule_tokens, m)
+    def flat(self):
+        return Address.flat(self)+u''.join(self.rule_tokens)
 
     def __repr__(self):
         return 'Rule(%r)' % self.flat()
@@ -270,6 +271,7 @@ class Directory(object):
             from   gradual
             where  addr_str = ?;
         ''', (addr_str,))
+
         row = self.cur.fetchone()
         if row is None:
             stored_zipcode = None
@@ -285,23 +287,24 @@ class Directory(object):
 
     def put(self, head_addr_str, tail_rule_str, zipcode):
 
-        tokens = Address.tokenize(head_addr_str)
+        addr = Address(head_addr_str)
 
         # (a, b, c)
         self.put_precise(
-            Address.flat_tokens(tokens),
+            addr.flat(),
             head_addr_str+tail_rule_str,
             zipcode
         )
 
         # (a, b, c) -> (a,); (a, b); (a, b, c); (b,); (b, c); (c,)
-        len_tokens = len(tokens)
+        len_tokens = len(addr)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
                 for s in range(1, 2+(f == 0 and l == 2)):
                     self.put_gradual(
-                        Address.flat_tokens(tokens[f:l+1:s]),
-                        zipcode)
+                        addr.flat(f, l+1, s),
+                        zipcode
+                    )
 
     def load_chp_csv(self, lines, skip_first=True):
 
@@ -346,15 +349,15 @@ class Directory(object):
 
         for i in range(len(addr.tokens), 0, -1):
 
-            k = addr.tokens[:i]
+            addr_str = addr.flat(i)
 
-            rzpairs = self.get_rule_str_zipcode_pairs(Address.flat_tokens(k))
+            rzpairs = self.get_rule_str_zipcode_pairs(addr_str)
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
                         return zipcode
 
-            gzipcode = self.get_gradual_zipcode(Address.flat_tokens(k))
+            gzipcode = self.get_gradual_zipcode(addr_str)
             if gzipcode:
                 return gzipcode
 
