@@ -2,22 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from os.path import join
-from setuptools import setup, find_packages
-from setuptools.command.install import install
-
-import zipcodetw
 import zipcodetw.builder
+from setuptools.command.install import install
 
 class zipcodetw_install(install):
 
     def run(self):
         print 'Building ZIP code index ... '
         sys.stdout.flush()
-        zipcodetw.builder.build(
-            join(zipcodetw._package_root, '201311.csv')
-        )
+        zipcodetw.builder.build()
         install.run(self)
+
+import zipcodetw
+from setuptools import setup, find_packages
 
 setup(
 
