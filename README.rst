@@ -58,7 +58,7 @@ Just install it and have fun. :)
 Data
 ----
 
-The ZIP code directory we use is provided by Chunghwa Post, and is available
+The ZIP code directory is provided by Chunghwa Post, and is available
 from: http://www.post.gov.tw/post/internet/down/index.html#1808
 
 Changelog
