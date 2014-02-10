@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import csv
 from time import time
 from os.path import join, splitext
@@ -8,6 +9,9 @@ from . import _package_root
 from .util import Directory
 
 def build(chp_csv_name):
+
+    print 'Building the ZIP code index ...',
+    sys.stdout.flush()
 
     chp_csv_path = join(_package_root, chp_csv_name)
     db_path = splitext(chp_csv_path)[0]+'.db'
@@ -27,6 +31,8 @@ def build(chp_csv_name):
 
     dir_.commit()
     csv_f.close()
+
+    print 'done.'
 
 if __name__ == '__main__':
 
