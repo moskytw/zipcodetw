@@ -78,8 +78,8 @@ Changelog
 v0.5
 ----
 
-1. It now builds ZIP code index when you install it.
-2. The package size is 12.5x smaller.
+1. It now builds a ZIP code index when you install it; so
+2. the package size is 12.5x smaller.
 3. The internal API is better now.
 
 v0.4
