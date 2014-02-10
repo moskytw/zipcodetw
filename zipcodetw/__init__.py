@@ -6,7 +6,7 @@ __version__ = '0.4'
 from os.path import dirname, join
 from .util import Directory
 
-_project_root = dirname(__file__)
+_package_root = dirname(__file__)
 
-_dir = Directory(join(_project_root, '201311.db'))
+_dir = Directory(join(_package_root, '201311.db'))
 find = _dir.find
