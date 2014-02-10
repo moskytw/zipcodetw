@@ -60,7 +60,7 @@ Build Index Manually
 
 If you install it by ``pip`` or ``python setup.py install``, a ZIP code index
 will be built automatically. But if you want to use it from source code, you
-have to build a index manually:
+have to build an index manually:
 
 .. code-block:: bash
 
