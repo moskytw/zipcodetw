@@ -35,6 +35,7 @@ if __name__ == '__main__':
 
     try:
         import clime
-        clime.start(white_pattern=clime.CMD_SUFFIX)
     except ImportError:
         build(*sys.argv[1:])
+    else:
+        clime.start(white_pattern=clime.CMD_SUFFIX)
