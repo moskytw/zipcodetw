@@ -33,7 +33,7 @@ Find ZIP code gradually:
     >>> zipcodetw.find('臺北市信義區市府路1號')
     u'11008'
 
-After v0.3, you can find ZIP code fuzzier:
+After v0.3, you even can find ZIP code like:
 
 .. code-block:: python
 
