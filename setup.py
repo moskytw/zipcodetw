@@ -1,7 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+
+import zipcodetw.builder
+
+class zipcodetw_install(install):
+
+    def run(self):
+        print 'Building ZIP code index ... '
+        sys.stdout.flush()
+        zipcodetw.builder.build_index_from_chp_csv('201311.csv')
+        install.run(self)
 
 import zipcodetw
 
@@ -29,7 +41,9 @@ setup(
     ],
 
     packages = find_packages(),
-    package_data = {'zipcodetw': ['*.csv']}
+    package_data = {'zipcodetw': ['*.csv', '*.db']},
+
+    cmdclass = {'install': zipcodetw_install},
 
 )
 
