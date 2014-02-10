@@ -1,33 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
 import csv
-from time import time
-from os.path import join, splitext
-from . import _package_root
+from os.path import splitext
 from .util import Directory
 
-def build_index_from_chp_csv(chp_csv_name):
+def build_index_from_chp_csv(chp_csv_path):
 
-    chp_csv_path = join(_package_root, chp_csv_name)
     db_path = splitext(chp_csv_path)[0]+'.db'
+
+    dir_ = Directory(db_path)
+    dir_.create_tables()
 
     csv_f = open(chp_csv_path)
     next(csv_f)
-
-    dir_ = Directory(db_path)
-
-    dir_.create_tables()
     for row in csv.reader(csv_f):
         dir_.put(
             ''.join(row[1:-1]).decode('utf-8'),
             row[-1].decode('utf-8'),
             row[0].decode('utf-8'),
         )
+    csv_f.close()
 
     dir_.commit()
-    csv_f.close()
 
 if __name__ == '__main__':
 
