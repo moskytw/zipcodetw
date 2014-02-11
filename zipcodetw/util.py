@@ -207,7 +207,6 @@ class Rule(Address):
 
 import sqlite3
 import csv
-from functools import wraps
 
 class Directory(object):
 
