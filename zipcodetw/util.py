@@ -148,11 +148,8 @@ class Rule(Address):
         self.rule_tokens, addr_str = Rule.part(rule_str)
         Address.__init__(self, addr_str)
 
-    def flat(self):
-        return Address.flat(self)+u''.join(self.rule_tokens)
-
     def __repr__(self):
-        return 'Rule(%r)' % self.flat()
+        return 'Rule(%r)' % (self.flat()+u''.join(self.rule_tokens))
 
     def match(self, addr):
 
