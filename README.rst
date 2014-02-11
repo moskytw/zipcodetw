@@ -76,7 +76,7 @@ Changelog
 ---------
 
 v0.5
-----
+~~~~
 
 1. It now builds a ZIP code index when you install it; so
 2. the package size is 12.5x smaller.
