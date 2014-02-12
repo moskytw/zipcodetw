@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<title>ZIP Code Finder for Taiwan</title>
+
+<style>
+
+/* reset.css */
+
+body {
+    padding: 0;
+    font-family: sans-serif;
+}
+
+h1, h2, h3 {
+    font-size: inherit;
+    font-weight: normal;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* index.css */
+
+body {
+    color: #333;
+}
+
+#container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #222;
+    font-size: 40px;
+    margin: 50px 0;
+    text-align: center;
+}
+
+#content {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    margin: 50px 0;
+}
+
+a {
+    color: #003;
+    font-size: 16px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* zipcodefinder.css */
+
+.zipcode-finder input {
+    display: block;
+    width: 600px;
+    border: 1px #999 solid;
+    box-shadow: #888 0px 0px 1px;
+    padding: 10px;
+    color: inherit;
+    font-size: 30px;
+    margin-bottom: 45px;
+}
+
+.zipcode-finder .address-with-zipcode-wrapper {
+    position: relative;
+}
+
+.zipcode-finder .address-with-zipcode {
+    color: #555;
+}
+
+.zipcode-finder .loader {
+    display: none;
+    position: absolute;
+    /* same as input */
+    padding: 10px;
+    /* (input's font-size - loader's height: 18)/2 */
+    top: 10.5px;
+    right: 0px;
+}
+
+.zipcode-finder.loading .loader {
+    display: block;
+}
+
+</style>
+
+<div id="container">
+    <h1>ZIP Code Finder for Taiwan</h1>
+    <div id="content">
+        <img class="loader" src="/static/loader.gif">
+    </div>
+    <footer>
+        <a href="https://github.com/moskytw/zipcodetw/">ZIPCodeTW</a>
+    </footer>
+</div>
+
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script>
+$(function () {
+
+// zipcodefinder.js
+(function () {
+
+var ZIPCodeFinder = window.ZIPCodeFinder = function (obj) {
+
+    obj = $.extend({
+        address: undefined,
+        zipcode: undefined,
+    }, obj);
+
+    this._$view = $(ZIPCodeFinder.template(obj));
+    this._$address = this._$view.find('.address');
+    this._$address_with_zipcode = this._$view.find('.address-with-zipcode');
+    this._$loader = this._$view.find('.loader');
+
+    this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓]/;
+    this._model = {};
+    this.model(obj);
+
+    this._$address.on('input',
+        _.bind(this.controller, this, 'address-input')
+    );
+
+    this._$address_with_zipcode.on('click',
+        _.bind(this.controller, this, 'address-with-zipcode-click')
+    );
+
+};
+
+ZIPCodeFinder.template = _.template(
+    '<article class="zipcode-finder">'+
+        '<input class="address" placeholder="請在這裡輸入欲查詢的地址" value="'+
+            '<%- address %>'+
+        '">'+
+        '<div class="address-with-zipcode-wrapper">'+
+            '<input class="address-with-zipcode" placeholder="接著郵遞區號就會顯示在這邊" value="'+
+                '<%- zipcode %><%= zipcode ? " " : "" %><%- address %>'+
+            '">'+
+            '<img class="loader" src="/static/loader.gif">'+
+        '</div>'+
+    '</article>'
+);
+
+ZIPCodeFinder.create = function (obj) {
+    return (new ZIPCodeFinder(obj))._$view;
+};
+
+ZIPCodeFinder.prototype.view = function (model_changed) {
+
+    if (model_changed.loading !== undefined) {
+        this._$view.toggleClass('loading', model_changed.loading);
+    }
+
+    if (
+        model_changed.zipcode != undefined ||
+        model_changed.address != undefined
+    ) {
+        var zipcode = this._model.zipcode || '';
+        var address = this._model.address || '';
+        this._$address_with_zipcode.val(zipcode + (zipcode ? ' ' : '') + address)
+    }
+
+};
+
+ZIPCodeFinder.cache = {};
+
+ZIPCodeFinder.prototype.model = function (model_changed) {
+
+    var _this = this;
+
+    // update the internal model
+    $.each(model_changed, function (key, value) {
+        if (_this._model[key] === value) {
+            delete model_changed[key];
+        } else {
+            _this._model[key] = value;
+        }
+    });
+
+    if (
+        model_changed.address !== undefined &&
+        this._units_re.test(model_changed.address.slice(-1))
+    ) {
+        // try cache or send request
+        var zipcode = ZIPCodeFinder.cache[model_changed.address];
+        if (zipcode !== undefined) {
+            _this.model({zipcode: zipcode});
+        } else {
+            _this.model({loading: true});
+            $.getJSON('/api/find', {
+                address: model_changed.address
+            }).done(function (resp) {
+                var zipcode = resp.result;
+                ZIPCodeFinder.cache[model_changed.address] = zipcode;
+                _this.model({zipcode: zipcode});
+            }).always(function () {
+                _this.model({loading: false});
+            });
+        }
+    } else if (model_changed.address === '') {
+        _this.model({zipcode: ''});
+    }
+
+    this.view(model_changed);
+
+};
+
+ZIPCodeFinder.prototype.controller = function (event_name) {
+
+    switch (event_name) {
+
+        case 'address-input':
+            this.model({address: this._$address.val()});
+            break;
+
+        case 'address-with-zipcode-click':
+            this._$address_with_zipcode.select();
+            break
+    }
+
+};
+
+})();
+
+// index.js
+
+$('#content').replaceWith(ZIPCodeFinder.create());
+
+});
+</script>
