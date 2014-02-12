@@ -296,6 +296,7 @@ class Directory(object):
         len_tokens = len(addr)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
+                # only (a, b, c) -> (a, b, c); (a, c)
                 for s in range(1, 2+(f == 0 and l == 2)):
                     self.put_gradual(
                         addr.flat(f, l+1, s),

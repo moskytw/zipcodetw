@@ -7,14 +7,16 @@ from .util import Directory
 
 def build(chp_csv_path=None, db_path=None):
 
+    # use default path if either path is not given.
+
     if chp_csv_path is None:
         chp_csv_path = _chp_csv_path
-
     if db_path is None:
         db_path = _db_path
 
-    dir_ = Directory(db_path)
+    # build the index
 
+    dir_ = Directory(db_path)
     with open(chp_csv_path) as csv_f:
         dir_.load_chp_csv(csv_f)
 
