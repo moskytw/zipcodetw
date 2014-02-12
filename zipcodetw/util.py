@@ -207,6 +207,7 @@ class Rule(Address):
 
 import sqlite3
 import csv
+from functools import wraps
 
 class Directory(object):
 
@@ -226,11 +227,9 @@ class Directory(object):
         return str_a[:i]
 
     def __init__(self, db_path):
-        self.conn = sqlite3.connect(db_path)
-        self.cur = self.conn.cursor()
-
-    def commit(self):
-        self.conn.commit()
+        self.db_path = db_path
+        self.conn = None
+        self.cur = None
 
     def create_tables(self):
 
@@ -303,6 +302,30 @@ class Directory(object):
                         zipcode
                     )
 
+    def within_a_transaction(method):
+
+        @wraps(method)
+        def method_wrapper(self, *args, **kargs):
+
+            self.conn = sqlite3.connect(self.db_path)
+            self.cur = self.conn.cursor()
+
+            try:
+                retval = method(self, *args, **kargs)
+            except:
+                self.conn.rollback()
+                raise
+            else:
+                self.conn.commit()
+            finally:
+                self.cur.close()
+                self.conn.close()
+
+            return retval
+
+        return method_wrapper
+
+    @within_a_transaction
     def load_chp_csv(self, chp_csv_lines):
 
         self.create_tables()
@@ -316,8 +339,6 @@ class Directory(object):
                 row[-1].decode('utf-8'),
                 row[0].decode('utf-8'),
             )
-
-        self.commit()
 
     def get_rule_str_zipcode_pairs(self, addr_str):
 
@@ -340,6 +361,7 @@ class Directory(object):
         row = self.cur.fetchone()
         return row and row[0] or None
 
+    @within_a_transaction
     def find(self, addr_str):
 
         addr = Address(addr_str)
