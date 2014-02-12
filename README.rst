@@ -1,7 +1,7 @@
-.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5
+.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.1
    :target: https://pypi.python.org/pypi/zipcodetw
 
-.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5
+.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.1
    :target: https://pypi.python.org/pypi/zipcodetw
 
 The ZIP Code Finder for Taiwan
