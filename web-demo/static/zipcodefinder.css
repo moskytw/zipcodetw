@@ -1,0 +1,32 @@
+.zipcode-finder input {
+    display: block;
+    width: 600px;
+    border: 1px #999 solid;
+    box-shadow: #888 0px 0px 1px;
+    padding: 10px;
+    color: inherit;
+    font-size: 30px;
+    margin-bottom: 45px;
+}
+
+.zipcode-finder .address-with-zipcode-wrapper {
+    position: relative;
+}
+
+.zipcode-finder .address-with-zipcode {
+    color: #555;
+}
+
+.zipcode-finder .loader {
+    display: none;
+    position: absolute;
+    /* same as input */
+    padding: 10px;
+    /* (input's font-size - loader's height: 18)/2 */
+    top: 10.5px;
+    right: 0px;
+}
+
+.zipcode-finder.loading .loader {
+    display: block;
+}

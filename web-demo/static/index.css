@@ -1,0 +1,33 @@
+body {
+    color: #333;
+}
+
+#container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #222;
+    font-size: 40px;
+    margin: 50px 0;
+    text-align: center;
+}
+
+#content {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    margin: 50px 0;
+}
+
+a {
+    color: #003;
+    font-size: 16px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
