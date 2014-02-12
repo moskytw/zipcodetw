@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {%- block styles %}
-        <link href="/static/zipcodefinder.css" rel="stylesheet">
+        <link href="/static/finder.css" rel="stylesheet">
 {%- endblock %}
 
 {%- block scripts %}
-        <script src="/static/zipcodefinder.js"></script>
+        <script src="/static/finder.js"></script>
         <script>
             $(function () {
-                $('#content').replaceWith(ZIPCodeFinder.create());
+                $('#content').replaceWith(Finder.create());
             });
         </script>
 {%- endblock%}

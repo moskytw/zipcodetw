@@ -1,13 +1,13 @@
 (function () {
 
-var ZIPCodeFinder = window.ZIPCodeFinder = function (obj) {
+var Finder = window.Finder = function (obj) {
 
     obj = $.extend({
         address: undefined,
         zipcode: undefined,
     }, obj);
 
-    this._$view = $(ZIPCodeFinder.template(obj));
+    this._$view = $(Finder.template(obj));
     this._$address = this._$view.find('.address');
     this._$address_with_zipcode = this._$view.find('.address-with-zipcode');
     this._$loader = this._$view.find('.loader');
@@ -26,8 +26,8 @@ var ZIPCodeFinder = window.ZIPCodeFinder = function (obj) {
 
 };
 
-ZIPCodeFinder.template = _.template(
-    '<article class="zipcode-finder">'+
+Finder.template = _.template(
+    '<article class="finder">'+
         '<input class="address" placeholder="請在這裡輸入欲查詢的地址" value="'+
             '<%- address %>'+
         '">'+
@@ -40,11 +40,11 @@ ZIPCodeFinder.template = _.template(
     '</article>'
 );
 
-ZIPCodeFinder.create = function (obj) {
-    return (new ZIPCodeFinder(obj))._$view;
+Finder.create = function (obj) {
+    return (new Finder(obj))._$view;
 };
 
-ZIPCodeFinder.prototype.view = function (model_changed) {
+Finder.prototype.view = function (model_changed) {
 
     if (model_changed.loading !== undefined) {
         this._$view.toggleClass('loading', model_changed.loading);
@@ -61,9 +61,9 @@ ZIPCodeFinder.prototype.view = function (model_changed) {
 
 };
 
-ZIPCodeFinder.cache = {};
+Finder.cache = {};
 
-ZIPCodeFinder.prototype.model = function (model_changed) {
+Finder.prototype.model = function (model_changed) {
 
     var _this = this;
 
@@ -81,7 +81,7 @@ ZIPCodeFinder.prototype.model = function (model_changed) {
         this._units_re.test(model_changed.address.slice(-1))
     ) {
         // try cache or send request
-        var zipcode = ZIPCodeFinder.cache[model_changed.address];
+        var zipcode = Finder.cache[model_changed.address];
         if (zipcode !== undefined) {
             _this.model({zipcode: zipcode});
         } else {
@@ -90,7 +90,7 @@ ZIPCodeFinder.prototype.model = function (model_changed) {
                 address: model_changed.address
             }).done(function (resp) {
                 var zipcode = resp.result;
-                ZIPCodeFinder.cache[model_changed.address] = zipcode;
+                Finder.cache[model_changed.address] = zipcode;
                 _this.model({zipcode: zipcode});
             }).always(function () {
                 _this.model({loading: false});
@@ -104,7 +104,7 @@ ZIPCodeFinder.prototype.model = function (model_changed) {
 
 };
 
-ZIPCodeFinder.prototype.controller = function (event_name) {
+Finder.prototype.controller = function (event_name) {
 
     switch (event_name) {
 

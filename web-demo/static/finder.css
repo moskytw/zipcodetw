@@ -1,4 +1,4 @@
-.zipcode-finder input {
+.finder input {
     display: block;
     width: 600px;
     border: 1px #999 solid;
@@ -9,15 +9,15 @@
     margin-bottom: 45px;
 }
 
-.zipcode-finder .address-with-zipcode-wrapper {
+.finder .address-with-zipcode-wrapper {
     position: relative;
 }
 
-.zipcode-finder .address-with-zipcode {
+.finder .address-with-zipcode {
     color: #555;
 }
 
-.zipcode-finder .loader {
+.finder .loader {
     display: none;
     position: absolute;
     /* same as input */
@@ -27,6 +27,6 @@
     right: 0px;
 }
 
-.zipcode-finder.loading .loader {
+.finder.loading .loader {
     display: block;
 }
