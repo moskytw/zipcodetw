@@ -75,6 +75,11 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 Changelog
 ---------
 
+v0.5.1
+~~~~~~
+
+1. Refined the code slightly.
+
 v0.5
 ~~~~
 
