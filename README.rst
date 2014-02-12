@@ -75,6 +75,12 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 Changelog
 ---------
 
+v0.5.2
+~~~~~~
+
+1. Fixed the issue while it was running in multi-threaded environment.
+2. Added a new argument, ``keep_alive``, for the ``Directory`` class.
+
 v0.5.1
 ~~~~~~
 
