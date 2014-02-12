@@ -402,7 +402,7 @@ class TestDirectory(object):
 81357,高雄市,左營區,大順一路,雙  96號至 568號
 81357,高雄市,左營區,大順一路,單 201號至 389巷'''.split('\n')
 
-        self.dir_ = Directory(':memory:')
+        self.dir_ = Directory(':memory:', keep_alive=True)
         self.dir_.load_chp_csv(chp_csv_lines)
 
     def test_find(self):

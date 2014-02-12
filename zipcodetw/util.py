@@ -226,8 +226,10 @@ class Directory(object):
 
         return str_a[:i]
 
-    def __init__(self, db_path):
+    def __init__(self, db_path, keep_alive=False):
         self.db_path = db_path
+        # It will always use a same connection if keep_alive is true.
+        self.keep_alive = keep_alive
         self.conn = None
         self.cur = None
 
@@ -307,7 +309,8 @@ class Directory(object):
         @wraps(method)
         def method_wrapper(self, *args, **kargs):
 
-            self.conn = sqlite3.connect(self.db_path)
+            if not self.keep_alive or self.conn is None:
+                self.conn = sqlite3.connect(self.db_path)
             self.cur = self.conn.cursor()
 
             try:
@@ -319,7 +322,8 @@ class Directory(object):
                 self.conn.commit()
             finally:
                 self.cur.close()
-                self.conn.close()
+                if not self.keep_alive:
+                    self.conn.close()
 
             return retval
 
