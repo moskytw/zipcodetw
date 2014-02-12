@@ -1,4 +1,4 @@
-tfunction () {
+(function () {
 
 var ZIPCodeFinder = window.ZIPCodeFinder = function (obj) {
 
