@@ -39,11 +39,6 @@ a:hover {
     position: relative;
 }
 
-#container header ol,
-#container header li {
-    display: inline;
-}
-
 #container header h1 {
     font-size: 24px;
 }
@@ -55,6 +50,11 @@ a:hover {
     right: 18px;
     /* (header's rendered padding-height - nav's rendered header) / 2 */
     top: 26px;
+}
+
+#container header nav ol,
+#container header nav li {
+    display: inline;
 }
 
 #container header nav li {
