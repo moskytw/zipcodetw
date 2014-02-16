@@ -36,28 +36,25 @@ a:hover {
 #container header {
     font-family: 'Alegreya Sans SC', sans-serif;
     text-transform: uppercase;
-    font-size: 24px;
+    position: relative;
 }
 
-#container header::after {
-    clear: both;
-    content: '.';
-    font-size: 0px;
-}
-
-#container header h1,
-#container header nav,
 #container header ol,
 #container header li {
     display: inline;
 }
 
 #container header h1 {
-    float: left;
+    font-size: 24px;
 }
 
 #container header nav {
-    float: right;
+    font-size: 18px;
+    position: absolute;
+    /* same as header's padding */
+    right: 18px;
+    /* (header's rendered padding-height - nav's rendered header) / 2 */
+    top: 26px;
 }
 
 #container header nav li {
