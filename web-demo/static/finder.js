@@ -2,19 +2,14 @@
 
 var Finder = window.Finder = function (obj) {
 
-    obj = $.extend({
-        address: undefined,
-        zipcode: undefined,
-    }, obj);
-
-    this._$view = $(Finder.template(obj));
+    this._$view = $(Finder.template());
     this._$address = this._$view.find('.address');
     this._$address_with_zipcode = this._$view.find('.address-with-zipcode');
     this._$loader = this._$view.find('.loader');
 
     this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓]/;
     this._model = {};
-    this.model(obj);
+    this.model(obj || {});
 
     this._$address.on('input',
         _.bind(this.controller, this, 'address-input')
@@ -28,13 +23,9 @@ var Finder = window.Finder = function (obj) {
 
 Finder.template = _.template(
     '<article class="finder">'+
-        '<input class="address" placeholder="請在這裡輸入欲查詢的地址" value="'+
-            '<%- address %>'+
-        '">'+
+        '<input class="address" placeholder="請在這裡輸入欲查詢的地址" value="">'+
         '<div class="address-with-zipcode-wrapper">'+
-            '<input class="address-with-zipcode" placeholder="接著郵遞區號就會顯示在這邊" value="'+
-                '<%- zipcode %><%= zipcode ? " " : "" %><%- address %>'+
-            '">'+
+            '<input class="address-with-zipcode" placeholder="接著郵遞區號就會顯示在這邊" value="">'+
             '<img class="loader" src="/static/loader.gif">'+
         '</div>'+
     '</article>'
