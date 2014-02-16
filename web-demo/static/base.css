@@ -30,7 +30,7 @@ a:hover {
 #container header,
 #container .content,
 #container footer {
-    padding: 22px;
+    padding: 30px;
 }
 
 #container header {
@@ -49,7 +49,7 @@ a:hover {
     /* same as header's padding */
     right: 22px;
     /* (header's rendered padding-height - nav's rendered header) / 2 */
-    top: 26px;
+    top: 34px;
 }
 
 #container header nav ol,
