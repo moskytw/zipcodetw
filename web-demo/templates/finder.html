@@ -8,7 +8,8 @@
         <script src="/static/finder.js"></script>
         <script>
             $(function () {
-                $('#container .content').wrapInner(Finder.create());
+                $('#container .content').empty();
+                $('#container .content').append(Finder.create());
             });
         </script>
 {%- endblock%}
