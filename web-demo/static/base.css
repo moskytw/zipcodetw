@@ -1,6 +1,6 @@
 body {
     color: #555;
-    background-image: url(http://subtlepatterns.com/patterns/green_dust_scratch.png);
+    background-image: url(/static/bg.png);
 }
 
 a {
