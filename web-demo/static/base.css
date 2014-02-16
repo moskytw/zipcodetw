@@ -58,7 +58,8 @@ a:hover {
 }
 
 #container header nav li {
-    margin-left: 12px;
+    /* a half of font size*/
+    margin-left: 9px;
 }
 
 #content-loader {
