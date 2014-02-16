@@ -1,5 +1,14 @@
 body {
-    color: #333;
+    color: #555;
+    background-image: url(http://subtlepatterns.com/patterns/green_dust_scratch.png);
+}
+
+a {
+    color: #008500;
+}
+
+a:hover {
+    color: #00CC00;
 }
 
 #container {
@@ -7,27 +16,58 @@ body {
     margin: 0 auto;
 }
 
-h1 {
-    color: #222;
-    font-size: 40px;
-    margin: 50px 0;
-    text-align: center;
+#container header,
+#container .content,
+#container footer {
+    background-color: hsla(0, 0%, 100%, 0.6);
 }
 
-#content {
-    text-align: center;
+#container header,
+#container .content {
+    margin-bottom: 24px;
 }
 
-footer {
-    text-align: center;
-    margin: 50px 0;
+#container header,
+#container .content,
+#container footer {
+    padding: 22px;
 }
 
-a {
-    color: #003;
-    font-size: 16px;
+#container header {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    text-transform: uppercase;
 }
 
-a:hover {
-    text-decoration: underline;
+#container header {
+    font-size: 24px;
+}
+
+#container header::after {
+    clear: both;
+    content: '.';
+    font-size: 0px;
+}
+
+#container header h1,
+#container header nav,
+#container header ol,
+#container header li {
+    display: inline;
+}
+
+#container header h1 {
+    float: left;
+}
+
+#container header nav {
+    float: right;
+}
+
+#container header nav li {
+    margin-left: 12px;
+}
+
+#content-loader {
+    display: block;
+    margin: 0 auto;
 }

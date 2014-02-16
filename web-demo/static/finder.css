@@ -1,30 +1,34 @@
 .finder input {
     display: block;
-    width: 600px;
-    border: 1px #999 solid;
-    box-shadow: #888 0px 0px 1px;
-    padding: 10px;
+    background-color: hsla(0, 0%, 100%, 0.9);
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    border: 0;
+    padding: 12px;
+    font-size: 26px;
     color: inherit;
-    font-size: 30px;
-    margin-bottom: 45px;
+}
+
+.finder .address {
+    margin-bottom: 22px;
+}
+
+.finder .address-with-zipcode {
+    color: #666;
 }
 
 .finder .address-with-zipcode-wrapper {
     position: relative;
 }
 
-.finder .address-with-zipcode {
-    color: #555;
-}
-
 .finder .loader {
     display: none;
     position: absolute;
-    /* same as input */
-    padding: 10px;
-    /* (input's font-size - loader's height: 18)/2 */
-    top: 10.5px;
-    right: 0px;
+    /* same as input's padding */
+    right: 12px;
+    /* (input's font-size+padding - loader's height: 16)/2 */
+    top: 16px;
 }
 
 .finder.loading .loader {

@@ -8,9 +8,7 @@
         <script src="/static/finder.js"></script>
         <script>
             $(function () {
-                $('#content').replaceWith(Finder.create());
+                $('#container .content').wrapInner(Finder.create());
             });
         </script>
 {%- endblock%}
-
-

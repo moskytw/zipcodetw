@@ -6,6 +6,7 @@
         <title>{%- block title -%}ZIP Code Finder for Taiwan{%- endblock -%}</title>
         <link href="/static/reset.css" rel="stylesheet">
         <link href="/static/base.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC:300' rel='stylesheet' type='text/css'>
         {%- block styles %}
         {%- endblock %}
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -15,10 +16,18 @@
     </head>
     <body>
         <div id="container">
-            <h1>ZIP Code Finder for Taiwan</h1>
-            <div id="content">
+            <header>
+                <h1><a href="/">ZIPCodeTW</a></h1>
+                <nav>
+                    <ol>
+                        <li><a href="/tech">Tech</a></li>
+                        <li><a href="/about">About</a></li>
+                    </ol>
+                </nav>
+            </header>
+            <div class="content">
                 {%- block content %}
-                <img class="loader" src="/static/loader.gif">
+                <img id="content-loader" src="/static/loader.gif">
                 {%- endblock %}
             </div>
             <footer>
