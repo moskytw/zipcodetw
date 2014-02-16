@@ -10,6 +10,10 @@ app = Flask(__name__)
 def index():
     return render_template('finder.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/api/find')
 def api_find():
     return jsonify(result=zipcodetw.find(request.values.get('address')))
