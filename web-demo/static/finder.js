@@ -31,10 +31,6 @@ Finder.template = _.template(
     '</article>'
 );
 
-Finder.create = function (obj) {
-    return (new Finder(obj)).$view;
-};
-
 Finder.prototype.view = function (model_changed) {
 
     if (model_changed.loading !== undefined) {
