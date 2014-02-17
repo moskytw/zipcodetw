@@ -179,52 +179,6 @@ def test_rule_match():
     assert     Rule(u'臺北市大安區市府路單5號以下').match(addr)
     assert not Rule(u'臺北市大安區市府路雙5號以下').match(addr)
 
-def test_rule_match_tail_rules():
-
-    # standard address w/ tail rules
-
-    addr = Address(u'臺北市大安區市府路5號')
-
-    # 全單雙
-    assert     Rule(u'全').match(addr)
-    assert     Rule(u'單全').match(addr)
-    assert not Rule(u'雙全').match(addr)
-
-    # 以上 & 以下
-    assert not Rule(u'6號以上').match(addr)
-    assert     Rule(u'6號以下').match(addr)
-    assert     Rule(u'5號以上').match(addr)
-    assert     Rule(u'5號').match(addr)
-    assert     Rule(u'5號以下').match(addr)
-    assert     Rule(u'4號以上').match(addr)
-    assert not Rule(u'4號以下').match(addr)
-
-    # 至
-    assert not Rule(u'1號至4號').match(addr)
-    assert     Rule(u'1號至5號').match(addr)
-    assert     Rule(u'5號至9號').match(addr)
-    assert not Rule(u'6號至9號').match(addr)
-
-    # 附號
-    assert not Rule(u'6號及以上附號').match(addr)
-    assert     Rule(u'6號含附號以下').match(addr)
-    assert     Rule(u'5號及以上附號').match(addr)
-    assert     Rule(u'5號含附號').match(addr)
-    assert not Rule(u'5附號全').match(addr)
-    assert     Rule(u'5號含附號以下').match(addr)
-    assert     Rule(u'4號及以上附號').match(addr)
-    assert not Rule(u'4號含附號以下').match(addr)
-
-    # 單雙 x 以上, 至, 以下
-    assert     Rule(u'單5號以上').match(addr)
-    assert not Rule(u'雙5號以上').match(addr)
-    assert     Rule(u'單1號至5號').match(addr)
-    assert not Rule(u'雙1號至5號').match(addr)
-    assert     Rule(u'單5號至9號').match(addr)
-    assert not Rule(u'雙5號至9號').match(addr)
-    assert     Rule(u'單5號以下').match(addr)
-    assert not Rule(u'雙5號以下').match(addr)
-
 def test_rule_match_gradual_address():
 
     # standard rule w/ gradual addresses
@@ -265,21 +219,15 @@ def test_rule_match_rule_all():
 def test_rule_match_tricky_input():
 
     # The address matched by it must have a even number.
-    rule1 = Rule('信義路一段雙全')
-    # The address matched by it shall be exactly same.
-    rule2 = Rule('信義路一段')
+    rule  = Rule('信義路一段雙全')
 
     addr1 = Address('信義路一段')
     addr2 = Address('信義路一段1號')
     addr3 = Address('信義路一段2號')
 
-    assert not rule1.match(addr1)
-    assert not rule1.match(addr2)
-    assert     rule1.match(addr3)
-
-    assert     rule2.match(addr1)
-    assert not rule2.match(addr2)
-    assert not rule2.match(addr3)
+    assert not rule.match(addr1)
+    assert not rule.match(addr2)
+    assert     rule.match(addr3)
 
 def test_rule_match_subno():
 
@@ -468,6 +416,24 @@ class TestDirectory(object):
 
 if __name__ == '__main__':
     import uniout
-    test_dir = TestDirectory()
-    test_dir.setup()
-    test_dir.test_find_middle_token()
+    #test_dir = TestDirectory()
+    #test_dir.setup()
+    #test_dir.test_find_middle_token()
+
+    #r = Rule('台北市信義區市府路10號以下')
+    #print r.tokens
+
+    #a = Address('市府路1號')
+    #print a.tokens
+    #print r.match(a)
+
+    #a = Address('台北市信義區市府路1號')
+    #print a.tokens
+    #print r.match(a)
+
+    r = Rule('新北市,中和區,景平路,雙  64號以下')
+    print r.tokens
+
+    a = Address('新北市景平路64巷13弄13號')
+    print a.tokens
+    print r.match(a)

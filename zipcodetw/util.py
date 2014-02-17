@@ -153,43 +153,26 @@ class Rule(Address):
 
     def match(self, addr):
 
-        # the part reserved for rule tokens
-        my_end_pos = len(self.tokens)
-        my_end_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
-        my_end_pos -= u'至' in self.rule_tokens
+        # except tokens reserved for rule token
 
-        my_tokens_to_match = self.tokens[:my_end_pos]
-        if my_tokens_to_match:
+        my_last_pos = len(self.tokens)-1
+        my_last_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
+        my_last_pos -= u'至' in self.rule_tokens
 
-            # find the range that must be matched exactly
+        # tokens must be matched exactly
 
-            start_unit = my_tokens_to_match[0][Address.UNIT]
-            his_start_pos = 0
-            for his_token in addr.tokens:
-                if his_token[Address.UNIT] != start_unit:
-                    his_start_pos += 1
-                else:
-                    break
+        if my_last_pos >= len(addr.tokens):
+            return False
 
-            end_unit = my_tokens_to_match[-1][Address.UNIT]
-            his_end_pos = len(addr.tokens)
-            if self.rule_tokens:
-                for his_token in addr.tokens[::-1]:
-                    if his_token[Address.UNIT] != end_unit:
-                        his_end_pos -= 1
-                    else:
-                        break
-
-            his_tokens_to_match = addr.tokens[his_start_pos:his_end_pos]
-            if len(my_tokens_to_match) != len(his_tokens_to_match):
+        i = my_last_pos
+        while i >= 0:
+            if self.tokens[i] != addr.tokens[i]:
                 return False
-
-            for my_token, his_token in zip(my_tokens_to_match, his_tokens_to_match):
-                if my_token != his_token:
-                    return False
+            i -= 1
 
         # check the rule tokens
-        his_no_pair     = addr.parse(-1)
+
+        his_no_pair     = addr.parse(my_last_pos+1)
         my_no_pair      = self.parse(-1)
         my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
