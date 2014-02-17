@@ -3,6 +3,15 @@ body {
     background-image: url(/static/bg.png);
 }
 
+p {
+    line-height: 26px;
+    margin-bottom: 16px;
+}
+
+p:last-of-type {
+    margin-bottom: 0;
+}
+
 a {
     color: #008500;
 }
