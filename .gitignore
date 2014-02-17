@@ -5,3 +5,6 @@
 #
 /zipcodetw.egg-info
 /dist
+
+#
+/zipcodetw/*.db
