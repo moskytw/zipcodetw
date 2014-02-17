@@ -1,7 +1,7 @@
-.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.2
+.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.3
    :target: https://pypi.python.org/pypi/zipcodetw
 
-.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.2
+.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.3
    :target: https://pypi.python.org/pypi/zipcodetw
 
 The ZIP Code Finder for Taiwan
@@ -74,6 +74,12 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 
 Changelog
 ---------
+
+v0.5.3
+~~~~~~
+
+1. Fixed and simplified the matching logic for address tail.
+2. Refined the index building logic.
 
 v0.5.2
 ~~~~~~
