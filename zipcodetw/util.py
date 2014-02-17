@@ -276,6 +276,7 @@ class Directory(object):
         addr = Address(head_addr_str)
 
         # (a, b, c)
+
         self.put_precise(
             addr.flat(),
             head_addr_str+tail_rule_str,
@@ -283,6 +284,7 @@ class Directory(object):
         )
 
         # (a, b, c) -> (a,); (a, b); (a, b, c); (b,); (b, c); (c,)
+
         len_tokens = len(addr)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
@@ -291,7 +293,8 @@ class Directory(object):
                     zipcode
                 )
 
-        self.put_gradual(addr.pick_to_flat(0, 2), zipcode)
+        if len_tokens >= 3:
+            self.put_gradual(addr.pick_to_flat(0, 2), zipcode)
 
     def within_a_transaction(method):
 
