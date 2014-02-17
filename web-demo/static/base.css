@@ -31,11 +31,6 @@ a:hover {
 #container footer {
     background-color: hsla(0, 0%, 100%, 0.6);
     padding: 30px;
-}
-
-#container header,
-#container .old-ie,
-#container .content {
     margin-bottom: 24px;
 }
 
