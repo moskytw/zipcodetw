@@ -177,7 +177,6 @@ class Rule(Address):
         my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
             if (
-                (his_no_pair == (0, 0)) or
                 (rt == u'全'         and not his_no_pair > (0, 0)) or
                 (rt == u'單'         and not his_no_pair[0] & 1 == 1) or
                 (rt == u'雙'         and not his_no_pair[0] & 1 == 0) or
