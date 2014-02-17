@@ -53,7 +53,7 @@ a:hover {
     font-size: 20px;
     position: absolute;
     /* same as header's padding */
-    right: 22px;
+    right: 30px;
     /* (header's rendered padding-height - nav's rendered header) / 2 */
     top: 32.5px;
 }
