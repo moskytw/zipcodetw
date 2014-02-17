@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {%- block styles %}
-        <link href="/static/finder.css" rel="stylesheet">
+    <link href="/static/finder.css" rel="stylesheet">
 {%- endblock %}
 
 {%- block scripts %}
-        <script src="/static/finder.js"></script>
-        <script>
-            $(function () {
-                window.finder = new Finder();
-                $('#container .content').empty();
-                $('#container .content').append(finder.$view);
-            });
-        </script>
+    <script src="/static/finder.js"></script>
+    <script>
+        $(function () {
+            window.finder = new Finder();
+            $('#container .content').empty();
+            $('#container .content').append(finder.$view);
+        });
+    </script>
 {%- endblock%}

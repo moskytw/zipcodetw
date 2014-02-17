@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <meta name="description" content="ZIPCodeTW 是一個支援漸進、模糊地址搜尋的臺灣郵遞區號查詢器。">
     <meta name="keywords" content="地址 郵遞區號 臺灣 漸進 模糊 address zipcode zipcodetw taiwan gradual fuzzy">
+
     <meta property="og:url" content="http://zipcode.mosky.tw">
     <meta property="og:type" content="website">
     <meta property="og:title" content="ZIP Code Finder for Taiwan">
     <meta property="og:description" content="ZIPCodeTW 是一個支援漸進、模糊地址搜尋的臺灣郵遞區號查詢器。">
     <meta property="og:image" content="http://zipcode.mosky.tw/static/preview.png">
+
     <title>{%- block title -%}ZIP Code Finder for Taiwan{%- endblock -%}</title>
+
     <link href="/static/reset.css" rel="stylesheet">
     <link href="/static/base.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC:300' rel='stylesheet' type='text/css'>
     {%- block styles %}
     {%- endblock %}
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -30,9 +37,13 @@
     <script src="http://underscorejs.org/underscore-min.js"></script>
     {%- block scripts %}
     {%- endblock %}
+
 </head>
+
 <body>
+
     <div id="container">
+
         <header>
             <h1><a href="/">ZIPCodeTW</a></h1>
             <nav>
@@ -41,6 +52,7 @@
                 </ol>
             </nav>
         </header>
+
         <!--[if lt IE 9]>
         <div class='old-ie'>
             <p>你的瀏覽器有點太舊囉，可能會沒辦法正常使用這個網站的每一個功能，建議你升級你的瀏覽器以取得最好的瀏覽效果。你可以參考下面的選項：
@@ -51,14 +63,19 @@
             </ol>
         </div>
         <![endif]-->
+
         <div class="content">
             {%- block content %}
             <img id="content-loader" src="/static/loader.gif">
             {%- endblock %}
         </div>
+
         <footer>
             <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fzipcode.mosky.tw%2F&amp;width=400&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;share=true&amp;height=35&amp;appId=" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:20px;" allowTransparency="true"></iframe>
         </footer>
+
     </div>
+
 </body>
+
 </html>
