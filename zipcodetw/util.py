@@ -153,7 +153,7 @@ class Rule(Address):
 
     def match(self, addr):
 
-        # the part reserves for rule tokens
+        # the part reserved for rule tokens
         my_end_pos = len(self.tokens)
         my_end_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
         my_end_pos -= u'至' in self.rule_tokens
@@ -161,7 +161,8 @@ class Rule(Address):
         my_tokens_to_match = self.tokens[:my_end_pos]
         if my_tokens_to_match:
 
-            # the addr's tokens whose unit bigger than rule's are ignorable
+            # find the range that must be matched exactly
+
             start_unit = my_tokens_to_match[0][Address.UNIT]
             his_start_pos = 0
             for his_token in addr.tokens:
