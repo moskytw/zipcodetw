@@ -1,0 +1,14 @@
+#container .content {
+    background-color: hsla(0, 0%, 100%, 0.9);
+}
+
+#container .content h1 {
+    margin-top: 26px;
+    font-size: 18px;
+    margin-bottom: 18px;
+    font-weight: bold;
+}
+
+#container .content h1:first-of-type {
+    margin-top: 0;
+}
