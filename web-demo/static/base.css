@@ -70,12 +70,8 @@ a:hover {
 }
 
 #container .old-ie img {
-    width: 100px;
-}
-
-#container .old-ie ol {
-    /* same as p's margin-bottom */
-    margin-top: 16px;
+    width: 120px;
+    padding: 0 28px;
 }
 
 #content-loader {
