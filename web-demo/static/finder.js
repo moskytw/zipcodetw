@@ -62,28 +62,35 @@ Finder.prototype.model = function (model_changed) {
         }
     });
 
-    if (
-        model_changed.address !== undefined &&
-        this._units_re.test(model_changed.address.slice(-1))
-    ) {
-        // try cache or send request
-        var zipcode = Finder.cache[model_changed.address];
-        if (zipcode !== undefined) {
-            _this.model({zipcode: zipcode});
-        } else {
-            _this.model({loading: true});
-            $.getJSON('/api/find', {
-                address: model_changed.address
-            }).done(function (resp) {
-                var zipcode = resp.result;
-                Finder.cache[model_changed.address] = zipcode;
+
+    var address = model_changed.address;
+    if (address !== undefined) {
+
+        if (address === '') {
+
+            _this.model({zipcode: ''});
+
+        } else if (this._units_re.test(address.slice(-1))) {
+
+            // try cache or send request
+            var zipcode = Finder.cache[address];
+            if (zipcode !== undefined) {
                 _this.model({zipcode: zipcode});
-            }).always(function () {
-                _this.model({loading: false});
-            });
+            } else {
+                _this.model({loading: true});
+                $.getJSON('/api/find', {
+                    address: model_changed.address
+                }).done(function (resp) {
+                    var zipcode = resp.result;
+                    Finder.cache[model_changed.address] = zipcode;
+                    _this.model({zipcode: zipcode});
+                }).always(function () {
+                    _this.model({loading: false});
+                });
+            }
+
         }
-    } else if (model_changed.address === '') {
-        _this.model({zipcode: ''});
+
     }
 
     this.view(model_changed);
