@@ -12,8 +12,8 @@ a:hover {
 }
 
 #container {
-    width: 600px;
     margin: 0 auto;
+    max-width: 600px;
 }
 
 #container header,
