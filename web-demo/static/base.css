@@ -20,17 +20,12 @@ a:hover {
 #container .content,
 #container footer {
     background-color: hsla(0, 0%, 100%, 0.6);
+    padding: 30px;
 }
 
 #container header,
 #container .content {
     margin-bottom: 24px;
-}
-
-#container header,
-#container .content,
-#container footer {
-    padding: 30px;
 }
 
 #container header {
