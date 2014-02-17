@@ -85,12 +85,11 @@ class Address(object):
     def __len__(self):
         return len(self.tokens)
 
-    def flat(self, slice_arg=None, *other_slice_args):
-        return u''.join(
-            u''.join(token) for token in self.tokens[
-                slice(slice_arg, *other_slice_args)
-            ]
-        )
+    def flat(self, sarg=None, *sargs):
+        return u''.join(u''.join(token) for token in self.tokens[slice(sarg, *sargs)])
+
+    def pick_to_flat(self, *idxs):
+        return u''.join(u''.join(self.tokens[idx]) for idx in idxs)
 
     def __repr__(self):
         return 'Address(%r)' % self.flat()
@@ -287,12 +286,12 @@ class Directory(object):
         len_tokens = len(addr)
         for f in range(len_tokens):
             for l in range(f, len_tokens):
-                # only (a, b, c) -> (a, b, c); (a, c)
-                for s in range(1, 2+(f == 0 and l == 2)):
-                    self.put_gradual(
-                        addr.flat(f, l+1, s),
-                        zipcode
-                    )
+                self.put_gradual(
+                    addr.flat(f, l+1),
+                    zipcode
+                )
+
+        self.put_gradual(addr.pick_to_flat(0, 2), zipcode)
 
     def within_a_transaction(method):
 
