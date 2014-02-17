@@ -1,6 +1,6 @@
 (function () {
 
-var Finder = window.Finder = function (obj) {
+var Finder = window.Finder = function () {
 
     this.$view = $(Finder.template());
     this.$address = this.$view.find('.address');
@@ -9,7 +9,6 @@ var Finder = window.Finder = function (obj) {
 
     this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓]/;
     this._model = {};
-    this.model(obj || {});
 
     this.$address.on('input',
         _.bind(this.controller, this, 'address-input')
