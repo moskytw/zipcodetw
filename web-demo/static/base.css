@@ -44,12 +44,12 @@ a:hover {
 }
 
 #container header nav {
-    font-size: 18px;
+    font-size: 20px;
     position: absolute;
     /* same as header's padding */
     right: 22px;
     /* (header's rendered padding-height - nav's rendered header) / 2 */
-    top: 34px;
+    top: 32.5px;
 }
 
 #container header nav ol,
