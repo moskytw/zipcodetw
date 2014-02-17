@@ -158,9 +158,6 @@ class Rule(Address):
         my_end_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
         my_end_pos -= u'至' in self.rule_tokens
 
-        his_end_pos = len(addr.tokens)
-        his_end_pos -= bool(self.rule_tokens)
-
         my_tokens_to_match = self.tokens[:my_end_pos]
         if my_tokens_to_match:
 
@@ -172,6 +169,15 @@ class Rule(Address):
                     his_start_pos += 1
                 else:
                     break
+
+            end_unit = my_tokens_to_match[-1][Address.UNIT]
+            his_end_pos = len(addr.tokens)
+            if self.rule_tokens:
+                for his_token in addr.tokens[::-1]:
+                    if his_token[Address.UNIT] != end_unit:
+                        his_end_pos -= 1
+                    else:
+                        break
 
             his_tokens_to_match = addr.tokens[his_start_pos:his_end_pos]
             if len(my_tokens_to_match) != len(his_tokens_to_match):
@@ -187,6 +193,7 @@ class Rule(Address):
         my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
             if (
+                (his_no_pair == (0, 0)) or
                 (rt == u'全'         and not his_no_pair > (0, 0)) or
                 (rt == u'單'         and not his_no_pair[0] & 1 == 1) or
                 (rt == u'雙'         and not his_no_pair[0] & 1 == 0) or
