@@ -25,18 +25,14 @@ a:hover {
     max-width: 600px;
 }
 
-#container header,
-#container .old-ie,
-#container .content,
-#container footer {
+#container > * {
     background-color: hsla(0, 0%, 100%, 0.6);
     padding: 30px;
+    margin-bottom: 24px;
 }
 
-#container header,
-#container .old-ie,
-#container .content {
-    margin-bottom: 24px;
+#container footer {
+    margin-bottom: 0;
 }
 
 #container header {
