@@ -1,3 +1,7 @@
+#container .content {
+    padding: 40px 30px;
+}
+
 .finder input {
     display: block;
     background-color: hsla(0, 0%, 100%, 0.9);
