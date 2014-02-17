@@ -23,9 +23,9 @@ var Finder = window.Finder = function (obj) {
 
 Finder.template = _.template(
     '<article class="finder">'+
-        '<input class="address" placeholder="請在這邊輸入欲查地址" value="">'+
+        '<input class="address" placeholder="請在上面這欄輸入地址" value="">'+
         '<div class="address-with-zipcode-wrapper">'+
-            '<input class="address-with-zipcode" placeholder="接著這邊會有郵遞區號" value="">'+
+            '<input class="address-with-zipcode" placeholder="郵遞區號會出現在這邊" value="">'+
             '<img class="loader" src="/static/loader.gif">'+
         '</div>'+
     '</article>'
