@@ -64,11 +64,12 @@ a:hover {
 }
 
 #container header nav li {
-    /* a half of font size*/
+    /* half of font size*/
     margin-left: 9px;
 }
 
 #container .old-ie {
+    /* text content */
     background-color: hsla(0, 0%, 100%, 0.9);
 }
 
@@ -77,6 +78,7 @@ a:hover {
 }
 
 #container .old-ie ol {
+    /* same as p's margin-bottom */
     margin-top: 16px;
 }
 
