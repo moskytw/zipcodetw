@@ -2,20 +2,20 @@
 
 var Finder = window.Finder = function (obj) {
 
-    this._$view = $(Finder.template());
-    this._$address = this._$view.find('.address');
-    this._$address_with_zipcode = this._$view.find('.address-with-zipcode');
-    this._$loader = this._$view.find('.loader');
+    this.$view = $(Finder.template());
+    this.$address = this.$view.find('.address');
+    this.$address_with_zipcode = this.$view.find('.address-with-zipcode');
+    this.$loader = this.$view.find('.loader');
 
     this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓]/;
     this._model = {};
     this.model(obj || {});
 
-    this._$address.on('input',
+    this.$address.on('input',
         _.bind(this.controller, this, 'address-input')
     );
 
-    this._$address_with_zipcode.on('click',
+    this.$address_with_zipcode.on('click',
         _.bind(this.controller, this, 'address-with-zipcode-click')
     );
 
@@ -32,13 +32,13 @@ Finder.template = _.template(
 );
 
 Finder.create = function (obj) {
-    return (new Finder(obj))._$view;
+    return (new Finder(obj)).$view;
 };
 
 Finder.prototype.view = function (model_changed) {
 
     if (model_changed.loading !== undefined) {
-        this._$view.toggleClass('loading', model_changed.loading);
+        this.$view.toggleClass('loading', model_changed.loading);
     }
 
     if (
@@ -47,7 +47,7 @@ Finder.prototype.view = function (model_changed) {
     ) {
         var zipcode = this._model.zipcode || '';
         var address = this._model.address || '';
-        this._$address_with_zipcode.val(zipcode + (zipcode ? ' ' : '') + address)
+        this.$address_with_zipcode.val(zipcode + (zipcode ? ' ' : '') + address)
     }
 
 };
@@ -100,11 +100,11 @@ Finder.prototype.controller = function (event_name) {
     switch (event_name) {
 
         case 'address-input':
-            this.model({address: this._$address.val()});
+            this.model({address: this.$address.val()});
             break;
 
         case 'address-with-zipcode-click':
-            this._$address_with_zipcode.select();
+            this.$address_with_zipcode.select();
             break
     }
 
