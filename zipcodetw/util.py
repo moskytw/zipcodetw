@@ -14,7 +14,7 @@ class Address(object):
             (?P<name>.+?)
         )
         (?:
-            (?P<unit>[縣市鄉鎮市區村里鄰路段街巷弄號樓])
+            (?P<unit>[縣市鄉鎮市區村里路段街巷弄號樓])
             |
             (?=\d+(?:[之-]\d+)?[巷弄號樓]|$)
         )
@@ -77,21 +77,7 @@ class Address(object):
 
     @staticmethod
     def tokenize(addr_str):
-
-        tokens = Address.TOKEN_RE.findall(Address.normalize(addr_str))
-
-        len_tokens = len(tokens)
-
-        i = 2
-        while i < len_tokens:
-            unit = tokens[i][Address.UNIT]
-            if unit and unit in u'里鄰':
-                del tokens[i]
-                len_tokens -= 1
-            else:
-                i += 1
-
-        return tuple(tokens)
+        return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
 
     def __init__(self, addr_str):
         self.tokens = Address.tokenize(addr_str)
