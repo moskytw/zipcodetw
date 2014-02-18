@@ -83,7 +83,7 @@ class Address(object):
         len_tokens = len(tokens)
 
         i = 2
-        while i < len_tokens-1:
+        while i < len_tokens:
             unit = tokens[i][Address.UNIT]
             if unit and unit in u'里鄰':
                 del tokens[i]
@@ -164,20 +164,6 @@ class Rule(Address):
     def __repr__(self):
         return 'Rule(%r)' % (self.flat()+u''.join(self.rule_tokens))
 
-    @staticmethod
-    def tokens_are_eq(token_a, token_b):
-
-        if token_a[:Address.UNIT] != token_b[:Address.UNIT]:
-            return False
-
-        unit_a = token_a[Address.UNIT]
-        unit_b = token_b[Address.UNIT]
-
-        if unit_a == '' or unit_b == '':
-            return True
-
-        return (unit_a == unit_b)
-
     def match(self, addr):
 
         # except tokens reserved for rule token
@@ -193,7 +179,7 @@ class Rule(Address):
 
         i = my_last_pos
         while i >= 0:
-            if not Rule.tokens_are_eq(self.tokens[i], addr.tokens[i]):
+            if self.tokens[i] != addr.tokens[i]:
                 return False
             i -= 1
 
