@@ -8,7 +8,7 @@
     <script src="/static/finder.js"></script>
     <script>
         $(function () {
-            window.finder = new Finder();
+            var finder = window.finder = new Finder();
             $('#container .content').empty();
             $('#container .content').append(finder.$view);
         });
