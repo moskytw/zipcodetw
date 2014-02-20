@@ -30,4 +30,6 @@ input {
     margin: 0;
     outline: none;
     background-color: transparent;
+    font-family: inherit;
+    font-size: inherit;
 }
