@@ -77,7 +77,7 @@ class Address(object):
 
         return s
 
-    TO_INGORE = set(u'鄰里')
+    TO_INGORE = set(u'鄰里村')
 
     @staticmethod
     def tokenize(addr_str):
