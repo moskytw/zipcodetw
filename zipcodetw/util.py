@@ -411,3 +411,41 @@ class Directory(object):
                 return gzipcode
 
         return u''
+
+class AddressEnglishTranslator(object):
+
+    UNIT_ENG_MAP = {
+    u'段' : u'Sec.', u'巷' : u'Ln.', u'弄' : u'Aly.', u'號' : u'No.',
+    u'樓' : u'F.', u'室' : u'Rm.'
+    }
+    COUNTY_UNIT_SET = set(u'縣市鄉鎮區')
+    VILLAGE_UNIT_SET = set(u'巷村里')
+
+    def __init__(self, county_path, village_path, rd_st_path):
+
+        self.county_data = dict([v.decode('utf-8') for v in row] for row in csv.reader(open(county_path,'rb')))
+        self.village_data = dict([v.decode('utf-8') for v in row] for row in csv.reader(open(village_path,'rb')))
+        self.rd_st_data = dict([v.decode('utf-8') for v in row] for row in csv.reader(open(rd_st_path,'rb')))
+
+    def translate_token(self, token_str, unit):
+
+        if token_str in self.county_data:
+            return self.county_data[token_str]
+        elif token_str in self.village_data:
+            return self.village_data[token_str]
+        elif token_str in self.rd_st_data:
+            return self.rd_st_data[token_str]
+        else:
+            eng_token = token_str.strip(u''.join(AddressEnglishTranslator.UNIT_ENG_MAP.keys())).replace(u'之', u'-')
+            if u'樓' == unit:
+                return eng_token + "F."
+            else:
+                return AddressEnglishTranslator.UNIT_ENG_MAP[unit] + u' ' + eng_token
+
+    def translate(self, addr_str):
+
+        addr = Address(addr_str)
+        eng_tokens = [u'Taiwan (R.O.C.)']
+        for idx in xrange(len(addr)):
+            eng_tokens.append(self.translate_token(addr.pick_to_flat(idx), addr.tokens[idx][Address.UNIT]))
+        return u', '.join(reversed(eng_tokens))

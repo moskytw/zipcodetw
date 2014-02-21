@@ -40,7 +40,7 @@ setup(
     ],
 
     packages = find_packages(),
-    package_data = {'zipcodetw': ['*.csv', '*.db']},
+    package_data = {'zipcodetw': ['*.csv', '*.db', '*.txt']},
 
     cmdclass = {'install': zipcodetw_install},
 

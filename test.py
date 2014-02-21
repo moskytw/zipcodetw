@@ -414,6 +414,26 @@ class TestDirectory(object):
         assert self.dir_.find('台北市大埔街') == '10068'
         assert self.dir_.find('苗栗縣大埔街') == '36046'
 
+from zipcodetw.util import AddressEnglishTranslator
+
+class TestAddressEnglishTranslator(object):
+
+    def setup(self):
+
+        self._translator = AddressEnglishTranslator('zipcodetw/county_h_2013-12-16.csv', 'zipcodetw/Village_H_10208.txt', 'zipcodetw/CE_Rd_St_H_12011.csv')
+
+    def test_translate(self):
+        assert self._translator.translate('台北市信義區市府路10號') == 'No. 10, Shifu Rd., Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市信義區市府路') == 'Shifu Rd., Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市信義區') == 'Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市') == 'Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市松山區南京東路四段2號') == 'No. 2, Sec. 4, Nanjing E. Rd., Songshan Dist., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('桃園縣大溪鎮環湖路1號') == 'No. 1, Huanhu Rd., Daxi Township, Taoyuan County, Taiwan (R.O.C.)'
+        assert self._translator.translate('台中市西屯區西屯路三段西平南巷') == 'Xiping S. Ln., Sec. 3, Xitun Rd., Xitun Dist., Taichung City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市濟南路1段2之2號3樓') == '3F., No. 2-2, Sec. 1, Jinan Rd., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市濟南路1段2-2號3樓') == '3F., No. 2-2, Sec. 1, Jinan Rd., Taipei City, Taiwan (R.O.C.)'
+        assert self._translator.translate('台北市文山區試院路1-1號') == 'No. 1-1, Shiyuan Rd., Wenshan Dist., Taipei City, Taiwan (R.O.C.)'
+
 if __name__ == '__main__':
     import uniout
     #test_dir = TestDirectory()
