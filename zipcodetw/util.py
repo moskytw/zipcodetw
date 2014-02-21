@@ -26,6 +26,8 @@ class Address(object):
     UNIT  = 3
 
     TO_REPLACE_RE = re.compile(u'''
+    ^北市
+    |
     [ 　,，台-]
     |
     [０-９]
@@ -39,7 +41,7 @@ class Address(object):
     TO_REMOVE_SET = set(u' 　,，')
 
     TO_REPLACE_MAP = {
-        u'-' : u'之', u'台': u'臺',
+        u'-' : u'之', u'台': u'臺', u'北市': u'臺北市',
         u'一': u'1', u'二': u'2', u'三': u'3', u'四': u'4', u'五': u'5',
         u'六': u'6', u'七': u'7', u'八': u'8', u'九': u'9',
     }
@@ -388,6 +390,7 @@ class Directory(object):
             addr_str = addr.flat(i)
 
             rzpairs = self.get_rule_str_zipcode_pairs(addr_str)
+
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
