@@ -26,8 +26,6 @@ class Address(object):
     UNIT  = 3
 
     TO_REPLACE_RE = re.compile(u'''
-    ^北市
-    |
     [ 　,，台~-]
     |
     [０-９]
@@ -36,6 +34,8 @@ class Address(object):
     十?
     [一二三四五六七八九]
     (?=[段路街巷弄號樓])
+    |
+    ^北市
     ''', re.X)
 
     TO_REMOVE_SET = set(u' 　,，')
