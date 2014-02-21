@@ -35,7 +35,7 @@ class Address(object):
     [一二三四五六七八九]
     (?=[段路街巷弄號樓])
     |
-    ^北市
+    (?<![臺台新竹])北市(?!場)
     ''', re.X)
 
     TO_REMOVE_SET = set(u' 　,，')
