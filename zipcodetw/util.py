@@ -191,6 +191,9 @@ class Rule(Address):
         # check the rule tokens
 
         his_no_pair     = addr.parse(my_last_pos+1)
+        if self.rule_tokens and his_no_pair == (0, 0):
+            return False
+
         my_no_pair      = self.parse(-1)
         my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
