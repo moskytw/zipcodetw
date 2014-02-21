@@ -317,6 +317,7 @@ class Directory(object):
                 )
 
         if len_tokens >= 3:
+            # (a, b, c, d) -> (a, c)
             self.put_gradual(addr.pick_to_flat(0, 2), zipcode)
 
     def within_a_transaction(method):
