@@ -130,6 +130,9 @@ class StandardAddress(Address):
                         standard_tokens.append(self.tokens[i])
                         start_pos = i+1
                         break
+                else:
+                    continue
+                break
 
         self.tokens = tuple(standard_tokens+list(self.tokens[start_pos:]))
 
