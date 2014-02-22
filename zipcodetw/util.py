@@ -104,6 +104,12 @@ class Address(object):
     def __len__(self):
         return len(self.tokens)
 
+    def __getitem__(self, val):
+        try:
+            return self.tokens[val]
+        except IndexError:
+            return (u'', u'')
+
     def flat(self, sarg=None, *sargs):
         return u''.join(u''.join(token) for token in self.tokens[slice(sarg, *sargs)])
 
@@ -245,12 +251,20 @@ class Directory(object):
 
     def create_tables(self):
 
+        # Division levels for an address:
+        # 0. 直轄市, 縣
+        # 1. 區, 縣轄市, 鄉鎮 etc.
+        # 2. 路, 街 (含段)
+        # 3. 其他部分
         self.cur.execute('''
             create table precise (
-                addr_str text,
+                addr_0 text,
+                addr_1 text,
+                addr_2 text,
+                addr_3 text,
                 rule_str text,
                 zipcode  text,
-                primary key (addr_str, rule_str)
+                primary key (addr_0, addr_1, addr_2, addr_3, rule_str)
             );
         ''')
 
@@ -261,10 +275,15 @@ class Directory(object):
             );
         ''')
 
-    def put_precise(self, addr_str, rule_str, zipcode):
+    def put_precise(self, addr, rule_str, zipcode):
 
-        self.cur.execute('insert or ignore into precise values (?, ?, ?);', (
-            addr_str,
+        self.cur.execute('''
+            insert or ignore into precise values (?, ?, ?, ?, ?, ?);
+        ''', (
+            ''.join(addr[0]),
+            ''.join(addr[1]),
+            ''.join(addr[2]),
+            ''.join(addr[3]),
             rule_str,
             zipcode
         ))
@@ -299,7 +318,7 @@ class Directory(object):
         # (a, b, c)
 
         self.put_precise(
-            addr.flat(),
+            addr,
             head_addr_str+tail_rule_str,
             zipcode
         )
@@ -357,13 +376,17 @@ class Directory(object):
                 row[0].decode('utf-8'),
             )
 
-    def get_rule_str_zipcode_pairs(self, addr_str):
+    def get_rule_str_zipcode_pairs(self, addr):
 
+        tokens = addr[:4]
         self.cur.execute('''
             select rule_str, zipcode
             from   precise
-            where  addr_str = ?;
-        ''', (addr_str,))
+            where  addr_0 = ?
+                   and addr_1 = ?
+                   and addr_2 = ?
+                   and addr_3 = ?;
+        ''', [''.join(t) for t in tokens] + [''] * (4 - len(tokens)))
 
         return self.cur.fetchall()
 
@@ -387,7 +410,7 @@ class Directory(object):
 
             addr_str = addr.flat(i)
 
-            rzpairs = self.get_rule_str_zipcode_pairs(addr_str)
+            rzpairs = self.get_rule_str_zipcode_pairs(addr)
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
