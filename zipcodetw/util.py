@@ -11,7 +11,7 @@ class Address(object):
             (?P<subno>之\d+)?
             (?=[巷弄號樓])
             |
-            (?P<name>.+?)
+            (?P<name>\d|.{2,}?)
         )
         (?:
             (?P<unit>[縣市鄉鎮市區村里鄰路街段巷弄號樓])
