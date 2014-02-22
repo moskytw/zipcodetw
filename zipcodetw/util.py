@@ -119,9 +119,10 @@ class StandardAddress(Address):
     def __init__(self, addr_str):
 
         Address.__init__(self, addr_str)
+        len_tokens = len(self.tokens)
 
         standard_tokens = []
-        len_tokens = len(self.tokens)
+
         start_pos = 0
         for units in StandardAddress.LEVEL_UNITS_LIST:
             for unit in units:
@@ -131,7 +132,7 @@ class StandardAddress(Address):
                         start_pos = i+1
                         break
                 else:
-                    continue
+                    continue # if not found
                 break
 
         self.tokens = tuple(standard_tokens+list(self.tokens[start_pos:]))
