@@ -26,6 +26,8 @@ class Address(object):
     UNIT  = 3
 
     TO_REPLACE_RE = re.compile(u'''
+    ^[\u0000-\u007F]+
+    |
     [ 　,，台~-]
     |
     ^北市
@@ -47,6 +49,8 @@ class Address(object):
         u'六': u'6', u'七': u'7', u'八': u'8', u'九': u'9',
     }
 
+    CHINESE_NUMERALS_SET = set(u'一二三四五六七八九十')
+
     @staticmethod
     def normalize(s):
 
@@ -61,11 +65,14 @@ class Address(object):
                 return Address.TO_REPLACE_MAP[found]
 
             # for '十一' to '九十九'
-            len_found = len(found)
-            if len_found == 2:
-                return u'1'+Address.TO_REPLACE_MAP[found[1]]
-            if len_found == 3:
-                return Address.TO_REPLACE_MAP[found[0]]+Address.TO_REPLACE_MAP[found[2]]
+            if found[0] in Address.CHINESE_NUMERALS_SET:
+
+                len_found = len(found)
+
+                if len_found == 2:
+                    return u'1'+Address.TO_REPLACE_MAP[found[1]]
+                if len_found == 3:
+                    return Address.TO_REPLACE_MAP[found[0]]+Address.TO_REPLACE_MAP[found[2]]
 
             return u''
 
