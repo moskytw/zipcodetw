@@ -28,6 +28,8 @@ class Address(object):
     TO_REPLACE_RE = re.compile(u'''
     ^[\u0000-\u007F]+
     |
+    [台臺]灣省?(?!大道|港務)
+    |
     [ 　,，台~-]
     |
     (?<![臺台新竹])北市(?!場)
