@@ -38,8 +38,7 @@ class Address(object):
     ^北市
     ''', re.X)
 
-    TO_REMOVE_SET = set(u' 　,，')
-
+    # the strs to replace not in here will be removed
     TO_REPLACE_MAP = {
         u'-': u'之', u'~': u'之', u'台': u'臺', u'北市': u'臺北市',
         u'一': u'1', u'二': u'2', u'三': u'3', u'四': u'4', u'五': u'5',
@@ -56,8 +55,6 @@ class Address(object):
 
             found = m.group()
 
-            if found in Address.TO_REMOVE_SET:
-                return u''
             if found in Address.TO_REPLACE_MAP:
                 return Address.TO_REPLACE_MAP[found]
 
@@ -72,6 +69,8 @@ class Address(object):
                 return u'1'+Address.TO_REPLACE_MAP[found[1]]
             if len_found == 3:
                 return Address.TO_REPLACE_MAP[found[0]]+Address.TO_REPLACE_MAP[found[2]]
+
+            return u''
 
         s = Address.TO_REPLACE_RE.sub(replace, s)
 
