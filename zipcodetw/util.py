@@ -28,14 +28,14 @@ class Address(object):
     TO_REPLACE_RE = re.compile(u'''
     [ 　,，台~-]
     |
+    ^北市
+    |
     [０-９]
     |
     [一二三四五六七八九]?
     十?
     [一二三四五六七八九]
     (?=[段路街巷弄號樓])
-    |
-    ^北市
     ''', re.X)
 
     # the strs to replace not in here will be removed
