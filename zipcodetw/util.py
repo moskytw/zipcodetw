@@ -83,7 +83,6 @@ class Address(object):
 
     def __init__(self, addr_str):
         self.tokens = tuple(Address.tokenize(addr_str))
-        # TODO: filter insignificant tokens out
 
     def __len__(self):
         return len(self.tokens)
