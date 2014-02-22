@@ -77,31 +77,13 @@ class Address(object):
 
         return s
 
-    TO_INGORE = set(u'鄰里村')
-
     @staticmethod
     def tokenize(addr_str):
-
-        tokens = Address.TOKEN_RE.findall(Address.normalize(addr_str))
-
-        # remove tokens whose unit is in TO_INGORE
-
-        len_tokens = len(tokens)
-
-        i = 2
-        while i < len_tokens:
-            name = tokens[i][Address.NAME]
-            unit = tokens[i][Address.UNIT]
-            if unit and unit in Address.TO_INGORE and name != u'宮后':
-                del tokens[i]
-                len_tokens -= 1
-            else:
-                i += 1
-
-        return tuple(tokens)
+        return Address.TOKEN_RE.findall(Address.normalize(addr_str))
 
     def __init__(self, addr_str):
-        self.tokens = Address.tokenize(addr_str)
+        self.tokens = tuple(Address.tokenize(addr_str))
+        # TODO: filter insignificant tokens out
 
     def __len__(self):
         return len(self.tokens)
