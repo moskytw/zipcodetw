@@ -360,15 +360,18 @@ class Directory(object):
 
     def get_rule_str_zipcode_pairs(self, addr):
 
-        tokens = addr[:4]
-        self.cur.execute('''
+        where_params = ([], [])
+        for level, token in enumerate(addr.tokens[:4]):
+            where_params[0].append('addr_%d = ?' % level)
+            where_params[1].append(''.join(token))
+
+        query = '''
             select rule_str, zipcode
             from   precise
-            where  addr_0 = ?
-                   and addr_1 = ?
-                   and addr_2 = ?
-                   and addr_3 = ?;
-        ''', [''.join(t) for t in tokens] + [''] * (4 - len(tokens)))
+            where  %s;
+        ''' % (' and '.join(where_params[0]))
+
+        self.cur.execute(query, where_params[1])
 
         return self.cur.fetchall()
 
