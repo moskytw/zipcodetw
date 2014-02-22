@@ -41,6 +41,8 @@ class Address(object):
     # the strs to replace not in here will be removed
     TO_REPLACE_MAP = {
         u'-': u'之', u'~': u'之', u'台': u'臺', u'北市': u'臺北市',
+        u'１': u'1', u'２': u'2', u'３': u'3', u'４': u'4', u'５': u'5',
+        u'６': u'6', u'７': u'7', u'８': u'8', u'９': u'9', u'０': u'0',
         u'一': u'1', u'二': u'2', u'三': u'3', u'四': u'4', u'五': u'5',
         u'六': u'6', u'七': u'7', u'八': u'8', u'九': u'9',
     }
@@ -58,13 +60,8 @@ class Address(object):
             if found in Address.TO_REPLACE_MAP:
                 return Address.TO_REPLACE_MAP[found]
 
-            len_found = len(found)
-
-            # 65296 = '０'; 65305 = '９'; 65248 = '０'-'0'
-            if len_found == 1 and 65296 <= ord(found) <= 65305:
-                return unichr(ord(found)-65248)
-
             # for '十一' to '九十九'
+            len_found = len(found)
             if len_found == 2:
                 return u'1'+Address.TO_REPLACE_MAP[found[1]]
             if len_found == 3:
