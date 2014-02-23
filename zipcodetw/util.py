@@ -26,13 +26,7 @@ class Address(object):
     UNIT  = 3
 
     TO_REPLACE_RE = re.compile(u'''
-        ^[\u0000-\u007F]+
-        |
-        [台臺]灣省?(?!大道|港務)
-        |
         [ 　,，台~-]
-        |
-        (?<![臺台新竹])北市(?!場)
         |
         [０-９]
         |
@@ -70,7 +64,6 @@ class Address(object):
             if found[0] in Address.CHINESE_NUMERALS_SET:
 
                 len_found = len(found)
-
                 if len_found == 2:
                     return u'1'+Address.TO_REPLACE_MAP[found[1]]
                 if len_found == 3:
