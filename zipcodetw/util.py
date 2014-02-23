@@ -366,7 +366,13 @@ class Directory(object):
         addr = Address(addr_str)
         len_addr_tokens = len(addr.tokens)
 
-        for i in range(len_addr_tokens, 0, -1):
+        start_len = len_addr_tokens
+        while start_len >= 0:
+            if addr.parse(start_len-1) == (0, 0):
+                break
+            start_len -= 1
+
+        for i in range(start_len, 0, -1):
 
             addr_str = addr.flat(i)
 
@@ -374,7 +380,7 @@ class Directory(object):
 
             # for special cases
             if (
-                i == len_addr_tokens and
+                i == start_len and
                 len_addr_tokens >= 4 and
                 addr.tokens[2][Address.UNIT] in u'村里' and
                 not rzpairs
