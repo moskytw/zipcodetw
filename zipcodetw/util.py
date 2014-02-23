@@ -38,7 +38,7 @@ class Address(object):
 
     # the strs matched but not in here will be removed
     TO_REPLACE_MAP = {
-        u'-': u'之', u'~': u'之', u'台': u'臺', u'北市': u'臺北市',
+        u'-': u'之', u'~': u'之', u'台': u'臺',
         u'１': u'1', u'２': u'2', u'３': u'3', u'４': u'4', u'５': u'5',
         u'６': u'6', u'７': u'7', u'８': u'8', u'９': u'9', u'０': u'0',
         u'一': u'1', u'二': u'2', u'三': u'3', u'四': u'4', u'五': u'5',
