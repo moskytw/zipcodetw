@@ -1,7 +1,7 @@
-.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.5
+.. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.6
    :target: https://pypi.python.org/pypi/zipcodetw
 
-.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.5
+.. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.6
    :target: https://pypi.python.org/pypi/zipcodetw
 
 The ZIP Code Finder for Taiwan
@@ -74,6 +74,15 @@ from: http://www.post.gov.tw/post/internet/down/index.html#1808
 
 Changelog
 ---------
+
+v0.5.6
+~~~~~~
+
+1. Reverted removing insignificant tokens introduced in v0.5.4.
+2. It now handles insignificant tokens; and
+3. redundant units in the finding logic (``directory.find``).
+4. Allowed number token ends without unit.
+5. Now ``address.tokens`` is a list.
 
 v0.5.5
 ~~~~~~
