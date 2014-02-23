@@ -331,6 +331,8 @@ class TestDirectory(object):
 20248,基隆市,中正區,環港街,全
 20243,基隆市,中正區,豐稔街,全
 20249,基隆市,中正區,觀海街,全
+22441,新北市,瑞芳區,中山路,　   2號
+22744,新北市,雙溪區,中山路,全
 36046,苗栗縣,苗栗市,大埔街,全
 81245,高雄市,小港區,豐田街,全
 81245,高雄市,小港區,豐登街,全
@@ -413,6 +415,10 @@ class TestDirectory(object):
         assert self.dir_.find('大埔街') == ''
         assert self.dir_.find('台北市大埔街') == '10068'
         assert self.dir_.find('苗栗縣大埔街') == '36046'
+
+    def test_find_divless(self):
+        assert self.dir_.find('臺北市八德路１段1號') == '10058'
+        assert self.dir_.find('新北市中山路2號') == '22'
 
 if __name__ == '__main__':
     import uniout

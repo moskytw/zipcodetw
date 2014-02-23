@@ -25,6 +25,9 @@ class Address(object):
     NAME  = 2
     UNIT  = 3
 
+    UNITS_0 = u'縣市'
+    UNITS_2 = u'里鄰路段街'
+
     TO_REPLACE_RE = re.compile(u'''
     [ 　,，台-]
     |
@@ -98,8 +101,12 @@ class Address(object):
 
         return tuple(tokens)
 
-    def __init__(self, addr_str):
-        self.tokens = Address.tokenize(addr_str)
+    def __init__(self, str_or_tokens):
+        if isinstance(str_or_tokens, (tuple, list)):
+            tokens = str_or_tokens
+        else:
+            tokens = Address.tokenize(str_or_tokens)
+        self.tokens = tokens
 
     def __len__(self):
         return len(self.tokens)
@@ -182,6 +189,15 @@ class Rule(Address):
         my_last_pos = len(self.tokens)-1
         my_last_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
         my_last_pos -= u'至' in self.rule_tokens
+
+        # Attempts to fill a level-1 token if the input address lacks one.
+
+        addr_tokens = [t for t in addr.tokens]
+        if (len(addr_tokens) > 1
+                and addr_tokens[0][Address.UNIT] in Address.UNITS_0
+                and addr_tokens[1][Address.UNIT] in Address.UNITS_2):
+            addr_tokens.insert(1, self.tokens[1])
+            addr = Address(addr_tokens)
 
         # tokens must be matched exactly
 
@@ -376,12 +392,19 @@ class Directory(object):
                 row[0].decode('utf-8'),
             )
 
-    def get_rule_str_zipcode_pairs(self, addr):
+    def get_rule_str_zipcode_pairs(self, addr, *sargs):
 
         where_params = ([], [])
-        for level, token in enumerate(addr.tokens[:4]):
+
+        level = 0
+        tokens = addr.tokens[slice(*sargs)]
+        while level < min(4, len(tokens)):
+            token = tokens[level]
+            if level == 1 and token[Address.UNIT] in Address.UNITS_2:
+                level += 1
             where_params[0].append('addr_%d = ?' % level)
             where_params[1].append(''.join(token))
+            level += 1
 
         query = '''
             select rule_str, zipcode
@@ -393,13 +416,13 @@ class Directory(object):
 
         return self.cur.fetchall()
 
-    def get_gradual_zipcode(self, addr_str):
+    def get_gradual_zipcode(self, addr, *sargs):
 
         self.cur.execute('''
             select zipcode
             from   gradual
             where  addr_str = ?;
-        ''', (addr_str,))
+        ''', (addr.flat(*sargs),))
 
         row = self.cur.fetchone()
         return row and row[0] or None
@@ -410,16 +433,18 @@ class Directory(object):
         addr = Address(addr_str)
 
         for i in range(len(addr.tokens), 0, -1):
-
-            addr_str = addr.flat(i)
-
-            rzpairs = self.get_rule_str_zipcode_pairs(addr)
+            rzpairs = self.get_rule_str_zipcode_pairs(addr, i)
             if rzpairs:
+                match = None
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
-                        return zipcode
-
-            gzipcode = self.get_gradual_zipcode(addr_str)
+                        if match:   # Multiple matches found. Failed.
+                            break
+                        match = zipcode
+                else:
+                    if match:
+                        return match
+            gzipcode = self.get_gradual_zipcode(addr, i)
             if gzipcode:
                 return gzipcode
 
