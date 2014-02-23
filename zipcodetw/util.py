@@ -14,7 +14,7 @@ class Address(object):
             (?P<name>.+?)
         )
         (?:
-            (?P<unit>[縣市鄉鎮市區村里路街段巷弄號樓])
+            (?P<unit>[縣市鄉鎮市區村里鄰路街段巷弄號樓])
             |
             (?=\d+(?:之\d+)?[巷弄號樓]|$)
         )
@@ -386,12 +386,16 @@ class Directory(object):
                 not rzpairs
             ):
 
+                # for insignificant token (whose unit is 鄰)
+                if addr.tokens[3][Address.UNIT] == u'鄰':
+                    del addr.tokens[3]
+
                 if addr.tokens[3][Address.UNIT] == u'號':
                     # for redundant unit
                     addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
                     rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
                 else:
-                    # for insignificant token
+                    # for insignificant token (whose unit is 村 or 里)
                     del addr.tokens[2]
                     rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
 
