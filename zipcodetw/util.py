@@ -364,12 +364,30 @@ class Directory(object):
     def find(self, addr_str):
 
         addr = Address(addr_str)
+        len_addr_tokens = len(addr.tokens)
 
-        for i in range(len(addr.tokens), 0, -1):
+        for i in range(len_addr_tokens, 0, -1):
 
             addr_str = addr.flat(i)
 
             rzpairs = self.get_rule_str_zipcode_pairs(addr_str)
+
+            # for special cases
+            if (
+                i == len_addr_tokens and
+                len_addr_tokens >= 4 and
+                addr.tokens[2][Address.UNIT] in u'村里' and
+                not rzpairs
+            ):
+
+                if addr.tokens[3][Address.UNIT] == u'號':
+                    # for redundant unit
+                    addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
+                    rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
+                else:
+                    # for insignificant token
+                    del addr.tokens[2]
+                    rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
 
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
