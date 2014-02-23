@@ -77,7 +77,7 @@ class Address(object):
 
     @staticmethod
     def tokenize(addr_str):
-        return tuple(Address.TOKEN_RE.findall(Address.normalize(addr_str)))
+        return Address.TOKEN_RE.findall(Address.normalize(addr_str))
 
     def __init__(self, addr_str):
         self.tokens = Address.tokenize(addr_str)
