@@ -92,7 +92,7 @@ class Address(object):
         return u''.join(u''.join(self.tokens[idx]) for idx in idxs)
 
     def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.flat())
+        return 'Address(%r)' % self.flat()
 
     def parse(self, idx):
         try:
