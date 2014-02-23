@@ -11,7 +11,7 @@ class Address(object):
             (?P<subno>之\d+)?
             (?=[巷弄號樓])
             |
-            (?P<name>\d|.{2,}?)
+            (?P<name>.+?)
         )
         (?:
             (?P<unit>[縣市鄉鎮市區村里鄰路街段巷弄號樓])
@@ -111,31 +111,6 @@ class Address(object):
                 int(token[Address.NO]        or 0),
                 int(token[Address.SUBNO][1:] or 0)
             )
-
-class StandardAddress(Address):
-
-    LEVEL_UNITS_LIST = [u'縣市', u'區市鎮鄉', u'路街里']
-
-    def __init__(self, addr_str):
-
-        Address.__init__(self, addr_str)
-        len_tokens = len(self.tokens)
-
-        standard_tokens = []
-
-        start_pos = 0
-        for units in StandardAddress.LEVEL_UNITS_LIST:
-            for unit in units:
-                for i in range(start_pos, len_tokens):
-                    if self.tokens[i][Address.UNIT] == unit:
-                        standard_tokens.append(self.tokens[i])
-                        start_pos = i+1
-                        break
-                else:
-                    continue # if not found
-                break
-
-        self.tokens = tuple(standard_tokens+list(self.tokens[start_pos:]))
 
 class Rule(Address):
 
@@ -395,7 +370,7 @@ class Directory(object):
     @within_a_transaction
     def find(self, addr_str):
 
-        addr = StandardAddress(addr_str)
+        addr = Address(addr_str)
 
         for i in range(len(addr.tokens), 0, -1):
 
