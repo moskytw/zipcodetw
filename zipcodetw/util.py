@@ -36,7 +36,7 @@ class Address(object):
         (?=[段路街巷弄號樓])
     ''', re.X)
 
-    # the strs to replace not in here will be removed
+    # the strs matched but not in here will be removed
     TO_REPLACE_MAP = {
         u'-': u'之', u'~': u'之', u'台': u'臺', u'北市': u'臺北市',
         u'１': u'1', u'２': u'2', u'３': u'3', u'４': u'4', u'５': u'5',
@@ -366,6 +366,7 @@ class Directory(object):
         addr = Address(addr_str)
         len_addr_tokens = len(addr.tokens)
 
+        # avoid unnecessary iteration
         start_len = len_addr_tokens
         while start_len >= 0:
             if addr.parse(start_len-1) == (0, 0):
@@ -378,24 +379,25 @@ class Directory(object):
 
             rzpairs = self.get_rule_str_zipcode_pairs(addr_str)
 
-            # for special cases
+            # for handling insignificant tokens and redundant unit
             if (
+                # It only runs once, and must be the first iteration.
                 i == start_len and
                 len_addr_tokens >= 4 and
                 addr.tokens[2][Address.UNIT] in u'村里' and
                 not rzpairs
             ):
 
-                # for insignificant token (whose unit is 鄰)
                 if addr.tokens[3][Address.UNIT] == u'鄰':
+                    # delete the insignificant token (whose unit is 鄰)
                     del addr.tokens[3]
 
                 if addr.tokens[3][Address.UNIT] == u'號':
-                    # for redundant unit
+                    # empty the redundant unit in the token
                     addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
                     rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
                 else:
-                    # for insignificant token (whose unit is 村 or 里)
+                    # delete insignificant token (whose unit is 村 or 里)
                     del addr.tokens[2]
                     rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
 
