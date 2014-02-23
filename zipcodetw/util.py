@@ -9,7 +9,7 @@ class Address(object):
         (?:
             (?P<no>\d+)
             (?P<subno>之\d+)?
-            (?=[巷弄號樓])
+            (?=[巷弄號樓]|$)
             |
             (?P<name>.+?)
         )
