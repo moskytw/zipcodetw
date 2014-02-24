@@ -458,6 +458,7 @@ class Directory(object):
                 else:
                     if match:
                         return match
+
             gzipcode = self.get_gradual_zipcode(addr, i)
             if gzipcode:
                 return gzipcode
