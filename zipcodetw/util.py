@@ -96,7 +96,7 @@ class Address(object):
         try:
             return self.tokens[val]
         except IndexError:
-            return (u'', u'')
+            return (u'', u'', u'', u'')
 
     def flat(self, sarg=None, *sargs):
         return u''.join(u''.join(token) for token in self.tokens[slice(sarg, *sargs)])
