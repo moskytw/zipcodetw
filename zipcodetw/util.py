@@ -20,6 +20,21 @@ class Address(object):
         )
     ''', re.X)
 
+    TOKEN_EXACT_RE = re.compile(u'''
+        (?:
+            (?P<no>\d+)
+            (?P<subno>之\d+)?
+            (?=[巷弄號樓]|$)
+            |
+            (?P<name>.+)
+        )
+        (?:
+            (?P<unit>[縣市鄉鎮市區村里鄰路街段巷弄號樓])
+            |
+            (?=\d+(?:之\d+)?[巷弄號樓]|$)
+        )
+    ''', re.X)
+
     NO    = 0
     SUBNO = 1
     NAME  = 2
@@ -76,11 +91,23 @@ class Address(object):
         return s
 
     @staticmethod
-    def tokenize(addr_str):
-        return Address.TOKEN_RE.findall(Address.normalize(addr_str))
+    def tokenize(str_or_tokens):
+        # Build tokens directly if the input is an non-string iterable
+        if (not isinstance(str_or_tokens, basestring)
+                and hasattr(str_or_tokens, '__iter__')):
+            tokens = []
+            for token_str in str_or_tokens:
+                token_str = Address.normalize(token_str)
+                match = Address.TOKEN_EXACT_RE.match(token_str)
+                if match:
+                    tokens.append(tuple(g or u'' for g in match.groups()))
+            return tokens
 
-    def __init__(self, addr_str):
-        self.tokens = Address.tokenize(addr_str)
+        # Default behaviour
+        return Address.TOKEN_RE.findall(Address.normalize(str_or_tokens))
+
+    def __init__(self, str_or_tokens):
+        self.tokens = Address.tokenize(str_or_tokens)
 
     def __len__(self):
         return len(self.tokens)
@@ -303,9 +330,9 @@ class Directory(object):
 
         return self.cur.rowcount
 
-    def put(self, head_addr_str, tail_rule_str, zipcode):
+    def put(self, head_addr_parts, tail_rule_str, zipcode):
 
-        addr = Address(head_addr_str)
+        addr = Address(head_addr_parts)
 
         # (a, b, c)
 
@@ -379,7 +406,7 @@ class Directory(object):
 
         for row in csv.reader(lines_iter):
             self.put(
-                ''.join(row[1:-1]).decode('utf-8'),
+                [c.decode('utf-8') for c in row[1:-1]],
                 row[-1].decode('utf-8'),
                 row[0].decode('utf-8'),
             )
