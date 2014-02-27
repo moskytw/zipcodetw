@@ -8,12 +8,14 @@ def test_address_init():
     expected_tokens = [(u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'', u'', u'號')]
     assert Address(u'臺北市大安區市府路1號').tokens == expected_tokens
     assert Address('臺北市大安區市府路1號').tokens == expected_tokens
+    assert Address(['臺北市', '大安區', '市府路', '1號']).tokens == expected_tokens
 
 def test_address_init_subno():
 
     expected_tokens = [(u'', u'', u'臺北', u'市'), (u'', u'', u'大安', u'區'), (u'', u'', u'市府', u'路'), (u'1', u'之1', u'', u'號')]
     assert Address(u'臺北市大安區市府路1之1號').tokens == expected_tokens
     assert Address('臺北市大安區市府路1之1號').tokens == expected_tokens
+    assert Address(['臺北市', '大安區', '市府路', '1之1號']).tokens == expected_tokens
 
 def test_address_init_tricky_input():
 
@@ -331,6 +333,7 @@ class TestDirectory(object):
 20248,基隆市,中正區,環港街,全
 20243,基隆市,中正區,豐稔街,全
 20249,基隆市,中正區,觀海街,全
+20743,新北市,萬里區,忠三街,全
 22441,新北市,瑞芳區,中山路,　   2號
 22744,新北市,雙溪區,中山路,全
 36046,苗栗縣,苗栗市,大埔街,全
@@ -419,6 +422,7 @@ class TestDirectory(object):
     def test_find_divless(self):
         assert self.dir_.find('臺北市八德路１段1號') == '10058'
         assert self.dir_.find('新北市中山路2號') == '22'
+        assert self.dir_.find('新北市萬里區忠3街') == '20743'
 
 if __name__ == '__main__':
     import uniout
