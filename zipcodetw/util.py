@@ -396,11 +396,11 @@ class Directory(object):
                 if len_addr_tokens >= 4 and addr.tokens[3][Address.UNIT] == u'號':
                     # empty the redundant unit in the token
                     addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
-                    rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
                 else:
                     # delete insignificant token (whose unit is 村 or 里)
                     del addr.tokens[2]
-                    rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
+
+                rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
 
             if rzpairs:
                 for rule_str, zipcode in rzpairs:
