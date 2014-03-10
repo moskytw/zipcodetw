@@ -391,8 +391,9 @@ class Directory(object):
                 if addr.tokens[3][Address.UNIT] == u'鄰':
                     # delete the insignificant token (whose unit is 鄰)
                     del addr.tokens[3]
+                    len_addr_tokens -= 1
 
-                if addr.tokens[3][Address.UNIT] == u'號':
+                if len_addr_tokens >= 4 and addr.tokens[3][Address.UNIT] == u'號':
                     # empty the redundant unit in the token
                     addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
                     rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
