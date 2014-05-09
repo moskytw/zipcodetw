@@ -62,7 +62,6 @@ class Address(object):
 
             # for '十一' to '九十九'
             if found[0] in Address.CHINESE_NUMERALS_SET:
-
                 len_found = len(found)
                 if len_found == 2:
                     return u'1'+Address.TO_REPLACE_MAP[found[1]]
@@ -171,7 +170,7 @@ class Rule(Address):
 
         # check the rule tokens
 
-        his_no_pair     = addr.parse(my_last_pos+1)
+        his_no_pair = addr.parse(my_last_pos+1)
         if self.rule_tokens and his_no_pair == (0, 0):
             return False
 
