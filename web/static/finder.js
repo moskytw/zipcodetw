@@ -7,7 +7,7 @@ var Finder = window.Finder = function () {
     this.$address_with_zipcode = this.$view.find('.address-with-zipcode');
     this.$loader = this.$view.find('.loader');
 
-    this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓]/;
+    this._units_re = /[縣市鄉鎮市區村里路段街巷弄號樓F]/;
     this._model = {};
 
     this.$address.on('input',
