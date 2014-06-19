@@ -44,6 +44,20 @@ After v0.3, you even can find ZIP code like:
     >>> zipcodetw.find('台北市秀山街')
     u'10042'
 
+Translate address to english gradually:
+
+.. code-block:: python
+
+    >>> import zipcodetw
+    >>> zipcodetw.translate('臺北市')
+    u'Taipei City, Taiwan (R.O.C.)'
+    >>> zipcodetw.translate('臺北市信義區')
+    u'Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+    >>> zipcodetw.translate('臺北市信義區市府路')
+    u'Shifu Rd., Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+    >>> zipcodetw.translate('臺北市信義區市府路1號')
+    u'No. 1, Shifu Rd., Xinyi Dist., Taipei City, Taiwan (R.O.C.)'
+
 Installation
 ------------
 
