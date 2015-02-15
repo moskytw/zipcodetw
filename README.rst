@@ -69,11 +69,16 @@ have to build an index manually:
 Data
 ----
 
-The ZIP code directory is provided by Chunghwa Post, and is available
-from: http://www.post.gov.tw/post/internet/down/index.html#1808
+The ZIP code directory is provided by Chunghwa Post, and is available from:
+http://www.post.gov.tw/post/internet/Download/all_list.jsp?ID=2201#dl_txt_s_A0206
 
 Changelog
 ---------
+
+v0.6
+~~~~
+
+1. Updated the data to 2014/12.
 
 v0.5.7
 ~~~~~~
