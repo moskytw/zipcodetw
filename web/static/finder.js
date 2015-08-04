@@ -70,7 +70,11 @@ Finder.prototype.model = function (model_changed) {
 
             _this.model({zipcode: ''});
 
-        } else if (this._units_re.test(address.slice(-1))) {
+        } else if (
+            // TODO: make it as a function
+            this._units_re.test(address.slice(-1)) ||
+            /[之-]/.test(address)
+        ) {
 
             // try cache or send request
             var zipcode = Finder.cache[address];
