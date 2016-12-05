@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 
 import sys
 import zipcodetw.builder
@@ -40,9 +41,9 @@ setup(
     ],
 
     packages = find_packages(),
+    install_requires = ['six', 'unicodecsv'],
     package_data = {'zipcodetw': ['*.csv', '*.db']},
 
     cmdclass = {'install': zipcodetw_install},
 
 )
-

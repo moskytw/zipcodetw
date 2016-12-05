@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import unicode_literals
 
 import sys
 from . import _chp_csv_path, _db_path
@@ -17,7 +19,7 @@ def build(chp_csv_path=None, db_path=None):
     # build the index
 
     dir_ = Directory(db_path)
-    with open(chp_csv_path) as csv_f:
+    with open(chp_csv_path, 'rb') as csv_f:
         dir_.load_chp_csv(csv_f)
 
 def build_cmd(chp_csv_path=None, db_path=None):

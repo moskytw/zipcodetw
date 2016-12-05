@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import unicode_literals
 
 import re
+import six
 
 class Address(object):
 
@@ -50,7 +53,7 @@ class Address(object):
     @staticmethod
     def normalize(s):
 
-        if isinstance(s, str):
+        if isinstance(s, six.binary_type):
             s = s.decode('utf-8')
 
         def replace(m):
@@ -196,7 +199,7 @@ class Rule(Address):
         return True
 
 import sqlite3
-import csv
+import unicodecsv as csv
 from functools import wraps
 
 class Directory(object):
@@ -333,9 +336,9 @@ class Directory(object):
 
         for row in csv.reader(lines_iter):
             self.put(
-                ''.join(row[1:-1]).decode('utf-8'),
-                row[-1].decode('utf-8'),
-                row[0].decode('utf-8'),
+                ''.join(row[1:-1]),
+                row[-1],
+                row[0],
             )
 
     def get_rule_str_zipcode_pairs(self, addr_str):
