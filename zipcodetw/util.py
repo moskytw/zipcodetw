@@ -5,7 +5,7 @@ import re
 
 class Address(object):
 
-    TOKEN_RE = re.compile(u'''
+    TOKEN_RE = re.compile('''
         (?:
             (?P<no>\d+)
             (?P<subno>之\d+)?
@@ -25,7 +25,7 @@ class Address(object):
     NAME  = 2
     UNIT  = 3
 
-    TO_REPLACE_RE = re.compile(u'''
+    TO_REPLACE_RE = re.compile('''
         [ 　,，台~-]
         |
         [０-９]
@@ -38,14 +38,14 @@ class Address(object):
 
     # the strs matched but not in here will be removed
     TO_REPLACE_MAP = {
-        u'-': u'之', u'~': u'之', u'台': u'臺',
-        u'１': u'1', u'２': u'2', u'３': u'3', u'４': u'4', u'５': u'5',
-        u'６': u'6', u'７': u'7', u'８': u'8', u'９': u'9', u'０': u'0',
-        u'一': u'1', u'二': u'2', u'三': u'3', u'四': u'4', u'五': u'5',
-        u'六': u'6', u'七': u'7', u'八': u'8', u'九': u'9',
+        '-': '之', '~': '之', '台': '臺',
+        '１': '1', '２': '2', '３': '3', '４': '4', '５': '5',
+        '６': '6', '７': '7', '８': '8', '９': '9', '０': '0',
+        '一': '1', '二': '2', '三': '3', '四': '4', '五': '5',
+        '六': '6', '七': '7', '八': '8', '九': '9',
     }
 
-    CHINESE_NUMERALS_SET = set(u'一二三四五六七八九十')
+    CHINESE_NUMERALS_SET = set('一二三四五六七八九十')
 
     @staticmethod
     def normalize(s):
@@ -64,11 +64,11 @@ class Address(object):
             if found[0] in Address.CHINESE_NUMERALS_SET:
                 len_found = len(found)
                 if len_found == 2:
-                    return u'1'+Address.TO_REPLACE_MAP[found[1]]
+                    return '1'+Address.TO_REPLACE_MAP[found[1]]
                 if len_found == 3:
                     return Address.TO_REPLACE_MAP[found[0]]+Address.TO_REPLACE_MAP[found[2]]
 
-            return u''
+            return ''
 
         s = Address.TO_REPLACE_RE.sub(replace, s)
 
@@ -85,10 +85,10 @@ class Address(object):
         return len(self.tokens)
 
     def flat(self, sarg=None, *sargs):
-        return u''.join(u''.join(token) for token in self.tokens[slice(sarg, *sargs)])
+        return ''.join(''.join(token) for token in self.tokens[slice(sarg, *sargs)])
 
     def pick_to_flat(self, *idxs):
-        return u''.join(u''.join(self.tokens[idx]) for idx in idxs)
+        return ''.join(''.join(self.tokens[idx]) for idx in idxs)
 
     def __repr__(self):
         return 'Address(%r)' % self.flat()
@@ -106,7 +106,7 @@ class Address(object):
 
 class Rule(Address):
 
-    RULE_TOKEN_RE = re.compile(u'''
+    RULE_TOKEN_RE = re.compile('''
         及以上附號|含附號以下|含附號全|含附號
         |
         以下|以上
@@ -126,12 +126,12 @@ class Rule(Address):
         def extract(m):
 
             token = m.group()
-            retval = u''
+            retval = ''
 
-            if token == u'連':
-                token = u''
-            elif token == u'附號全':
-                retval = u'號'
+            if token == '連':
+                token = ''
+            elif token == '附號全':
+                retval = '號'
 
             if token:
                 rule_tokens.add(token)
@@ -147,15 +147,15 @@ class Rule(Address):
         Address.__init__(self, addr_str)
 
     def __repr__(self):
-        return 'Rule(%r)' % (self.flat()+u''.join(self.rule_tokens))
+        return 'Rule(%r)' % (self.flat()+''.join(self.rule_tokens))
 
     def match(self, addr):
 
         # except tokens reserved for rule token
 
         my_last_pos = len(self.tokens)-1
-        my_last_pos -= bool(self.rule_tokens) and u'全' not in self.rule_tokens
-        my_last_pos -= u'至' in self.rule_tokens
+        my_last_pos -= bool(self.rule_tokens) and '全' not in self.rule_tokens
+        my_last_pos -= '至' in self.rule_tokens
 
         # tokens must be matched exactly
 
@@ -178,18 +178,18 @@ class Rule(Address):
         my_asst_no_pair = self.parse(-2)
         for rt in self.rule_tokens:
             if (
-                (rt == u'單'         and not his_no_pair[0] & 1 == 1) or
-                (rt == u'雙'         and not his_no_pair[0] & 1 == 0) or
-                (rt == u'以上'       and not his_no_pair >= my_no_pair) or
-                (rt == u'以下'       and not his_no_pair <= my_no_pair) or
-                (rt == u'至'         and not (
+                (rt == '單'         and not his_no_pair[0] & 1 == 1) or
+                (rt == '雙'         and not his_no_pair[0] & 1 == 0) or
+                (rt == '以上'       and not his_no_pair >= my_no_pair) or
+                (rt == '以下'       and not his_no_pair <= my_no_pair) or
+                (rt == '至'         and not (
                     my_asst_no_pair <= his_no_pair <= my_no_pair or
-                    u'含附號全' in self.rule_tokens and his_no_pair[0] == my_no_pair[0]
+                    '含附號全' in self.rule_tokens and his_no_pair[0] == my_no_pair[0]
                 )) or
-                (rt == u'含附號'     and not  his_no_pair[0] == my_no_pair[0]) or
-                (rt == u'附號全'     and not (his_no_pair[0] == my_no_pair[0] and his_no_pair[1] > 0)) or
-                (rt == u'及以上附號' and not  his_no_pair >= my_no_pair) or
-                (rt == u'含附號以下' and not (his_no_pair <= my_no_pair  or his_no_pair[0] == my_no_pair[0]))
+                (rt == '含附號'     and not  his_no_pair[0] == my_no_pair[0]) or
+                (rt == '附號全'     and not (his_no_pair[0] == my_no_pair[0] and his_no_pair[1] > 0)) or
+                (rt == '及以上附號' and not  his_no_pair >= my_no_pair) or
+                (rt == '含附號以下' and not (his_no_pair <= my_no_pair  or his_no_pair[0] == my_no_pair[0]))
             ):
                 return False
 
@@ -383,18 +383,18 @@ class Directory(object):
                 # It only runs once, and must be the first iteration.
                 i == start_len and
                 len_addr_tokens >= 4 and
-                addr.tokens[2][Address.UNIT] in u'村里' and
+                addr.tokens[2][Address.UNIT] in '村里' and
                 not rzpairs
             ):
 
-                if addr.tokens[3][Address.UNIT] == u'鄰':
+                if addr.tokens[3][Address.UNIT] == '鄰':
                     # delete the insignificant token (whose unit is 鄰)
                     del addr.tokens[3]
                     len_addr_tokens -= 1
 
-                if len_addr_tokens >= 4 and addr.tokens[3][Address.UNIT] == u'號':
+                if len_addr_tokens >= 4 and addr.tokens[3][Address.UNIT] == '號':
                     # empty the redundant unit in the token
-                    addr.tokens[2] = (u'', u'', addr.tokens[2][Address.NAME], u'')
+                    addr.tokens[2] = ('', '', addr.tokens[2][Address.NAME], '')
                 else:
                     # delete insignificant token (whose unit is 村 or 里)
                     del addr.tokens[2]
@@ -410,4 +410,4 @@ class Directory(object):
             if gzipcode:
                 return gzipcode
 
-        return u''
+        return ''

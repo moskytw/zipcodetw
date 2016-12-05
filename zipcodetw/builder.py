@@ -27,10 +27,10 @@ def build_cmd(chp_csv_path=None, db_path=None):
     -o, --db-path       The output path.
     '''
 
-    print 'Building ZIP code index ...',
+    print('Building ZIP code index ...', end=' ')
     sys.stdout.flush()
     build(chp_csv_path, db_path)
-    print 'Done.'
+    print('Done.')
 
 if __name__ == '__main__':
 

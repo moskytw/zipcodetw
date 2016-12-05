@@ -8,7 +8,7 @@ from setuptools.command.install import install
 class zipcodetw_install(install):
 
     def run(self):
-        print 'Building ZIP code index ... '
+        print('Building ZIP code index ... ')
         sys.stdout.flush()
         zipcodetw.builder.build()
         install.run(self)

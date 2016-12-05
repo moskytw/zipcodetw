@@ -8,7 +8,7 @@ start = time()
 import zipcodetw
 end = time()
 
-print 'The package took {:.2f} seconds to load.'.format(end-start)
+print('The package took {:.2f} seconds to load.'.format(end-start))
 
 def test_find():
 
@@ -31,4 +31,4 @@ def test_find():
     zipcodetw.find('臺南市中西區府前路1段226號')
 
 n = 1000
-print 'Timeit test_find with n={} took {:.2f} seconds.'.format(n, timeit(test_find, number=n))
+print('Timeit test_find with n={} took {:.2f} seconds.'.format(n, timeit(test_find, number=n)))
