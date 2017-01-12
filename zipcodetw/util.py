@@ -20,6 +20,21 @@ class Address(object):
         )
     ''', re.X)
 
+    TOKEN_EXACT_RE = re.compile(u'''
+        (?:
+            (?P<no>\d+)
+            (?P<subno>之\d+)?
+            (?=[巷弄號樓]|$)
+            |
+            (?P<name>.+)
+        )
+        (?:
+            (?P<unit>[縣市鄉鎮市區村里鄰路街段巷弄號樓])
+            |
+            (?=\d+(?:之\d+)?[巷弄號樓])
+        )$
+    ''', re.X)
+
     NO    = 0
     SUBNO = 1
     NAME  = 2
@@ -75,11 +90,23 @@ class Address(object):
         return s
 
     @staticmethod
-    def tokenize(addr_str):
-        return Address.TOKEN_RE.findall(Address.normalize(addr_str))
+    def tokenize(str_or_tokens):
+        # Build tokens directly if the input is an non-string iterable
+        if (not isinstance(str_or_tokens, basestring)
+                and hasattr(str_or_tokens, '__iter__')):
+            tokens = []
+            for token_str in str_or_tokens:
+                token_str = Address.normalize(token_str)
+                match = Address.TOKEN_EXACT_RE.match(token_str)
+                if match:
+                    tokens.append(tuple(g or u'' for g in match.groups()))
+            return tokens
 
-    def __init__(self, addr_str):
-        self.tokens = Address.tokenize(addr_str)
+        # Default behaviour
+        return Address.TOKEN_RE.findall(Address.normalize(str_or_tokens))
+
+    def __init__(self, str_or_tokens):
+        self.tokens = Address.tokenize(str_or_tokens)
 
     def __len__(self):
         return len(self.tokens)
@@ -241,6 +268,9 @@ class Directory(object):
             );
         ''')
 
+    def cleanup(self):
+        self.cur.execute('delete from precise where zipcode is ?', (None,))
+
     def put_precise(self, addr_str, rule_str, zipcode):
 
         self.cur.execute('insert or ignore into precise values (?, ?, ?);', (
@@ -248,6 +278,33 @@ class Directory(object):
             rule_str,
             zipcode
         ))
+
+        return self.cur.rowcount
+
+    def put_fuzzy(self, addr_str, rule_str, zipcode):
+
+        self.cur.execute('''
+            select addr_str, rule_str
+            from   precise
+            where  addr_str = ? and rule_str = ?;
+        ''', (addr_str, rule_str))
+
+        rows = self.cur.fetchall()
+        if rows:
+            # There are conflicting entries. Ignore the current entry. The
+            # existed conflicts will be marked, and removed later.
+            self.cur.execute('''
+                update precise
+                set    zipcode  = ?
+                where  addr_str = ? and rule_str = ?;
+            ''', (None, addr_str, rule_str))
+        else:
+            # No conflicting entries---We can insert safely.
+            self.cur.execute('insert into precise values (?, ?, ?);', (
+                addr_str,
+                rule_str,
+                zipcode
+            ))
 
         return self.cur.rowcount
 
@@ -272,15 +329,30 @@ class Directory(object):
 
         return self.cur.rowcount
 
-    def put(self, head_addr_str, tail_rule_str, zipcode):
+    def put(self, head_addr_parts, tail_rule_str, zipcode):
 
-        addr = Address(head_addr_str)
+        addr = Address(head_addr_parts)
 
         # (a, b, c)
 
+        addr_str = addr.flat()
         self.put_precise(
-            addr.flat(),
-            head_addr_str+tail_rule_str,
+            addr_str,
+            addr_str+tail_rule_str,
+            zipcode
+        )
+
+        # Fuzzy entries
+
+        indices = range(len(addr.tokens))
+        try:
+            del indices[1]
+        except IndexError:
+            pass
+        fuzzy_addr_str = addr.pick_to_flat(*indices)
+        self.put_fuzzy(
+            fuzzy_addr_str,
+            fuzzy_addr_str+tail_rule_str,
             zipcode
         )
 
@@ -333,10 +405,12 @@ class Directory(object):
 
         for row in csv.reader(lines_iter):
             self.put(
-                ''.join(row[1:-1]).decode('utf-8'),
+                [c.decode('utf-8') for c in row[1:-1]],
                 row[-1].decode('utf-8'),
                 row[0].decode('utf-8'),
             )
+
+        self.cleanup()
 
     def get_rule_str_zipcode_pairs(self, addr_str):
 
@@ -402,9 +476,15 @@ class Directory(object):
                 rzpairs = self.get_rule_str_zipcode_pairs(addr.flat(3))
 
             if rzpairs:
+                matched = None
                 for rule_str, zipcode in rzpairs:
                     if Rule(rule_str).match(addr):
-                        return zipcode
+                        if matched and matched != zipcode:
+                            break   # Conflicting matches. FAIL.
+                        matched = zipcode
+                else:
+                    if matched:
+                        return matched
 
             gzipcode = self.get_gradual_zipcode(addr_str)
             if gzipcode:
