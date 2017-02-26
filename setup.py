@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 
 import sys
 import zipcodetw.builder
@@ -8,7 +9,7 @@ from setuptools.command.install import install
 class zipcodetw_install(install):
 
     def run(self):
-        print 'Building ZIP code index ... '
+        print('Building ZIP code index ... ')
         sys.stdout.flush()
         zipcodetw.builder.build()
         install.run(self)
@@ -40,9 +41,9 @@ setup(
     ],
 
     packages = find_packages(),
+    install_requires = ['six', 'unicodecsv'],
     package_data = {'zipcodetw': ['*.csv', '*.db']},
 
     cmdclass = {'install': zipcodetw_install},
 
 )
-
