@@ -8,8 +8,8 @@ from .util import Directory
 
 # paths
 _package_root = dirname(__file__)
-_chp_csv_path = join(_package_root, '201412.csv')
-_db_path = join(_package_root, '201412.db')
+_chp_csv_path = join(_package_root, '201610.csv')
+_db_path = join(_package_root, '201610.db')
 
 # make a directory
 _dir = Directory(_db_path)
