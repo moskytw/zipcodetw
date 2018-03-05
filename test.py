@@ -3,6 +3,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import io
 from zipcodetw.util import Address
 
 def test_address_init():
@@ -288,7 +289,7 @@ class TestDirectory(object):
 
     def setup(self):
 
-        chp_csv_lines = '''郵遞區號,縣市名稱,鄉鎮市區,原始路名,投遞範圍
+        chp_csv_lines = io.BytesIO(b'''郵遞區號,縣市名稱,鄉鎮市區,原始路名,投遞範圍
 10058,臺北市,中正區,八德路１段,全
 10079,臺北市,中正區,三元街,單全
 10070,臺北市,中正區,三元街,雙  48號以下
@@ -350,7 +351,7 @@ class TestDirectory(object):
 81354,高雄市,左營區,大中二路,雙 700號以上
 81357,高雄市,左營區,大順一路,單  91號至  95號
 81357,高雄市,左營區,大順一路,雙  96號至 568號
-81357,高雄市,左營區,大順一路,單 201號至 389巷'''.split('\n')
+81357,高雄市,左營區,大順一路,單 201號至 389巷''')
 
         self.dir_ = Directory(':memory:', keep_alive=True)
         self.dir_.load_chp_csv(chp_csv_lines)
@@ -415,27 +416,3 @@ class TestDirectory(object):
         assert self.dir_.find('大埔街') == ''
         assert self.dir_.find('台北市大埔街') == '10068'
         assert self.dir_.find('苗栗縣大埔街') == '36046'
-
-if __name__ == '__main__':
-    import uniout
-    #test_dir = TestDirectory()
-    #test_dir.setup()
-    #test_dir.test_find_middle_token()
-
-    #r = Rule('台北市信義區市府路10號以下')
-    #print r.tokens
-
-    #a = Address('市府路1號')
-    #print a.tokens
-    #print r.match(a)
-
-    #a = Address('台北市信義區市府路1號')
-    #print a.tokens
-    #print r.match(a)
-
-    r = Rule('新北市,中和區,景平路,雙  64號以下')
-    print(r.tokens)
-
-    a = Address('新北市景平路64巷13弄13號')
-    print(a.tokens)
-    print(r.match(a))
