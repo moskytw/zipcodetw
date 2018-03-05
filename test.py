@@ -4,6 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import io
+import six
 from zipcodetw.util import Address
 
 def test_address_init():
@@ -64,7 +65,10 @@ def test_address_flat():
 
 def test_address_repr():
 
-    repr_str = "Address(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f')"
+    if six.PY2:
+        repr_str = "Address(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f')"
+    else:
+        repr_str = "Address('臺北市大安區市府路1號')"
     assert repr(Address('臺北市大安區市府路1號')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
@@ -132,7 +136,10 @@ def test_rule_init_tricky_input():
 
 def test_rule_repr():
 
-    repr_str = "Rule(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f\\u4ee5\\u4e0a')"
+    if six.PY2:
+        repr_str = "Rule(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f\\u4ee5\\u4e0a')"
+    else:
+        repr_str = "Rule('臺北市大安區市府路1號以上')"
     assert repr(Rule('臺北市大安區市府路1號以上')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
