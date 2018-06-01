@@ -75,6 +75,11 @@ http://www.post.gov.tw/post/internet/Download/all_list.jsp?ID=2201#dl_txt_s_A020
 Changelog
 ---------
 
+v0.6.1
+~~~~~~
+
+1. Fix the py2 py3 compatibility. Thanks the contribution from `Poren Chiang <https://github.com/rschiang>`_ and `Ryan <https://github.com/ryanchentw>`_.
+
 v0.6
 ~~~~
 
