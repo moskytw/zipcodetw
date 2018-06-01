@@ -199,7 +199,10 @@ class Rule(Address):
         return True
 
 import sqlite3
-import unicodecsv as csv
+try:
+    import unicodecsv as csv
+except ImportError:
+    import csv
 from functools import wraps
 
 class Directory(object):
@@ -335,6 +338,13 @@ class Directory(object):
         next(lines_iter)
 
         for row in csv.reader(lines_iter):
+
+            # for py2 py3 compatibility
+            try:
+                row = [val.decode('utf-8') for val in row]
+            except AttributeError:
+                pass
+
             self.put(
                 ''.join(row[1:-1]),
                 row[-1],
