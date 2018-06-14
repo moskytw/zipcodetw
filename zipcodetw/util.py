@@ -199,10 +199,7 @@ class Rule(Address):
         return True
 
 import sqlite3
-try:
-    import unicodecsv as csv
-except ImportError:
-    import csv
+import csv
 from functools import wraps
 
 class Directory(object):
@@ -338,12 +335,7 @@ class Directory(object):
         next(lines_iter)
 
         for row in csv.reader(lines_iter):
-
-            # for py2 py3 compatibility
-            try:
-                row = [val.decode('utf-8') for val in row]
-            except AttributeError:
-                pass
+            row = [ensure_unicode_text(val) for val in row]
 
             self.put(
                 ''.join(row[1:-1]),
@@ -424,3 +416,9 @@ class Directory(object):
                 return gzipcode
 
         return ''
+
+
+def ensure_unicode_text(s):
+    if isinstance(s, six.text_type):
+        return s
+    return s.decode('utf-8')
