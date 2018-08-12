@@ -22,7 +22,7 @@ setup(
     name = 'zipcodetw',
     version = zipcodetw.__version__,
     description = 'Find Taiwan ZIP code by address fuzzily.',
-    long_description = open('README.rst').read(),
+    long_description = open('README.rst', encoding='UTF-8').read(),
 
     author = 'Mosky',
     url = 'https://github.com/moskytw/zipcodetw',
