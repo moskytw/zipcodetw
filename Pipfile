@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 flask = "==1.1.1"
+twine = "==3.1.1"
 
 [packages]
 six = "==1.11.0"
