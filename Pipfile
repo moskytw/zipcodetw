@@ -4,11 +4,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flask = "==1.1.1"
 
 [packages]
 six = "==1.11.0"
 unicodecsv = "==0.14.1"
-flask = "==1.1.1"
 
 [requires]
 python_version = "3.7"
