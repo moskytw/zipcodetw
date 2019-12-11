@@ -2,3 +2,4 @@ global-include README* LICENSE*
 include README.rst LICENSE.txt
 global-exclude *.pyc
 exclude zipcodetw/*.db
+include test.py
