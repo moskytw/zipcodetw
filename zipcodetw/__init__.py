@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = '0.6.2'
+__version__ = '0.6.4.1989'
 
 from os.path import dirname, join
 from .util import Directory
