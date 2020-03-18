@@ -232,7 +232,7 @@ class Directory(object):
     def create_tables(self):
 
         self.cur.execute('''
-            create table precise (
+            create table if not exists precise (
                 addr_str text,
                 rule_str text,
                 zipcode  text,
@@ -241,7 +241,7 @@ class Directory(object):
         ''')
 
         self.cur.execute('''
-            create table gradual (
+            create table if not exists gradual (
                 addr_str text primary key,
                 zipcode  text
             );
