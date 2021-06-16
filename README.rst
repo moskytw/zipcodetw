@@ -75,6 +75,18 @@ http://www.post.gov.tw/post/internet/Download/all_list.jsp?ID=2201#dl_txt_s_A020
 Changelog
 ---------
 
+v0.6.5
+~~~~~~
+
+1. Updated to the 3+3 v2102.01 data.
+2. Fixed a Python 3 bug, maybe.
+
+
+v0.6.2–0.6.4
+~~~~~~~~~~~~
+
+1. A black hole eats the logs.
+
 v0.6.1
 ~~~~~~
 
