@@ -85,7 +85,7 @@ v0.6.5
 v0.6.2–0.6.4
 ~~~~~~~~~~~~
 
-1. A black hole eats the logs.
+1. A black hole ate the logs.
 
 v0.6.1
 ~~~~~~
