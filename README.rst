@@ -78,7 +78,7 @@ Changelog
 v0.6.1
 ~~~~~~
 
-1. Fix the py2 py3 compatibility. Thanks the contribution from `Poren Chiang <https://github.com/rschiang>`_ and `Ryan <https://github.com/ryanchentw>`_.
+1. Fixed the py2 py3 compatibility. Thanks the contribution from `Poren Chiang <https://github.com/rschiang>`_ and `Ryan <https://github.com/ryanchentw>`_.
 
 v0.6
 ~~~~
