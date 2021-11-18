@@ -3,26 +3,25 @@
 from __future__ import print_function
 
 import sys
-import zipcodetw.builder
 from setuptools.command.install import install
 
 class zipcodetw_install(install):
 
     def run(self):
+        import zipcodetw.builder
         print('Building ZIP code index ... ')
         sys.stdout.flush()
         zipcodetw.builder.build()
         install.run(self)
 
-import zipcodetw
 from setuptools import setup, find_packages
 
 setup(
 
     name = 'zipcodetw',
-    version = zipcodetw.__version__,
+    version = '0.6.4.1989',
     description = 'Find Taiwan ZIP code by address fuzzily.',
-    long_description = open('README.rst').read(),
+    long_description = open('README.rst', encoding='UTF-8').read(),
 
     author = 'Mosky',
     url = 'https://github.com/moskytw/zipcodetw',
@@ -47,6 +46,7 @@ setup(
 
     packages = find_packages(),
     install_requires = ['six', 'unicodecsv'],
+    setup_requires = ['six', 'unicodecsv'],
     package_data = {'zipcodetw': ['*.csv', '*.db']},
 
     cmdclass = {'install': zipcodetw_install},
