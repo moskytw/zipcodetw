@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = '0.6.5'
-
 from os.path import dirname, join
 from .util import Directory
 
