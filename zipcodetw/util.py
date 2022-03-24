@@ -344,7 +344,7 @@ class Directory(object):
 
             # for py2 py3 compatibility
             try:
-                row = [val.decode('utf-8') for val in row]
+                row = [six.ensure_text(val) for val in row]
             except AttributeError:
                 pass
 
