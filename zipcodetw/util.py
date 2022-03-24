@@ -199,9 +199,12 @@ class Rule(Address):
         return True
 
 import sqlite3
-try:
-    import unicodecsv as csv
-except ImportError:
+if six.PY2:
+    try:
+        import unicodecsv as csv
+    except ImportError:
+        import csv
+else:
     import csv
 from functools import wraps
 
