@@ -199,9 +199,12 @@ class Rule(Address):
         return True
 
 import sqlite3
-try:
-    import unicodecsv as csv
-except ImportError:
+if six.PY2:
+    try:
+        import unicodecsv as csv
+    except ImportError:
+        import csv
+else:
     import csv
 from functools import wraps
 
@@ -341,7 +344,7 @@ class Directory(object):
 
             # for py2 py3 compatibility
             try:
-                row = [val.decode('utf-8') for val in row]
+                row = [six.ensure_text(val) for val in row]
             except AttributeError:
                 pass
 
