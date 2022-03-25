@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import re
-import six
 
 class Address(object):
 
@@ -53,7 +50,7 @@ class Address(object):
     @staticmethod
     def normalize(s):
 
-        if isinstance(s, six.binary_type):
+        if isinstance(s, bytes):
             s = s.decode('utf-8')
 
         def replace(m):
@@ -199,13 +196,7 @@ class Rule(Address):
         return True
 
 import sqlite3
-if six.PY2:
-    try:
-        import unicodecsv as csv
-    except ImportError:
-        import csv
-else:
-    import csv
+import csv
 from functools import wraps
 
 class Directory(object):
@@ -341,12 +332,6 @@ class Directory(object):
         next(lines_iter)
 
         for row in csv.reader(lines_iter):
-
-            # for py2 py3 compatibility
-            try:
-                row = [six.ensure_text(val) for val in row]
-            except AttributeError:
-                pass
 
             self.put(
                 ''.join(row[1:-1]),
