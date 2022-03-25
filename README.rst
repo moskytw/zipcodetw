@@ -1,9 +1,3 @@
-.. .. image:: https://pypip.in/v/zipcodetw/badge.png?v=0.5.7
-..    :target: https://pypi.python.org/pypi/zipcodetw
-..
-.. .. image:: https://pypip.in/d/zipcodetw/badge.png?v=0.5.7
-..    :target: https://pypi.python.org/pypi/zipcodetw
-
 The ZIP Code Finder for Taiwan
 ==============================
 
@@ -75,10 +69,22 @@ http://www.post.gov.tw/post/internet/Download/all_list.jsp?ID=2201#dl_txt_s_A020
 Changelog
 ---------
 
+v0.6.5
+~~~~~~
+
+1. Updated to the 3+3 v2102.01 data.
+2. Fixed a Python 3 bug, maybe.
+
+
+v0.6.2–0.6.4
+~~~~~~~~~~~~
+
+1. A black hole ate the logs.
+
 v0.6.1
 ~~~~~~
 
-1. Fix the py2 py3 compatibility. Thanks the contribution from `Poren Chiang <https://github.com/rschiang>`_ and `Ryan <https://github.com/ryanchentw>`_.
+1. Fixed the py2 py3 compatibility. Thanks the contribution from `Poren Chiang <https://github.com/rschiang>`_ and `Ryan <https://github.com/ryanchentw>`_.
 
 v0.6
 ~~~~
