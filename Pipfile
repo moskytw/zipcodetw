@@ -7,9 +7,5 @@ verify_ssl = true
 flask = "==1.1.1"
 twine = "==3.1.1"
 
-[packages]
-six = "==1.11.0"
-unicodecsv = "==0.14.1"
-
 [requires]
 python_version = "3.7"
