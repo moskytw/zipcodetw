@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import io
-import six
 from zipcodetw.util import Address
 
 def test_address_init():
@@ -65,10 +62,7 @@ def test_address_flat():
 
 def test_address_repr():
 
-    if six.PY2:
-        repr_str = "Address(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f')"
-    else:
-        repr_str = "Address('臺北市大安區市府路1號')"
+    repr_str = "Address('臺北市大安區市府路1號')"
     assert repr(Address('臺北市大安區市府路1號')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
@@ -136,10 +130,7 @@ def test_rule_init_tricky_input():
 
 def test_rule_repr():
 
-    if six.PY2:
-        repr_str = "Rule(u'\\u81fa\\u5317\\u5e02\\u5927\\u5b89\\u5340\\u5e02\\u5e9c\\u8def1\\u865f\\u4ee5\\u4e0a')"
-    else:
-        repr_str = "Rule('臺北市大安區市府路1號以上')"
+    repr_str = "Rule('臺北市大安區市府路1號以上')"
     assert repr(Rule('臺北市大安區市府路1號以上')) == repr_str
     assert repr(eval(repr_str)) == repr_str
 
@@ -296,7 +287,7 @@ class TestDirectory(object):
 
     def setup(self):
 
-        chp_csv_lines = io.BytesIO('''郵遞區號,縣市名稱,鄉鎮市區,原始路名,投遞範圍
+        chp_csv_lines = io.StringIO('''郵遞區號,縣市名稱,鄉鎮市區,原始路名,投遞範圍
 10058,臺北市,中正區,八德路１段,全
 10079,臺北市,中正區,三元街,單全
 10070,臺北市,中正區,三元街,雙  48號以下
@@ -358,7 +349,7 @@ class TestDirectory(object):
 81354,高雄市,左營區,大中二路,雙 700號以上
 81357,高雄市,左營區,大順一路,單  91號至  95號
 81357,高雄市,左營區,大順一路,雙  96號至 568號
-81357,高雄市,左營區,大順一路,單 201號至 389巷'''.encode('utf-8'))
+81357,高雄市,左營區,大順一路,單 201號至 389巷''')
 
         self.dir_ = Directory(':memory:', keep_alive=True)
         self.dir_.load_chp_csv(chp_csv_lines)
