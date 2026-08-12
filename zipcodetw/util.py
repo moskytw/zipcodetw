@@ -357,9 +357,10 @@ class Directory(object):
     def get_rule_str_zipcode_pairs(self, addr_str):
 
         self.cur.execute('''
-            select rule_str, zipcode
-            from   precise
-            where  addr_str = ?;
+            select   rule_str, zipcode
+            from     precise
+            where    addr_str = ?
+            order by rowid;
         ''', (addr_str,))
 
         return self.cur.fetchall()

@@ -358,7 +358,10 @@ class TestDirectory(object):
 81354,高雄市,左營區,大中二路,雙 700號以上
 81357,高雄市,左營區,大順一路,單  91號至  95號
 81357,高雄市,左營區,大順一路,雙  96號至 568號
-81357,高雄市,左營區,大順一路,單 201號至 389巷'''.encode('utf-8'))
+81357,高雄市,左營區,大順一路,單 201號至 389巷
+10082,臺北市,中正區,南昌路１段,單 199號至 243號
+10083,臺北市,中正區,南昌路１段,單 245號至 291號
+10080,臺北市,中正區,南昌路１段,全'''.encode('utf-8'))
 
         self.dir_ = Directory(':memory:', keep_alive=True)
         self.dir_.load_chp_csv(chp_csv_lines)
@@ -398,6 +401,11 @@ class TestDirectory(object):
         assert self.dir_.find('臺北市中正區中華路１段51號') == '10042'
         assert self.dir_.find('臺北市中正區中華路１段52號') == '100'
         assert self.dir_.find('臺北市中正區中華路１段53號') == '10042'
+
+    def test_find_prefers_narrower_rule_over_catch_all(self):
+
+        assert self.dir_.find('臺北市中正區南昌路１段291號') == '10083'
+        assert self.dir_.find('臺北市中正區南昌路１段1號') == '10080'
 
     def test_find_gradually(self):
 
